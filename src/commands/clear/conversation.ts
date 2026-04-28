@@ -10,6 +10,7 @@ import {
   getSessionId,
   regenerateSessionId,
 } from '../../bootstrap/state.js'
+import { snapshotConversationStart } from '../../cost-tracker.js'
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
@@ -201,6 +202,8 @@ export async function clearConversation({
   // Generate new session ID to provide fresh state
   // Set the old session as parent for analytics lineage tracking
   regenerateSessionId({ setCurrentAsParent: true })
+  // 重置对话费用基线：新对话从当前会话累计值开始计算差值
+  snapshotConversationStart()
   // Update the environment variable so subprocesses use the new session ID
   if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_SESSION_ID) {
     process.env.CLAUDE_CODE_SESSION_ID = getSessionId()

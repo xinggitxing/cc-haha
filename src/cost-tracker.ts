@@ -3,16 +3,23 @@ import chalk from 'chalk'
 import {
   addToTotalCostState,
   addToTotalLinesChanged,
+  getConversationAPICalls,
+  getConversationCacheCreationInputTokens,
+  getConversationCacheReadInputTokens,
+  getConversationCost,
+  getConversationInputTokens,
+  getConversationOutputTokens,
   getCostCounter,
   getModelUsage,
   getSdkBetas,
   getSessionId,
   getTokenCounter,
+  getTotalAPICalls,
   getTotalAPIDuration,
   getTotalAPIDurationWithoutRetries,
   getTotalCacheCreationInputTokens,
   getTotalCacheReadInputTokens,
-  getTotalCostUSD,
+  getTotalCost,
   getTotalDuration,
   getTotalInputTokens,
   getTotalLinesAdded,
@@ -20,12 +27,21 @@ import {
   getTotalOutputTokens,
   getTotalToolDuration,
   getTotalWebSearchRequests,
+  getTurnAPICalls,
+  getTurnCacheCreationInputTokens,
+  getTurnCacheReadInputTokens,
+  getTurnCost,
+  getTurnInputTokens,
+  getTurnOutputTokens,
   getUsageForModel,
   hasUnknownModelCost,
+  incrementTotalAPICalls,
   resetCostState,
   resetStateForTests,
   setCostStateForRestore,
   setHasUnknownModelCost,
+  snapshotConversationStart,
+  snapshotTurnCosts,
 } from './bootstrap/state.js'
 import type { ModelUsage } from './entrypoints/agentSdkTypes.js'
 import {
@@ -45,9 +61,70 @@ import { isFastModeEnabled } from './utils/fastMode.js'
 import { formatDuration, formatNumber } from './utils/format.js'
 import type { FpsMetrics } from './utils/fpsTracker.js'
 import { getCanonicalName } from './utils/model/model.js'
-import { calculateUSDCost } from './utils/modelCost.js'
+import { calculateModelCost, convertCurrency, getDisplayCurrency, getModelCosts } from './utils/modelCost.js'
+export function formatTurnStats(): string {
+  const totalInput = getTurnInputTokens()
+  const totalOutput = getTurnOutputTokens()
+  const totalCacheRead = getTurnCacheReadInputTokens()
+  const totalCacheCreation = getTurnCacheCreationInputTokens()
+  const totalUpTokens = totalInput + totalCacheRead + totalCacheCreation
+  const totalAllTokens = totalUpTokens + totalOutput
+  const totalCost = getTurnCost()
+  const apiCalls = getTurnAPICalls()
+
+  const modelUsageMap = getModelUsage()
+  const modelNames = Object.keys(modelUsageMap).map(m =>
+    process.env.ANTHROPIC_BASE_URL ? m : getCanonicalName(m),
+  )
+  const uniqueModels = [...new Set(modelNames)]
+  const modelDisplay = uniqueModels.length > 0 ? uniqueModels.join('+') : '?'
+
+  const costStr = formatCost(totalCost)
+
+  return chalk.dim(
+    `📊 ${modelDisplay} · ${apiCalls} times · ↑${formatNumber(totalUpTokens)} ↓${formatNumber(totalOutput)} · ${costStr}` +
+      (hasUnknownModelCost() ? ' (cost may be inaccurate)' : ''),
+  )
+}
+
+/** /clear 时输出的对话费用摘要，使用对话级别数据。 */
+export function formatConversationCost(): string {
+  const convInput = getConversationInputTokens()
+  const convOutput = getConversationOutputTokens()
+  const convCacheRead = getConversationCacheReadInputTokens()
+  const convCacheCreation = getConversationCacheCreationInputTokens()
+  const convUpTokens = convInput + convCacheRead + convCacheCreation
+  const convCost = getConversationCost()
+  const convAPICalls = getConversationAPICalls()
+
+  const modelUsageMap = getModelUsage()
+  const modelNames = Object.keys(modelUsageMap).map(m =>
+    process.env.ANTHROPIC_BASE_URL ? m : getCanonicalName(m),
+  )
+  const uniqueModels = [...new Set(modelNames)]
+  const modelDisplay = uniqueModels.length > 0 ? uniqueModels.join('+') : '?'
+
+  const costStr = formatCost(convCost)
+
+  return chalk.dim(
+    `📊 Conversation cost: ${modelDisplay} · ${convAPICalls} times · ↑${formatNumber(convUpTokens)} ↓${formatNumber(convOutput)} · ${costStr}` +
+      (hasUnknownModelCost() ? ' (cost may be inaccurate)' : ''),
+  )
+}
+
+// 防止 gracefulShutdown + process.on('exit') 重复输出
+let costOutputDone = false
+
+export function isCostOutputDone(): boolean {
+  return costOutputDone
+}
+
+export function markCostOutputDone(): void {
+  costOutputDone = true
+}
+
 export {
-  getTotalCostUSD as getTotalCost,
+  getTotalCost,
   getTotalDuration,
   getTotalAPIDuration,
   getTotalAPIDurationWithoutRetries,
@@ -59,6 +136,8 @@ export {
   getTotalCacheReadInputTokens,
   getTotalCacheCreationInputTokens,
   getTotalWebSearchRequests,
+  getTotalAPICalls,
+  incrementTotalAPICalls,
   formatCost,
   hasUnknownModelCost,
   resetStateForTests,
@@ -66,10 +145,24 @@ export {
   setHasUnknownModelCost,
   getModelUsage,
   getUsageForModel,
+  getConversationCost,
+  getConversationInputTokens,
+  getConversationOutputTokens,
+  getConversationCacheReadInputTokens,
+  getConversationCacheCreationInputTokens,
+  getConversationAPICalls,
+  getTurnCost,
+  getTurnInputTokens,
+  getTurnOutputTokens,
+  getTurnCacheReadInputTokens,
+  getTurnCacheCreationInputTokens,
+  getTurnAPICalls,
+  snapshotConversationStart,
+  snapshotTurnCosts,
 }
 
 export type SessionUsageSnapshot = {
-  totalCostUSD: number
+  totalCost: number
   costDisplay: string
   hasUnknownModelCost: boolean
   totalAPIDuration: number
@@ -89,7 +182,7 @@ export type SessionUsageSnapshot = {
     cacheReadInputTokens: number
     cacheCreationInputTokens: number
     webSearchRequests: number
-    costUSD: number
+    cost: number
     costDisplay: string
     contextWindow: number
     maxOutputTokens: number
@@ -97,7 +190,8 @@ export type SessionUsageSnapshot = {
 }
 
 type StoredCostState = {
-  totalCostUSD: number
+  totalCost: number
+  totalAPICalls: number
   totalAPIDuration: number
   totalAPIDurationWithoutRetries: number
   totalToolDuration: number
@@ -138,7 +232,8 @@ export function getStoredSessionCosts(
   }
 
   return {
-    totalCostUSD: projectConfig.lastCost ?? 0,
+    totalCost: projectConfig.lastCost ?? 0,
+    totalAPICalls: 0,  // API calls are not persisted across sessions
     totalAPIDuration: projectConfig.lastAPIDuration ?? 0,
     totalAPIDurationWithoutRetries:
       projectConfig.lastAPIDurationWithoutRetries ?? 0,
@@ -171,7 +266,7 @@ export function restoreCostStateForSession(sessionId: string): boolean {
 export function saveCurrentSessionCosts(fpsMetrics?: FpsMetrics): void {
   saveCurrentProjectConfig(current => ({
     ...current,
-    lastCost: getTotalCostUSD(),
+    lastCost: getTotalCost(),
     lastAPIDuration: getTotalAPIDuration(),
     lastAPIDurationWithoutRetries: getTotalAPIDurationWithoutRetries(),
     lastToolDuration: getTotalToolDuration(),
@@ -202,8 +297,13 @@ export function saveCurrentSessionCosts(fpsMetrics?: FpsMetrics): void {
   }))
 }
 
-function formatCost(cost: number, maxDecimalPlaces: number = 4): string {
-  return `$${cost > 0.5 ? round(cost, 100).toFixed(2) : cost.toFixed(maxDecimalPlaces)}`
+function formatCost(cost: number, currency?: string, maxDecimalPlaces: number = 4): string {
+  const display = currency ?? getDisplayCurrency()
+  const symbol = display === 'USD' ? '$' : '¥'
+  if (cost < 0.01) {
+    return `${symbol}${cost.toFixed(maxDecimalPlaces)}`
+  }
+  return `${symbol}${round(cost, 100).toFixed(2)}`
 }
 
 function formatModelUsage(): string {
@@ -254,16 +354,57 @@ function formatModelUsage(): string {
 }
 
 export function formatTotalCost(): string {
+  const totalInput = getTotalInputTokens()
+  const totalOutput = getTotalOutputTokens()
+  const totalCacheRead = getTotalCacheReadInputTokens()
+  const totalCacheCreation = getTotalCacheCreationInputTokens()
+  const totalUpTokens = totalInput + totalCacheRead + totalCacheCreation
+  const totalAllTokens = totalUpTokens + totalOutput
+
+  const totalCost = getTotalCost()
   const costDisplay =
-    formatCost(getTotalCostUSD()) +
+    formatCost(totalCost) +
     (hasUnknownModelCost()
       ? ' (costs may be inaccurate due to usage of unknown models)'
       : '')
 
+  // 摘要行
+  const apiCalls = getTotalAPICalls()
+  const modelUsageMap = getModelUsage()
+  const isThirdParty = !!process.env.ANTHROPIC_BASE_URL
+  const modelNames = Object.keys(modelUsageMap).map(m =>
+    isThirdParty ? m : getCanonicalName(m),
+  )
+  const uniqueModels = [...new Set(modelNames)]
+  const modelDisplay = uniqueModels.length > 0 ? uniqueModels.join(', ') : '-'
+
+  const COL_WIDTH = 16
+
+  const rpad = (s: string) => s.padStart(COL_WIDTH)
+
+  const summaryLines = [
+    `${rpad('Model:')} ${modelDisplay}`,
+    `${rpad('Times:')} ${formatNumber(apiCalls)}`,
+    `${rpad('Up tokens:')} ${formatNumber(totalUpTokens)}`,
+    `${rpad('  input:')} ${formatNumber(totalInput)}`,
+  ]
+  if (totalCacheRead > 0) {
+    summaryLines.push(`${rpad('  cache hit:')} ${formatNumber(totalCacheRead)}`)
+  }
+  if (totalCacheCreation > 0) {
+    summaryLines.push(`${rpad('  cache write:')} ${formatNumber(totalCacheCreation)}`)
+  }
+  summaryLines.push(
+    `${rpad('Down tokens:')} ${formatNumber(totalOutput)}`,
+    `${rpad('Total tokens:')} ${formatNumber(totalAllTokens)}`,
+    `${rpad('Est cost:')} ${costDisplay}`,
+  )
+
   const modelUsageDisplay = formatModelUsage()
 
   return chalk.dim(
-    `Total cost:            ${costDisplay}\n` +
+    summaryLines.join('\n') +
+      '\n\n' +
       `Total duration (API):  ${formatDuration(getTotalAPIDuration())}
 Total duration (wall): ${formatDuration(getTotalDuration())}
 Total code changes:    ${getTotalLinesAdded()} ${getTotalLinesAdded() === 1 ? 'line' : 'lines'} added, ${getTotalLinesRemoved()} ${getTotalLinesRemoved() === 1 ? 'line' : 'lines'} removed
@@ -273,8 +414,8 @@ ${modelUsageDisplay}`,
 
 export function getSessionUsageSnapshot(): SessionUsageSnapshot {
   return {
-    totalCostUSD: getTotalCostUSD(),
-    costDisplay: formatCost(getTotalCostUSD()),
+    totalCost: getTotalCost(),
+    costDisplay: formatCost(getTotalCost()),
     hasUnknownModelCost: hasUnknownModelCost(),
     totalAPIDuration: getTotalAPIDuration(),
     totalDuration: getTotalDuration(),
@@ -293,7 +434,7 @@ export function getSessionUsageSnapshot(): SessionUsageSnapshot {
       cacheReadInputTokens: usage.cacheReadInputTokens,
       cacheCreationInputTokens: usage.cacheCreationInputTokens,
       webSearchRequests: usage.webSearchRequests,
-      costUSD: usage.costUSD,
+      cost: usage.costUSD,
       costDisplay: formatCost(usage.costUSD),
       contextWindow: usage.contextWindow,
       maxOutputTokens: usage.maxOutputTokens,
@@ -338,15 +479,23 @@ export function addToTotalSessionCost(
   usage: Usage,
   model: string,
 ): number {
+  const modelCosts = getModelCosts(model, usage)
+  const nativeCurrency = modelCosts.currency
+
+  // 按原生币种存储到 modelUsage
   const modelUsage = addToTotalModelUsage(cost, usage, model)
-  addToTotalCostState(cost, modelUsage, model)
+
+  // 转换为展示币种后累加到总额
+  const displayCurrency = getDisplayCurrency()
+  const displayCost = convertCurrency(cost, nativeCurrency, displayCurrency)
+  addToTotalCostState(displayCost, modelUsage, model)
 
   const attrs =
     isFastModeEnabled() && usage.speed === 'fast'
       ? { model, speed: 'fast' }
       : { model }
 
-  getCostCounter()?.add(cost, attrs)
+  getCostCounter()?.add(displayCost, attrs)
   getTokenCounter()?.add(usage.input_tokens, { ...attrs, type: 'input' })
   getTokenCounter()?.add(usage.output_tokens, { ...attrs, type: 'output' })
   getTokenCounter()?.add(usage.cache_read_input_tokens ?? 0, {
@@ -358,9 +507,14 @@ export function addToTotalSessionCost(
     type: 'cacheCreation',
   })
 
-  let totalCost = cost
+  let totalCost = displayCost
   for (const advisorUsage of getAdvisorUsage(usage)) {
-    const advisorCost = calculateUSDCost(advisorUsage.model, advisorUsage)
+    const advisorCost = calculateModelCost(advisorUsage.model, advisorUsage)
+    const advisorTotal = addToTotalSessionCost(
+      advisorCost,
+      advisorUsage,
+      advisorUsage.model,
+    )
     logEvent('tengu_advisor_tool_token_usage', {
       advisor_model:
         advisorUsage.model as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -369,13 +523,9 @@ export function addToTotalSessionCost(
       cache_read_input_tokens: advisorUsage.cache_read_input_tokens ?? 0,
       cache_creation_input_tokens:
         advisorUsage.cache_creation_input_tokens ?? 0,
-      cost_usd_micros: Math.round(advisorCost * 1_000_000),
+      cost_micros: Math.round(advisorTotal * 1_000_000),
     })
-    totalCost += addToTotalSessionCost(
-      advisorCost,
-      advisorUsage,
-      advisorUsage.model,
-    )
+    totalCost += advisorTotal
   }
   return totalCost
 }

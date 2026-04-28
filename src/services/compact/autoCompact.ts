@@ -11,7 +11,7 @@ import { isEnvTruthy } from '../../utils/envUtils.js'
 import { hasExactErrorMessage } from '../../utils/errors.js'
 import type { CacheSafeParams } from '../../utils/forkedAgent.js'
 import { logError } from '../../utils/log.js'
-import { tokenCountWithEstimation } from '../../utils/tokens.js'
+import { estimateHistoricalThinkingTokens, tokenCountWithEstimation } from '../../utils/tokens.js'
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../analytics/growthbook.js'
 import { getMaxOutputTokensForModel } from '../api/claude.js'
 import { notifyCompaction } from '../api/promptCacheBreakDetection.js'
@@ -22,6 +22,10 @@ import {
   ERROR_MESSAGE_USER_ABORT,
   type RecompactionInfo,
 } from './compact.js'
+import {
+  clearForceClearThinkingThisTurn,
+  setForceClearThinkingThisTurn,
+} from './apiMicrocompact.js'
 import { runPostCompactCleanup } from './postCompactCleanup.js'
 import { trySessionMemoryCompaction } from './sessionMemoryCompact.js'
 
@@ -254,6 +258,10 @@ export async function autoCompactIfNeeded(
     return { wasCompacted: false }
   }
 
+  // Lazy cleanup: reset the one-shot force-clear-thinking flag from any
+  // previous autocompact optimization that used it.
+  clearForceClearThinkingThisTurn()
+
   // Circuit breaker: stop retrying after N consecutive failures.
   // Without this, sessions where context is irrecoverably over the limit
   // hammer the API with doomed compaction attempts on every turn.
@@ -274,6 +282,28 @@ export async function autoCompactIfNeeded(
 
   if (!shouldCompact) {
     return { wasCompacted: false }
+  }
+
+  // Optimization: when CLAUDE_CODE_PRESERVE_HISTORICAL_THINKING is set, try
+  // clearing historical thinking via the API's context_management before falling
+  // back to a full conversation compaction. If clearing old thinking alone frees
+  // enough tokens to drop below the autocompact threshold, we skip compaction
+  // entirely and let the next API request clear thinking for this turn only.
+  if (isEnvTruthy(process.env.CLAUDE_CODE_PRESERVE_HISTORICAL_THINKING)) {
+    const historicalThinkingTokens =
+      estimateHistoricalThinkingTokens(messages)
+    if (historicalThinkingTokens > 0) {
+      const currentTokens =
+        tokenCountWithEstimation(messages) - (snipTokensFreed ?? 0)
+      const threshold = getAutoCompactThreshold(model)
+      if (currentTokens - historicalThinkingTokens < threshold) {
+        setForceClearThinkingThisTurn()
+        logForDebugging(
+          `autocompact: skipping compaction, clearing historical thinking instead (${historicalThinkingTokens} est. thinking tokens, ${currentTokens} current → ~${currentTokens - historicalThinkingTokens} after clear, threshold ${threshold})`,
+        )
+        return { wasCompacted: false }
+      }
+    }
   }
 
   const recompactionInfo: RecompactionInfo = {

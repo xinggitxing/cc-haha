@@ -36,7 +36,7 @@ export type RecentProject = {
 
 export type SessionUsageSnapshot = {
   source?: 'current_process' | 'transcript'
-  totalCostUSD: number
+  totalCost: number
   costDisplay: string
   hasUnknownModelCost: boolean
   totalAPIDuration: number
@@ -56,7 +56,7 @@ export type SessionUsageSnapshot = {
     cacheReadInputTokens: number
     cacheCreationInputTokens: number
     webSearchRequests: number
-    costUSD: number
+    cost: number
     costDisplay: string
     contextWindow: number
     maxOutputTokens: number

@@ -60,6 +60,31 @@ export type ContextManagementConfig = {
   edits: ContextEditStrategy[]
 }
 
+// When set, forces the next getAPIContextManagement() call to clear historical
+// thinking even when CLAUDE_CODE_PRESERVE_HISTORICAL_THINKING is set. This is
+// a one-shot flag — call clearForceClearThinkingThisTurn() to reset after the
+// API call that should use it completes.
+let forceClearThinkingThisTurn = false
+
+/**
+ * Set the one-shot flag that forces the next API request to clear historical
+ * thinking blocks, temporarily overriding CLAUDE_CODE_PRESERVE_HISTORICAL_THINKING.
+ * Used by autocompact to try thinking clearing before full compaction.
+ */
+export function setForceClearThinkingThisTurn(): void {
+  forceClearThinkingThisTurn = true
+}
+
+/** Check whether the force-clear-thinking flag is set (without resetting). */
+export function isForceClearThinkingThisTurn(): boolean {
+  return forceClearThinkingThisTurn
+}
+
+/** Reset the force-clear-thinking flag after the API call that used it succeeds. */
+export function clearForceClearThinkingThisTurn(): void {
+  forceClearThinkingThisTurn = false
+}
+
 // API-based microcompact implementation that uses native context management
 export function getAPIContextManagement(options?: {
   hasThinking?: boolean
@@ -79,11 +104,13 @@ export function getAPIContextManagement(options?: {
   // When clearAllThinking is set (>1h idle = cache miss), keep only the last
   // thinking turn — the API schema requires value >= 1, and omitting the edit
   // falls back to the model-policy default (often "all"), which wouldn't clear.
-  // CLAUDE_CODE_PRESERVE_HISTORICAL_THINKING overrides this to keep all thinking.
+  // CLAUDE_CODE_PRESERVE_HISTORICAL_THINKING overrides this to keep all thinking,
+  // but forceClearThinkingThisTurn temporarily ignores that override so autocompact
+  // can try a lightweight thinking-clear before falling back to full compaction.
   if (hasThinking && !isRedactThinkingActive) {
-    const preserveHistoricalThinking = isEnvTruthy(
-      process.env.CLAUDE_CODE_PRESERVE_HISTORICAL_THINKING,
-    )
+    const preserveHistoricalThinking =
+      !forceClearThinkingThisTurn &&
+      isEnvTruthy(process.env.CLAUDE_CODE_PRESERVE_HISTORICAL_THINKING)
     strategies.push({
       type: 'clear_thinking_20251015',
       keep:

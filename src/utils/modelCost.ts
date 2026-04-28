@@ -30,6 +30,7 @@ export type ModelCosts = {
   promptCacheWriteTokens: number
   promptCacheReadTokens: number
   webSearchRequests: number
+  currency: 'USD' | 'CNY'
 }
 
 // Standard pricing tier for Sonnet models: $3 input / $15 output per Mtok
@@ -39,6 +40,7 @@ export const COST_TIER_3_15 = {
   promptCacheWriteTokens: 3.75,
   promptCacheReadTokens: 0.3,
   webSearchRequests: 0.01,
+  currency: 'USD',
 } as const satisfies ModelCosts
 
 // Pricing tier for Opus 4/4.1: $15 input / $75 output per Mtok
@@ -48,6 +50,7 @@ export const COST_TIER_15_75 = {
   promptCacheWriteTokens: 18.75,
   promptCacheReadTokens: 1.5,
   webSearchRequests: 0.01,
+  currency: 'USD',
 } as const satisfies ModelCosts
 
 // Pricing tier for Opus 4.5: $5 input / $25 output per Mtok
@@ -57,6 +60,7 @@ export const COST_TIER_5_25 = {
   promptCacheWriteTokens: 6.25,
   promptCacheReadTokens: 0.5,
   webSearchRequests: 0.01,
+  currency: 'USD',
 } as const satisfies ModelCosts
 
 // Fast mode pricing for Opus 4.7: $30 input / $150 output per Mtok
@@ -66,6 +70,7 @@ export const COST_TIER_30_150 = {
   promptCacheWriteTokens: 37.5,
   promptCacheReadTokens: 3,
   webSearchRequests: 0.01,
+  currency: 'USD',
 } as const satisfies ModelCosts
 
 // Pricing for Haiku 3.5: $0.80 input / $4 output per Mtok
@@ -75,6 +80,7 @@ export const COST_HAIKU_35 = {
   promptCacheWriteTokens: 1,
   promptCacheReadTokens: 0.08,
   webSearchRequests: 0.01,
+  currency: 'USD',
 } as const satisfies ModelCosts
 
 // Pricing for Haiku 4.5: $1 input / $5 output per Mtok
@@ -84,9 +90,199 @@ export const COST_HAIKU_45 = {
   promptCacheWriteTokens: 1.25,
   promptCacheReadTokens: 0.1,
   webSearchRequests: 0.01,
+  currency: 'USD',
 } as const satisfies ModelCosts
 
-const DEFAULT_UNKNOWN_MODEL_COST = COST_TIER_5_25
+const DEFAULT_UNKNOWN_MODEL_COST = { ...COST_TIER_5_25, currency: 'USD' as const }
+
+// ── 中国大模型定价（每百万 tokens 人民币）──
+// 数据来源：各厂商官方定价页，截至 2026-04
+// 仅包含有明确文档确认的缓存价格，未确认的不纳入计算
+
+// DeepSeek V4-Pro (2026.4.26 永久降价后)
+const DEEPSEEK_V4_PRO: ModelCosts = {
+  inputTokens: 3,
+  outputTokens: 6,
+  promptCacheWriteTokens: 0,   // 未公开
+  promptCacheReadTokens: 0.1,  // 永久价 0.1，限时 0.025 截至 2026-05-31
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// DeepSeek V4-Flash
+const DEEPSEEK_V4_FLASH: ModelCosts = {
+  inputTokens: 1,
+  outputTokens: 2,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0.02,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// DeepSeek V3（无缓存定价）
+const DEEPSEEK_V3: ModelCosts = {
+  inputTokens: 2,
+  outputTokens: 8,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// DeepSeek R1（无缓存定价，含思维链输出）
+const DEEPSEEK_R1: ModelCosts = {
+  inputTokens: 4,
+  outputTokens: 16,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// MiniMax M2.7（无缓存定价）
+const MINIMAX_M27: ModelCosts = {
+  inputTokens: 7.20,
+  outputTokens: 36,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// MiniMax M2.5（无缓存定价）
+const MINIMAX_M25: ModelCosts = {
+  inputTokens: 2.16,
+  outputTokens: 17.28,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// MiniMax abab6.5t（无缓存定价）
+const MINIMAX_ABAB65T: ModelCosts = {
+  inputTokens: 0.70,
+  outputTokens: 2.10,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// Qwen3.5-Plus ≤128K
+const QWEN35_PLUS: ModelCosts = {
+  inputTokens: 0.8,
+  outputTokens: 4.8,
+  promptCacheWriteTokens: 1.0,
+  promptCacheReadTokens: 0.08,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// Qwen3-Max ≤32K
+const QWEN3_MAX: ModelCosts = {
+  inputTokens: 2.5,
+  outputTokens: 10,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0.25,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// GLM-5.1 (via OpenRouter, USD pricing)
+// NOTE: 此定价基于 OpenRouter，通过智谱官方 API 使用时价格和币种可能不同
+const GLM51: ModelCosts = {
+  inputTokens: 1.26,
+  outputTokens: 3.96,
+  promptCacheWriteTokens: 0.26,
+  promptCacheReadTokens: 0.475,
+  webSearchRequests: 0,
+  currency: 'USD',
+}
+
+// 豆包 Seed 1.8 ≤32K
+const DOUBAO_SEED18: ModelCosts = {
+  inputTokens: 0.8,
+  outputTokens: 2,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0.16,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// 豆包 Seed 2.0 Pro
+const DOUBAO_SEED20_PRO: ModelCosts = {
+  inputTokens: 3.2,
+  outputTokens: 16,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0.64,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// 豆包 Seed 2.0 Lite
+const DOUBAO_SEED20_LITE: ModelCosts = {
+  inputTokens: 0.6,
+  outputTokens: 3.6,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0.12,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// Kimi K2.5
+const KIMI_K25: ModelCosts = {
+  inputTokens: 4.0,
+  outputTokens: 21,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 0.7,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+// Kimi K2.6
+const KIMI_K26: ModelCosts = {
+  inputTokens: 6.5,
+  outputTokens: 27,
+  promptCacheWriteTokens: 0,
+  promptCacheReadTokens: 1.1,
+  webSearchRequests: 0,
+  currency: 'CNY',
+}
+
+/**
+ * 模型名称关键词 → 定价映射（模糊匹配用）
+ * 按优先级排序：越具体的匹配越靠前
+ */
+const MODEL_PRICING_KEYWORDS: [RegExp, ModelCosts][] = [
+  [/deepseek.*v4.*pro/i, DEEPSEEK_V4_PRO],
+  [/deepseek.*v4.*flash/i, DEEPSEEK_V4_FLASH],
+  [/deepseek.*v4/i, DEEPSEEK_V4_PRO],  // "deepseek-v4" 默认匹配 Pro
+  [/deepseek.*r1/i, DEEPSEEK_R1],
+  [/deepseek.*v3/i, DEEPSEEK_V3],
+  [/deepseek/i, DEEPSEEK_V3],           // 通用 DeepSeek 回退到 V3
+  [/minimax.*m2\.7/i, MINIMAX_M27],
+  [/minimax.*m2\.5/i, MINIMAX_M25],
+  [/minimax.*abab.*6\.?5t/i, MINIMAX_ABAB65T],
+  [/minimax.*abab/i, MINIMAX_ABAB65T],
+  [/minimax.*m2/i, MINIMAX_M25],
+  [/minimax/i, MINIMAX_M25],
+  [/qwen3\.5.*plus/i, QWEN35_PLUS],
+  [/qwen3.*max/i, QWEN3_MAX],
+  [/qwen/i, QWEN3_MAX],
+  [/glm.*5\.1/i, GLM51],
+  [/glm.*5/i, GLM51],
+  [/glm/i, GLM51],
+  [/doubao.*seed.*2.*pro/i, DOUBAO_SEED20_PRO],
+  [/doubao.*seed.*2.*lite/i, DOUBAO_SEED20_LITE],
+  [/doubao.*seed.*1/i, DOUBAO_SEED18],
+  [/doubao.*seed/i, DOUBAO_SEED20_PRO],
+  [/doubao/i, DOUBAO_SEED18],
+  [/kimi.*k2\.6/i, KIMI_K26],
+  [/kimi.*k2/i, KIMI_K25],
+  [/kimi/i, KIMI_K25],
+  [/moonshot/i, KIMI_K25],
+]
 
 /**
  * Get the cost tier for Opus 4.7 based on fast mode.
@@ -126,19 +322,82 @@ export const MODEL_COSTS: Record<ModelShortName, ModelCosts> = {
 }
 
 /**
- * Calculates the USD cost based on token usage and model cost configuration
+ * Calculates the cost in the model's native currency based on token usage.
  */
-function tokensToUSDCost(modelCosts: ModelCosts, usage: Usage): number {
+function tokensToCost(modelCosts: ModelCosts, usage: Usage): number {
+  const cacheRead = usage.cache_read_input_tokens ?? 0
+  const cacheWrite = usage.cache_creation_input_tokens ?? 0
+  // Only apply cache-aware pricing for models that support prompt caching
+  // (Anthropic, Qwen, etc.). Non-caching models (DeepSeek, MiniMax, etc.)
+  // have promptCacheReadTokens=0 and promptCacheWriteTokens=0 — their
+  // input_tokens already covers everything, and we must not subtract.
+  const supportsCache =
+    modelCosts.promptCacheReadTokens > 0 ||
+    modelCosts.promptCacheWriteTokens > 0
+  // input_tokens includes cache tokens — subtract them to avoid double-charging
+  const nonCachedInput = supportsCache
+    ? Math.max(0, usage.input_tokens - cacheRead - cacheWrite)
+    : usage.input_tokens
   return (
-    (usage.input_tokens / 1_000_000) * modelCosts.inputTokens +
+    (nonCachedInput / 1_000_000) * modelCosts.inputTokens +
     (usage.output_tokens / 1_000_000) * modelCosts.outputTokens +
-    ((usage.cache_read_input_tokens ?? 0) / 1_000_000) *
-      modelCosts.promptCacheReadTokens +
-    ((usage.cache_creation_input_tokens ?? 0) / 1_000_000) *
-      modelCosts.promptCacheWriteTokens +
+    (supportsCache
+      ? (cacheRead / 1_000_000) * modelCosts.promptCacheReadTokens
+      : 0) +
+    (supportsCache
+      ? (cacheWrite / 1_000_000) * modelCosts.promptCacheWriteTokens
+      : 0) +
     (usage.server_tool_use?.web_search_requests ?? 0) *
       modelCosts.webSearchRequests
   )
+}
+
+// 缓存 settings.json 中的 modelPricing，避免每次 API 调用都 require 读取
+type CustomPricingCache = {
+  exact: Record<string, ModelCosts>
+  patterns: [RegExp, ModelCosts][]
+} | null
+
+let _cachedCustomPricing: CustomPricingCache = undefined as unknown as CustomPricingCache
+
+function getCustomPricingCache(): CustomPricingCache {
+  if (_cachedCustomPricing !== (undefined as unknown as CustomPricingCache)) {
+    return _cachedCustomPricing
+  }
+
+  _cachedCustomPricing = null
+  try {
+    const { getInitialSettings } = require('./settings/settings.js') as typeof import('./settings/settings.js')
+    const settings = getInitialSettings()
+    const customPricing = (settings as Record<string, unknown>)?.modelPricing as
+      | Record<string, { inputPrice: number; outputPrice: number; cacheReadPrice?: number; cacheWritePrice?: number; currency?: 'USD' | 'CNY' }>
+      | undefined
+    if (customPricing) {
+      const exact: Record<string, ModelCosts> = {}
+      const patterns: [RegExp, ModelCosts][] = []
+      for (const [key, p] of Object.entries(customPricing)) {
+        const costs: ModelCosts = {
+          inputTokens: p.inputPrice,
+          outputTokens: p.outputPrice,
+          promptCacheWriteTokens: p.cacheWritePrice ?? 0,
+          promptCacheReadTokens: p.cacheReadPrice ?? 0,
+          webSearchRequests: 0,
+          currency: p.currency ?? 'CNY',
+        }
+        try {
+          patterns.push([new RegExp(key, 'i'), costs])
+        } catch {
+          // key 不是合法正则，作为精确匹配
+          exact[key] = costs
+        }
+      }
+      _cachedCustomPricing = { exact, patterns }
+    }
+  } catch {
+    // settings 读取失败，缓存为空
+  }
+
+  return _cachedCustomPricing
 }
 
 export function getModelCosts(model: string, usage: Usage): ModelCosts {
@@ -152,15 +411,38 @@ export function getModelCosts(model: string, usage: Usage): ModelCosts {
     return getOpus46CostTier(isFastMode)
   }
 
+  // 1. 精确匹配内置 MODEL_COSTS（Anthropic 第一方模型）
   const costs = MODEL_COSTS[shortName]
-  if (!costs) {
-    trackUnknownModelCost(model, shortName)
-    return (
-      MODEL_COSTS[getCanonicalName(getDefaultMainLoopModelSetting())] ??
-      DEFAULT_UNKNOWN_MODEL_COST
-    )
+  if (costs) return costs
+
+  // 2. settings.json modelPricing（精确匹配 + 关键词匹配，缓存避免重复 I/O）
+  const cachedPricing = getCustomPricingCache()
+  if (cachedPricing) {
+    // 精确匹配
+    if (cachedPricing.exact[model]) {
+      return cachedPricing.exact[model]
+    }
+    // 关键词匹配（正则已预编译）
+    for (const [regex, pricing] of cachedPricing.patterns) {
+      if (regex.test(model)) {
+        return pricing
+      }
+    }
   }
-  return costs
+
+  // 3. 关键词模糊匹配（中国大模型等第三方模型内置定价）
+  for (const [regex, pricing] of MODEL_PRICING_KEYWORDS) {
+    if (regex.test(model)) {
+      return pricing
+    }
+  }
+
+  // 4. 回退：未知模型
+  trackUnknownModelCost(model, shortName)
+  return (
+    MODEL_COSTS[getCanonicalName(getDefaultMainLoopModelSetting())] ??
+    DEFAULT_UNKNOWN_MODEL_COST
+  )
 }
 
 function trackUnknownModelCost(model: string, shortName: ModelShortName): void {
@@ -172,11 +454,16 @@ function trackUnknownModelCost(model: string, shortName: ModelShortName): void {
   setHasUnknownModelCost()
 }
 
-// Calculate the cost of a query in US dollars.
-// If the model's costs are not found, use the default model's costs.
-export function calculateUSDCost(resolvedModel: string, usage: Usage): number {
+/**
+ * Calculate the cost of a query in the model's native currency.
+ * - USD for Anthropic first-party models
+ * - CNY for Chinese models (DeepSeek, Qwen, etc.)
+ * Caller should use convertCurrency() to normalize to display currency.
+ * If the model's costs are not found, use the default model's costs.
+ */
+export function calculateModelCost(resolvedModel: string, usage: Usage): number {
   const modelCosts = getModelCosts(resolvedModel, usage)
-  return tokensToUSDCost(modelCosts, usage)
+  return tokensToCost(modelCosts, usage)
 }
 
 /**
@@ -191,6 +478,7 @@ export function calculateCostFromTokens(
     cacheReadInputTokens: number
     cacheCreationInputTokens: number
   },
+  costs?: ModelCosts,
 ): number {
   const usage: Usage = {
     input_tokens: tokens.inputTokens,
@@ -198,24 +486,103 @@ export function calculateCostFromTokens(
     cache_read_input_tokens: tokens.cacheReadInputTokens,
     cache_creation_input_tokens: tokens.cacheCreationInputTokens,
   } as Usage
-  return calculateUSDCost(model, usage)
+  const modelCosts = costs ?? getModelCosts(model, usage)
+  return tokensToCost(modelCosts, usage)
 }
 
-function formatPrice(price: number): string {
-  // Format price: integers without decimals, others with 2 decimal places
-  // e.g., 3 -> "$3", 0.8 -> "$0.80", 22.5 -> "$22.50"
-  if (Number.isInteger(price)) {
-    return `$${price}`
+// ── 多币种汇率表（1 unit of key → value units of target）──
+// 默认 USD↔CNY 汇率，可通过 settings.json 的 exchangeRates 覆盖/扩展
+const DEFAULT_EXCHANGE_RATES: Record<string, number> = {
+  'USD→CNY': 7.25,
+  'CNY→USD': 0.138,
+}
+
+let _cachedExchangeRates: Record<string, number> | null = null
+
+/**
+ * 获取所有汇率。合并 settings.json 中的自定义汇率，缓存结果。
+ * 默认包含 USD↔CNY 双向汇率。
+ */
+export function getExchangeRates(): Record<string, number> {
+  if (_cachedExchangeRates !== null) return _cachedExchangeRates
+  _cachedExchangeRates = { ...DEFAULT_EXCHANGE_RATES }
+  try {
+    const { getInitialSettings } = require('./settings/settings.js') as typeof import('./settings/settings.js')
+    const settings = getInitialSettings() as Record<string, unknown>
+    const custom = settings?.exchangeRates as
+      | Record<string, number>
+      | undefined
+    if (custom) {
+      Object.assign(_cachedExchangeRates, custom)
+    } else if (typeof settings?.exchangeRate === 'number') {
+      // 兼容旧版 exchangeRate 设置
+      _cachedExchangeRates['USD→CNY'] = settings.exchangeRate as number
+      _cachedExchangeRates['CNY→USD'] = 1 / (settings.exchangeRate as number)
+    }
+  } catch {
+    // settings 读取失败，使用默认汇率
   }
-  return `$${price.toFixed(2)}`
+  return _cachedExchangeRates
+}
+
+/**
+ * 通用货币转换。
+ * 同币种直接返回原值；不同币种查找汇率表。
+ * 汇率格式 "USD→CNY" 表示 1 USD = rate CNY。
+ */
+export function convertCurrency(
+  amount: number,
+  from: string,
+  to: string,
+): number {
+  if (from === to) return amount
+  const key = `${from}→${to}`
+  const rate = getExchangeRates()[key]
+  if (rate !== undefined) return amount * rate
+  // 如果找不到直接汇率，尝试通过 CNY 中转
+  if (from !== 'CNY' && to !== 'CNY') {
+    const rateToCNY = getExchangeRates()[`${from}→CNY`]
+    const rateFromCNY = getExchangeRates()[`CNY→${to}`]
+    if (rateToCNY !== undefined && rateFromCNY !== undefined) {
+      return amount * rateToCNY * rateFromCNY
+    }
+  }
+  // 找不到汇率，返回原值
+  return amount
+}
+
+/**
+ * 获取主模型的展示币种。用于聚合展示。
+ */
+export function getDisplayCurrency(): 'USD' | 'CNY' {
+  const modelSetting = getDefaultMainLoopModelSetting()
+  const modelName =
+    typeof modelSetting === 'object' && modelSetting !== null
+      ? (modelSetting as { model?: string }).model ?? ''
+      : ''
+  if (modelName) {
+    try {
+      const costs = getModelCosts(modelName, {
+        input_tokens: 0,
+        output_tokens: 0,
+      } as Usage)
+      return costs.currency
+    } catch {
+      // fall through
+    }
+  }
+  return process.env.ANTHROPIC_BASE_URL ? 'CNY' : 'USD'
 }
 
 /**
  * Format model costs as a pricing string for display
- * e.g., "$3/$15 per Mtok"
+ * e.g., "$3/$15 per Mtok" or "¥3/¥6 per Mtok"
  */
 export function formatModelPricing(costs: ModelCosts): string {
-  return `${formatPrice(costs.inputTokens)}/${formatPrice(costs.outputTokens)} per Mtok`
+  const symbol = costs.currency === 'CNY' ? '¥' : '$'
+  const fmt = (p: number) =>
+    Number.isInteger(p) ? `${symbol}${p}` : `${symbol}${p.toFixed(2)}`
+  return `${fmt(costs.inputTokens)}/${fmt(costs.outputTokens)} per Mtok`
 }
 
 /**

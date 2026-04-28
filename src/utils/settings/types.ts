@@ -396,6 +396,34 @@ export const SettingsSchema = lazySchema(() =>
             'model ID (e.g. a Bedrock inference profile ARN). Typically set in managed settings by ' +
             'enterprise administrators.',
         ),
+      // Custom model pricing overrides (per-million-tokens prices)
+      modelPricing: z
+        .record(
+          z.string(),
+          z.object({
+            inputPrice: z.number().positive(),
+            outputPrice: z.number().positive(),
+            cacheReadPrice: z.number().positive().optional(),
+            cacheWritePrice: z.number().positive().optional(),
+            currency: z.enum(['USD', 'CNY']).optional().default('CNY'),
+          }),
+        )
+        .optional()
+        .describe(
+          'Custom model pricing overrides. Key is a model name or keyword, ' +
+            'value contains per-million-token prices. ' +
+            'currency: "USD" or "CNY" (default "CNY").',
+        ),
+      // Multi-currency exchange rates for cost display.
+      // Format: "USD→CNY" (1 unit FROM → N units TO).
+      // Default: USD→CNY=7.25, CNY→USD=0.138
+      exchangeRates: z
+        .record(z.string(), z.number().positive())
+        .optional()
+        .describe(
+          'Multi-currency exchange rates. Key format: "USD→CNY" = how many CNY per 1 USD. ' +
+            'Default rates: USD→CNY=7.25, CNY→USD=0.138',
+        ),
       // Whether to automatically approve all MCP servers in the project
       enableAllProjectMcpServers: z
         .boolean()

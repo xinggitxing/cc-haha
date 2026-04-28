@@ -143,7 +143,8 @@ import {
 } from 'src/constants/betas.js'
 import type { QuerySource } from 'src/constants/querySource.js'
 import type { Notification } from 'src/context/notifications.js'
-import { addToTotalSessionCost } from 'src/cost-tracker.js'
+import { addToTotalSessionCost, incrementTotalAPICalls } from 'src/cost-tracker.js'
+import { updateTurnUsage } from 'src/bootstrap/state.js'
 import { getFeatureValue_CACHED_MAY_BE_STALE } from 'src/services/analytics/growthbook.js'
 import type { AgentId } from 'src/types/ids.js'
 import {
@@ -176,7 +177,7 @@ import {
 import { returnValue } from 'src/utils/generators.js'
 import { headlessProfilerCheckpoint } from 'src/utils/headlessProfiler.js'
 import { isMcpInstructionsDeltaEnabled } from 'src/utils/mcpInstructionsDelta.js'
-import { calculateUSDCost } from 'src/utils/modelCost.js'
+import { calculateModelCost } from 'src/utils/modelCost.js'
 import { endQueryProfile, queryCheckpoint } from 'src/utils/queryProfiler.js'
 import {
   modelSupportsAdaptiveThinking,
@@ -1763,7 +1764,7 @@ async function* queryModel(
   let partialMessage: BetaMessage | undefined = undefined
   const contentBlocks: (BetaContentBlock | ConnectorTextBlock)[] = []
   let usage: NonNullableUsage = EMPTY_USAGE
-  let costUSD = 0
+  let turnCost = 0
   let stopReason: BetaStopReason | null = null
   let didFallBackToNonStreaming = false
   let fallbackMessage: AssistantMessage | undefined
@@ -1981,6 +1982,12 @@ async function* queryModel(
             partialMessage = part.message
             ttftMs = Date.now() - start
             usage = updateUsage(usage, part.message?.usage)
+            // Expose real token counts to spinner via global state
+            updateTurnUsage({
+              inputTokens: usage.input_tokens,
+              cacheReadInputTokens: usage.cache_read_input_tokens ?? 0,
+              cacheCreationInputTokens: usage.cache_creation_input_tokens ?? 0,
+            })
             // Capture research from message_start if available (internal only).
             // Always overwrite with the latest value.
             if (
@@ -2212,6 +2219,13 @@ async function* queryModel(
           }
           case 'message_delta': {
             usage = updateUsage(usage, part.usage)
+            // Expose updated token counts to spinner via global state.
+            // Only input/output are updated here — cache fields come from
+            // message_start and are NOT present in delta events.
+            updateTurnUsage({
+              inputTokens: usage.input_tokens,
+              outputTokens: usage.output_tokens,
+            })
             // Capture research from message_delta if available (internal only).
             // Always overwrite with the latest value. Also write back to
             // already-yielded messages since message_delta arrives after
@@ -2248,9 +2262,10 @@ async function* queryModel(
             }
 
             // Update cost
-            const costUSDForPart = calculateUSDCost(resolvedModel, usage)
-            costUSD += addToTotalSessionCost(
-              costUSDForPart,
+            const costForPart = calculateModelCost(resolvedModel, usage)
+            incrementTotalAPICalls()
+            turnCost += addToTotalSessionCost(
+              costForPart,
               usage,
               options.model,
             )
@@ -2821,8 +2836,9 @@ async function* queryModel(
       const fallbackUsage = fallbackMessage.message.usage
       usage = updateUsage(EMPTY_USAGE, fallbackUsage)
       stopReason = fallbackMessage.message.stop_reason
-      const fallbackCost = calculateUSDCost(resolvedModel, fallbackUsage)
-      costUSD += addToTotalSessionCost(
+      const fallbackCost = calculateModelCost(resolvedModel, fallbackUsage)
+      incrementTotalAPICalls()
+      turnCost += addToTotalSessionCost(
         fallbackCost,
         fallbackUsage,
         options.model,
@@ -2871,7 +2887,7 @@ async function* queryModel(
       didFallBackToNonStreaming,
       querySource: options.querySource,
       headers: responseHeaders,
-      costUSD,
+      turnCost,
       queryTracking: options.queryTracking,
       permissionMode: permissionContext.mode,
       // Pass newMessages for beta tracing - extraction happens in logging.ts

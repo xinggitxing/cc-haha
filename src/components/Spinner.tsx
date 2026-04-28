@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { computeGlimmerIndex, computeShimmerSegments, SHIMMER_INTERVAL_MS } from '../bridge/bridgeStatusUtil.js';
 import { feature } from 'bun:bundle';
-import { getKairosActive, getUserMsgOptIn } from '../bootstrap/state.js';
+import { getKairosActive, getUserMsgOptIn, getTurnUsage } from '../bootstrap/state.js';
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
 import { isEnvTruthy } from '../utils/envUtils.js';
 import { count } from '../utils/array.js';
@@ -204,10 +204,10 @@ function SpinnerWithVerbInner({
   // a coarse 30s threshold.
   const elapsedSnapshot = pauseStartTimeRef.current !== null ? pauseStartTimeRef.current - loadingStartTimeRef.current - totalPausedMsRef.current : Date.now() - loadingStartTimeRef.current - totalPausedMsRef.current;
 
-  // Leader token count for TeammateSpinnerTree — read raw (non-animated) from
-  // the ref. The tree is only shown when teammates are running; teammate
+  // Leader token count for TeammateSpinnerTree — read from real API usage.
+  // The tree is only shown when teammates are running; teammate
   // progress updates to s.tasks trigger re-renders that keep this fresh.
-  const leaderTokenCount = Math.round(responseLengthRef.current / 4);
+  const leaderTokenCount = getTurnUsage().outputTokens;
   const defaultColor: keyof Theme = 'claude';
   const defaultShimmerColor = 'claudeShimmer';
   const messageColor = overrideColor ?? defaultColor;

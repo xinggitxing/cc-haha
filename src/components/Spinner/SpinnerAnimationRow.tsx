@@ -6,6 +6,9 @@ import { stringWidth } from '../../ink/stringWidth.js';
 import { Box, Text, useAnimationFrame } from '../../ink.js';
 import type { InProcessTeammateTaskState } from '../../tasks/InProcessTeammateTask/types.js';
 import { formatDuration, formatNumber } from '../../utils/format.js';
+import { getInitialMainLoopModel, getTurnUsage } from '../../bootstrap/state.js';
+import { calculateCostFromTokens, convertCurrency, getDisplayCurrency, getModelCosts, type ModelCosts } from '../../utils/modelCost.js';
+import { formatCost } from '../../cost-tracker.js';
 import { toInkColor } from '../../utils/ink.js';
 import type { Theme } from '../../utils/theme.js';
 import { Byline } from '../design-system/Byline.js';
@@ -138,35 +141,57 @@ export function SpinnerAnimationRow({
   const glimmerIndex = reducedMotion ? -100 : isStalled ? -100 : mode === 'requesting' ? cyclePosition % cycleLength - 10 : glimmerMessageWidth + 10 - cyclePosition % cycleLength;
   const flashOpacity = reducedMotion ? 0 : mode === 'tool-use' ? (Math.sin(time / 1000 * Math.PI) + 1) / 2 : 0;
 
-  // === Token counter animation (smooth increment, driven by 50ms clock) ===
-  const tokenCounterRef = useRef(currentResponseLength);
-  if (reducedMotion) {
-    tokenCounterRef.current = currentResponseLength;
-  } else {
-    const gap = currentResponseLength - tokenCounterRef.current;
-    if (gap > 0) {
-      let increment;
-      if (gap < 70) {
-        increment = 3;
-      } else if (gap < 200) {
-        increment = Math.max(8, Math.ceil(gap * 0.15));
-      } else {
-        increment = 50;
-      }
-      tokenCounterRef.current = Math.min(tokenCounterRef.current + increment, currentResponseLength);
-    }
-  }
-  const displayedResponseLength = tokenCounterRef.current;
-  const leaderTokens = Math.round(displayedResponseLength / 4);
+  // === Token count from real API usage (replaces chars/4 estimation) ===
+  const turnUsage = getTurnUsage()
+  const leaderOutputTokens = turnUsage.outputTokens
   const effectiveElapsedMs = hasRunningTeammates ? Math.max(elapsedTimeMs, now - turnStartRef.current) : elapsedTimeMs;
   const timerText = formatDuration(effectiveElapsedMs);
   const timerWidth = stringWidth(timerText);
 
-  // === Token count (leader + teammates, or foregrounded teammate) ===
-  const totalTokens = foregroundedTeammate && !foregroundedTeammate.isIdle ? foregroundedTeammate.progress?.tokenCount ?? 0 : leaderTokens + teammateTokens;
+  // Total tokens for display: input + output (leader) + teammate output
+  const totalTokens = foregroundedTeammate && !foregroundedTeammate.isIdle ? foregroundedTeammate.progress?.tokenCount ?? 0 : turnUsage.inputTokens + leaderOutputTokens + teammateTokens;
   const tokenCount = formatNumber(totalTokens);
   const tokensText = hasRunningTeammates ? `${tokenCount} tokens` : `${figures.arrowDown} ${tokenCount} tokens`;
   const tokensWidth = stringWidth(tokensText);
+
+  // === Real-time cost computed from real API usage data ===
+  // Memoized: cost only changes when token counts change (post-API-call),
+  // not every 50ms animation frame. Model name changes (/model) trigger
+  // a parent re-render which resets the memo.
+  const costText = useMemo(() => {
+    const modelSetting = getInitialMainLoopModel()
+    const modelName = (modelSetting as { model?: string })?.model
+      ?? process.env.ANTHROPIC_MODEL
+      ?? 'claude-sonnet-4-20250514'
+    let modelCosts: ModelCosts
+    try {
+      modelCosts = getModelCosts(modelName, { input_tokens: 0, output_tokens: 0 } as Parameters<typeof getModelCosts>[1])
+    } catch {
+      return ''
+    }
+    if (foregroundedTeammate && !foregroundedTeammate.isIdle) {
+      if (totalTokens <= 0) return ''
+      return formatCost(convertCurrency((totalTokens * modelCosts.inputTokens) / 1_000_000, modelCosts.currency, getDisplayCurrency()))
+    }
+    const tu = turnUsage
+    if (tu.inputTokens + tu.outputTokens <= 0) return ''
+    try {
+      const cost = calculateCostFromTokens(
+        modelName,
+        {
+          inputTokens: tu.inputTokens,
+          outputTokens: tu.outputTokens,
+          cacheReadInputTokens: tu.cacheReadInputTokens,
+          cacheCreationInputTokens: tu.cacheCreationInputTokens,
+        },
+        modelCosts,
+      )
+      return formatCost(convertCurrency(cost, modelCosts.currency, getDisplayCurrency()))
+    } catch {
+      return ''
+    }
+  }, [turnUsage.inputTokens, turnUsage.outputTokens, turnUsage.cacheReadInputTokens, turnUsage.cacheCreationInputTokens, totalTokens, foregroundedTeammate?.isIdle, foregroundedTeammate?.progress?.tokenCount])
+  const costWidth = costText ? stringWidth(costText) + SEP_WIDTH : 0
 
   // === Thinking text (may shrink to fit) ===
   let thinkingText = thinkingStatus === 'thinking' ? `thinking${effortSuffix}` : typeof thinkingStatus === 'number' ? `thought for ${Math.max(1, Math.round(thinkingStatus / 1000))}s` : null;
@@ -190,7 +215,10 @@ export function SpinnerAnimationRow({
   const showTimer = wantsTimerAndTokens && availableSpace > usedAfterThinking + timerWidth;
   const usedAfterTimer = usedAfterThinking + (showTimer ? timerWidth + sep : 0);
   const showTokens = wantsTimerAndTokens && totalTokens > 0 && availableSpace > usedAfterTimer + tokensWidth;
-  const thinkingOnly = showThinking && thinkingStatus === 'thinking' && !spinnerSuffix && !showTimer && !showTokens && true;
+  const usedAfterTokens = usedAfterTimer + (showTokens ? tokensWidth + sep : 0);
+  const showCost = wantsTimerAndTokens && !!costText && availableSpace > usedAfterTokens + costWidth;
+
+  const thinkingOnly = showThinking && thinkingStatus === 'thinking' && !spinnerSuffix && !showTimer && !showTokens && !showCost && true;
 
   // === Thinking shimmer color (formerly ThinkingShimmerText's own timer) ===
   // Same sine-wave opacity, but derived from our shared `time` instead of a
@@ -207,7 +235,9 @@ export function SpinnerAnimationRow({
           </Text>] : []), ...(showTokens ? [<Box flexDirection="row" key="tokens">
             {!hasRunningTeammates && <SpinnerModeGlyph mode={mode} />}
             <Text dimColor>{tokenCount} tokens</Text>
-          </Box>] : []), ...(showThinking && thinkingText ? [thinkingStatus === 'thinking' && !reducedMotion ? <Text key="thinking" color={thinkingShimmerColor}>
+          </Box>] : []), ...(showCost ? [<Text dimColor key="cost">
+            {costText}
+          </Text>] : []), ...(showThinking && thinkingText ? [thinkingStatus === 'thinking' && !reducedMotion ? <Text key="thinking" color={thinkingShimmerColor}>
               {thinkingOnly ? `(${thinkingText})` : thinkingText}
             </Text> : <Text dimColor key="thinking">
               {thinkingText}

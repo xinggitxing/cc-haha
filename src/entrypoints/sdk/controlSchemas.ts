@@ -194,7 +194,7 @@ export const SDKControlGetSessionUsageRequestSchema = lazySchema(() =>
 export const SDKControlGetSessionUsageResponseSchema = lazySchema(() =>
   z
     .object({
-      totalCostUSD: z.number(),
+      totalCost: z.number(),
       costDisplay: z.string(),
       hasUnknownModelCost: z.boolean(),
       totalAPIDuration: z.number(),
@@ -215,7 +215,7 @@ export const SDKControlGetSessionUsageResponseSchema = lazySchema(() =>
           cacheReadInputTokens: z.number(),
           cacheCreationInputTokens: z.number(),
           webSearchRequests: z.number(),
-          costUSD: z.number(),
+          cost: z.number(),
           costDisplay: z.string(),
           contextWindow: z.number(),
           maxOutputTokens: z.number(),

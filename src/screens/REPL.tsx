@@ -29,7 +29,7 @@ import { startPreventSleep, stopPreventSleep } from '../services/preventSleep.js
 import { useTerminalNotification } from '../ink/useTerminalNotification.js';
 import { hasCursorUpViewportYankBug } from '../ink/terminal.js';
 import { createFileStateCacheWithSizeLimit, mergeFileStateCaches, READ_FILE_STATE_CACHE_SIZE } from '../utils/fileStateCache.js';
-import { updateLastInteractionTime, getLastInteractionTime, getOriginalCwd, getProjectRoot, getSessionId, switchSession, setCostStateForRestore, getTurnHookDurationMs, getTurnHookCount, resetTurnHookDuration, getTurnToolDurationMs, getTurnToolCount, resetTurnToolDuration, getTurnClassifierDurationMs, getTurnClassifierCount, resetTurnClassifierDuration } from '../bootstrap/state.js';
+import { updateLastInteractionTime, getLastInteractionTime, getOriginalCwd, getProjectRoot, getSessionId, switchSession, setCostStateForRestore, getTurnHookDurationMs, getTurnHookCount, resetTurnHookDuration, getTurnToolDurationMs, getTurnToolCount, resetTurnToolDuration, getTurnClassifierDurationMs, getTurnClassifierCount, resetTurnClassifierDuration, resetTurnUsage, snapshotTurnCosts } from '../bootstrap/state.js';
 import { asSessionId, asAgentId } from '../types/ids.js';
 import { logForDebugging } from '../utils/debug.js';
 import { QueryGuard } from '../utils/QueryGuard.js';
@@ -72,7 +72,7 @@ import { buildEffectiveSystemPrompt } from '../utils/systemPrompt.js';
 import { getSystemContext, getUserContext } from '../context.js';
 import { getMemoryFiles } from '../utils/claudemd.js';
 import { startBackgroundHousekeeping } from '../utils/backgroundHousekeeping.js';
-import { getTotalCost, saveCurrentSessionCosts, resetCostState, getStoredSessionCosts } from '../cost-tracker.js';
+import { getTotalCost, saveCurrentSessionCosts, resetCostState, getStoredSessionCosts, formatTurnStats, snapshotConversationStart } from '../cost-tracker.js';
 import { useCostSummary } from '../costHook.js';
 import { useFpsMetrics } from '../context/fpsMetrics.js';
 import { useAfterFirstRender } from '../hooks/useAfterFirstRender.js';
@@ -613,6 +613,12 @@ export function REPL({
     logForDebugging(`[REPL:mount] REPL mounted, disabled=${disabled}`);
     return () => logForDebugging(`[REPL:unmount] REPL unmounting`);
   }, [disabled]);
+
+  // 初始化对话费用快照（CLI 启动时 STATE 已全部归零，快照自然为 0；
+  // 但显式调用确保后续 /resume 等场景也正确）
+  useEffect(() => {
+    snapshotConversationStart();
+  }, []);
 
   // Agent definition is state so /resume can update it mid-session
   const [mainThreadAgentDefinition, setMainThreadAgentDefinition] = useState(initialMainThreadAgentDefinition);
@@ -1572,6 +1578,7 @@ export function REPL({
     setUserInputOnProcessing(undefined);
     responseLengthRef.current = 0;
     apiMetricsRef.current = [];
+    resetTurnUsage();
     setStreamingText(null);
     setStreamingToolUses([]);
     setSpinnerMessage(null);
@@ -1907,6 +1914,8 @@ export function REPL({
       if (targetSessionCosts) {
         setCostStateForRestore(targetSessionCosts);
       }
+      // 设置恢复后的对话费用基线
+      snapshotConversationStart();
 
       // Reconstruct replacement state for the resumed session. Runs after
       // setSessionId so any NEW replacements post-resume write to the
@@ -2207,7 +2216,7 @@ export function REPL({
       // access). Otherwise this effect re-fires on every message change for
       // the rest of the session — 200k+ spurious events observed.
       setHaveShownCostDialog(true);
-      if (hasConsoleBillingAccess()) {
+      if (hasConsoleBillingAccess() && verbose) {
         setShowCostDialog(true);
       }
     }
@@ -2843,6 +2852,19 @@ export function REPL({
     }
     resetLoadingState();
 
+    // 每轮对话结束后输出费用统计（用 isMeta 消息通过 Ink 渲染，不发送给 API）
+    if (hasConsoleBillingAccess() && verbose) {
+      setMessages(prev => [...prev, {
+        type: 'system' as const,
+        subtype: 'informational' as const,
+        content: formatTurnStats(),
+        level: 'info' as const,
+        isMeta: true as const,
+        timestamp: new Date().toISOString(),
+        uuid: Math.random().toString(36).slice(2),
+      }])
+    }
+
     // Log query profiling report if enabled
     logQueryProfileReport();
 
@@ -2887,6 +2909,8 @@ export function REPL({
       resetTimingRefs();
       setMessages(oldMessages => [...oldMessages, ...newMessages]);
       responseLengthRef.current = 0;
+      resetTurnUsage();
+      snapshotTurnCosts();
       if (feature('TOKEN_BUDGET')) {
         const parsedBudget = input ? parseTokenBudget(input) : null;
         snapshotOutputTokensForTurn(parsedBudget ?? getCurrentTurnTokenBudget());

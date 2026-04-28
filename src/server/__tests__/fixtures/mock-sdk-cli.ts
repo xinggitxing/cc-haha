@@ -177,7 +177,7 @@ ws.addEventListener('message', (event) => {
             subtype: 'success',
             request_id: parsed.request_id,
             response: {
-              totalCostUSD: 0.1234,
+              totalCost: 0.1234,
               costDisplay: '$0.1234',
               hasUnknownModelCost: false,
               totalAPIDuration: 4,
@@ -197,7 +197,7 @@ ws.addEventListener('message', (event) => {
                 cacheReadInputTokens: 0,
                 cacheCreationInputTokens: 0,
                 webSearchRequests: 0,
-                costUSD: 0.1234,
+                cost: 0.1234,
                 costDisplay: '$0.1234',
                 contextWindow: 200000,
                 maxOutputTokens: 8192,

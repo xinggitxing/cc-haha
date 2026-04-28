@@ -48,7 +48,25 @@ type State = {
   // never updated by mid-session EnterWorktreeTool.
   // Use for project identity (history, skills, sessions) not file operations.
   projectRoot: string
-  totalCostUSD: number
+  // 按主模型展示币种存储的累计费用
+  totalCost: number
+  totalAPICalls: number
+  // 对话级别快照 — 记录当前对话开始时的会话累计值，
+  // 对话费用 = 当前会话累计 - 对话开始时快照
+  conversationStartCost: number
+  conversationStartInputTokens: number
+  conversationStartOutputTokens: number
+  conversationStartCacheReadInputTokens: number
+  conversationStartCacheCreationInputTokens: number
+  conversationStartAPICalls: number
+  // 每轮 (turn) 级别快照 — 记录当前轮开始时的会话累计值，
+  // 每轮费用 = 当前会话累计 - 轮开始时快照
+  turnStartCost: number
+  turnStartInputTokens: number
+  turnStartOutputTokens: number
+  turnStartCacheReadInputTokens: number
+  turnStartCacheCreationInputTokens: number
+  turnStartAPICalls: number
   totalAPIDuration: number
   totalAPIDurationWithoutRetries: number
   totalToolDuration: number
@@ -277,7 +295,20 @@ function getInitialState(): State {
   const state: State = {
     originalCwd: resolvedCwd,
     projectRoot: resolvedCwd,
-    totalCostUSD: 0,
+    totalCost: 0,
+    totalAPICalls: 0,
+    conversationStartCost: 0,
+    conversationStartInputTokens: 0,
+    conversationStartOutputTokens: 0,
+    conversationStartCacheReadInputTokens: 0,
+    conversationStartCacheCreationInputTokens: 0,
+    conversationStartAPICalls: 0,
+    turnStartCost: 0,
+    turnStartInputTokens: 0,
+    turnStartOutputTokens: 0,
+    turnStartCacheReadInputTokens: 0,
+    turnStartCacheCreationInputTokens: 0,
+    turnStartAPICalls: 0,
     totalAPIDuration: 0,
     totalAPIDurationWithoutRetries: 0,
     totalToolDuration: 0,
@@ -551,7 +582,7 @@ export function addToTotalDurationState(
 export function resetTotalDurationStateAndCost_FOR_TESTS_ONLY(): void {
   STATE.totalAPIDuration = 0
   STATE.totalAPIDurationWithoutRetries = 0
-  STATE.totalCostUSD = 0
+  STATE.totalCost = 0
 }
 
 export function addToTotalCostState(
@@ -560,11 +591,19 @@ export function addToTotalCostState(
   model: string,
 ): void {
   STATE.modelUsage[model] = modelUsage
-  STATE.totalCostUSD += cost
+  STATE.totalCost += cost
 }
 
-export function getTotalCostUSD(): number {
-  return STATE.totalCostUSD
+export function getTotalCost(): number {
+  return STATE.totalCost
+}
+
+export function getTotalAPICalls(): number {
+  return STATE.totalAPICalls
+}
+
+export function incrementTotalAPICalls(): void {
+  STATE.totalAPICalls++
 }
 
 export function getTotalAPIDuration(): number {
@@ -721,6 +760,110 @@ export function getTotalWebSearchRequests(): number {
   return sumBy(Object.values(STATE.modelUsage), 'webSearchRequests')
 }
 
+// ── Conversation-level cost (current 对话, reset on /clear) ──
+
+/** 保存当前会话累计值作为新对话的基线。在 CLI 启动、/clear 后、/resume 后调用。 */
+export function snapshotConversationStart(): void {
+  STATE.conversationStartCost = STATE.totalCost
+  STATE.conversationStartInputTokens = getTotalInputTokens()
+  STATE.conversationStartOutputTokens = getTotalOutputTokens()
+  STATE.conversationStartCacheReadInputTokens = getTotalCacheReadInputTokens()
+  STATE.conversationStartCacheCreationInputTokens = getTotalCacheCreationInputTokens()
+  STATE.conversationStartAPICalls = STATE.totalAPICalls
+}
+
+export function getConversationCost(): number {
+  return STATE.totalCost - STATE.conversationStartCost
+}
+
+export function getConversationInputTokens(): number {
+  return getTotalInputTokens() - STATE.conversationStartInputTokens
+}
+
+export function getConversationOutputTokens(): number {
+  return getTotalOutputTokens() - STATE.conversationStartOutputTokens
+}
+
+export function getConversationCacheReadInputTokens(): number {
+  return getTotalCacheReadInputTokens() - STATE.conversationStartCacheReadInputTokens
+}
+
+export function getConversationCacheCreationInputTokens(): number {
+  return getTotalCacheCreationInputTokens() - STATE.conversationStartCacheCreationInputTokens
+}
+
+export function getConversationAPICalls(): number {
+  return STATE.totalAPICalls - STATE.conversationStartAPICalls
+}
+
+// ── Turn-level cost (current 轮, reset on each turn start) ──
+
+/** 保存当前会话累计值作为本轮对话的基线。在每轮开始时调用。 */
+export function snapshotTurnCosts(): void {
+  STATE.turnStartCost = STATE.totalCost
+  STATE.turnStartInputTokens = getTotalInputTokens()
+  STATE.turnStartOutputTokens = getTotalOutputTokens()
+  STATE.turnStartCacheReadInputTokens = getTotalCacheReadInputTokens()
+  STATE.turnStartCacheCreationInputTokens = getTotalCacheCreationInputTokens()
+  STATE.turnStartAPICalls = STATE.totalAPICalls
+  // Also set outputTokensAtTurnStart so getTurnOutputTokens() works
+  // regardless of whether TOKEN_BUDGET feature is enabled.
+  outputTokensAtTurnStart = getTotalOutputTokens()
+}
+
+export function getTurnCost(): number {
+  return STATE.totalCost - STATE.turnStartCost
+}
+
+export function getTurnInputTokens(): number {
+  return getTotalInputTokens() - STATE.turnStartInputTokens
+}
+
+export function getTurnCacheReadInputTokens(): number {
+  return getTotalCacheReadInputTokens() - STATE.turnStartCacheReadInputTokens
+}
+
+export function getTurnCacheCreationInputTokens(): number {
+  return getTotalCacheCreationInputTokens() - STATE.turnStartCacheCreationInputTokens
+}
+
+export function getTurnAPICalls(): number {
+  return STATE.totalAPICalls - STATE.turnStartAPICalls
+}
+
+// ── Current turn usage (updated from API message_start / message_delta) ──
+
+export type TurnUsage = {
+  inputTokens: number
+  outputTokens: number
+  cacheReadInputTokens: number
+  cacheCreationInputTokens: number
+}
+
+let CURRENT_TURN_USAGE: TurnUsage = {
+  inputTokens: 0,
+  outputTokens: 0,
+  cacheReadInputTokens: 0,
+  cacheCreationInputTokens: 0,
+}
+
+export function updateTurnUsage(patch: Partial<TurnUsage>): void {
+  CURRENT_TURN_USAGE = { ...CURRENT_TURN_USAGE, ...patch }
+}
+
+export function getTurnUsage(): TurnUsage {
+  return CURRENT_TURN_USAGE
+}
+
+export function resetTurnUsage(): void {
+  CURRENT_TURN_USAGE = {
+    inputTokens: 0,
+    outputTokens: 0,
+    cacheReadInputTokens: 0,
+    cacheCreationInputTokens: 0,
+  }
+}
+
 let outputTokensAtTurnStart = 0
 let currentTurnTokenBudget: number | null = null
 export function getTurnOutputTokens(): number {
@@ -862,7 +1005,8 @@ export function setSdkBetas(betas: string[] | undefined): void {
 }
 
 export function resetCostState(): void {
-  STATE.totalCostUSD = 0
+  STATE.totalCost = 0
+  STATE.totalAPICalls = 0
   STATE.totalAPIDuration = 0
   STATE.totalAPIDurationWithoutRetries = 0
   STATE.totalToolDuration = 0
@@ -879,7 +1023,8 @@ export function resetCostState(): void {
  * Called by restoreCostStateForSession in cost-tracker.ts.
  */
 export function setCostStateForRestore({
-  totalCostUSD,
+  totalCost,
+  totalAPICalls,
   totalAPIDuration,
   totalAPIDurationWithoutRetries,
   totalToolDuration,
@@ -888,7 +1033,8 @@ export function setCostStateForRestore({
   lastDuration,
   modelUsage,
 }: {
-  totalCostUSD: number
+  totalCost: number
+  totalAPICalls: number
   totalAPIDuration: number
   totalAPIDurationWithoutRetries: number
   totalToolDuration: number
@@ -897,7 +1043,8 @@ export function setCostStateForRestore({
   lastDuration: number | undefined
   modelUsage: { [modelName: string]: ModelUsage } | undefined
 }): void {
-  STATE.totalCostUSD = totalCostUSD
+  STATE.totalCost = totalCost
+  STATE.totalAPICalls = totalAPICalls
   STATE.totalAPIDuration = totalAPIDuration
   STATE.totalAPIDurationWithoutRetries = totalAPIDurationWithoutRetries
   STATE.totalToolDuration = totalToolDuration

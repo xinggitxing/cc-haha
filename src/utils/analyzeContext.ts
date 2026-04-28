@@ -1204,8 +1204,10 @@ export async function analyzeContextUsage(
       apiUsage.cache_read_input_tokens
     : null
 
-  // Use API total if available, otherwise fall back to estimated total
-  const finalTotalTokens = totalFromAPI ?? totalIncludingReserved
+  // Use estimated total from category breakdown so the header percentage
+  // is always consistent with the category detail sums. API usage is still
+  // returned via apiUsage for the status line and other consumers.
+  const finalTotalTokens = totalIncludingReserved
 
   // Pre-calculate grid based on model context window and terminal width
   // For narrow screens (< 80 cols), use 5x5 for 200k models, 5x10 for 1M+ models

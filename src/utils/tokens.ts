@@ -199,6 +199,46 @@ export function getAssistantMessageContentLength(
 }
 
 /**
+ * Estimate the number of tokens consumed by thinking/redacted_thinking blocks
+ * in historical assistant messages (excluding the most recent assistant message).
+ *
+ * This is used by the autocompact optimization: when
+ * CLAUDE_CODE_PRESERVE_HISTORICAL_THINKING is set, clearing historical thinking
+ * via the API's context_management may free enough tokens to avoid a full
+ * conversation compaction.
+ */
+export function estimateHistoricalThinkingTokens(
+  messages: readonly Message[],
+): number {
+  // Find the index of the last assistant message (the most recent one)
+  let lastAssistantIndex = -1
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i]?.type === 'assistant') {
+      lastAssistantIndex = i
+      break
+    }
+  }
+  if (lastAssistantIndex < 0) return 0
+
+  let totalThinkingChars = 0
+  for (let i = 0; i < lastAssistantIndex; i++) {
+    const message = messages[i]
+    if (message?.type === 'assistant') {
+      for (const block of message.message.content) {
+        if (block.type === 'thinking') {
+          totalThinkingChars += block.thinking.length
+        } else if (block.type === 'redacted_thinking') {
+          totalThinkingChars += block.data.length
+        }
+      }
+    }
+  }
+
+  if (totalThinkingChars === 0) return 0
+  return Math.round(totalThinkingChars / 4)
+}
+
+/**
  * Get the current context window size in tokens.
  *
  * This is the CANONICAL function for measuring context size when checking
@@ -223,7 +263,21 @@ export function getAssistantMessageContentLength(
  * bearing record we walk back to the FIRST sibling with the same message.id
  * so every interleaved tool_result is included in the rough estimate.
  */
+// Reference-based cache for tokenCountWithEstimation.
+// The messages array reference changes whenever a message is appended,
+// so caching by reference avoids repeated O(n) walks within the same turn.
+let _cachedMessagesRef: WeakRef<readonly Message[]> | null = null
+let _cachedTokenCount: number | null = null
+
 export function tokenCountWithEstimation(messages: readonly Message[]): number {
+  // Fast path: same array reference as last call → return cached result.
+  if (_cachedMessagesRef) {
+    const cached = _cachedMessagesRef.deref()
+    if (cached === messages && _cachedTokenCount !== null) {
+      return _cachedTokenCount
+    }
+  }
+
   let i = messages.length - 1
   while (i >= 0) {
     const message = messages[i]
@@ -250,12 +304,26 @@ export function tokenCountWithEstimation(messages: readonly Message[]): number {
           j--
         }
       }
-      return (
+      const result =
         getTokenCountFromUsage(usage) +
         roughTokenCountEstimationForMessages(messages.slice(i + 1))
-      )
+
+      // Cache the result keyed by array reference.
+      _cachedMessagesRef = new WeakRef(messages)
+      _cachedTokenCount = result
+      return result
     }
     i--
   }
-  return roughTokenCountEstimationForMessages(messages)
+
+  const result = roughTokenCountEstimationForMessages(messages)
+  _cachedMessagesRef = new WeakRef(messages)
+  _cachedTokenCount = result
+  return result
+}
+
+/** Clear the token count cache — call when messages are mutated in-place. */
+export function clearTokenCountCache(): void {
+  _cachedMessagesRef = null
+  _cachedTokenCount = null
 }
