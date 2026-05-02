@@ -5,6 +5,7 @@ import { useTerminalSize } from '../hooks/useTerminalSize.js';
 import { setClipboard } from '../ink/termio/osc.js';
 import { Box, Text } from '../ink.js';
 import { useKeybinding } from '../keybindings/useKeybinding.js';
+import { useTranslation } from '../i18n/index.js';
 import { getCwd } from '../utils/cwd.js';
 import { writeFileSync_DEPRECATED } from '../utils/slowOperations.js';
 import { ConfigurableShortcutHint } from './ConfigurableShortcutHint.js';
@@ -27,6 +28,7 @@ export function ExportDialog({
   defaultFilename,
   onDone
 }: ExportDialogProps): React.ReactNode {
+  const t = useTranslation();
   const [, setSelectedOption] = useState<ExportOption | null>(null);
   const [filename, setFilename] = useState<string>(defaultFilename);
   const [cursorOffset, setCursorOffset] = useState<number>(defaultFilename.length);
@@ -47,7 +49,7 @@ export function ExportDialog({
       if (raw) process.stdout.write(raw);
       onDone({
         success: true,
-        message: 'Conversation copied to clipboard'
+        message: t('ui.exportDialog.copiedToClipboard')
       });
     } else if (value === 'file') {
       setSelectedOption('file');
@@ -64,12 +66,12 @@ export function ExportDialog({
       });
       onDone({
         success: true,
-        message: `Conversation exported to: ${filepath}`
+        message: t('ui.exportDialog.exportedTo', { filepath })
       });
     } catch (error) {
       onDone({
         success: false,
-        message: `Failed to export conversation: ${error instanceof Error ? error.message : 'Unknown error'}`
+        message: t('ui.exportDialog.failedExport', { error: error instanceof Error ? error.message : 'Unknown error' })
       });
     }
   };
@@ -82,18 +84,18 @@ export function ExportDialog({
     } else {
       onDone({
         success: false,
-        message: 'Export cancelled'
+        message: t('ui.exportDialog.cancelled')
       });
     }
   }, [showFilenameInput, handleGoBack, onDone]);
   const options = [{
-    label: 'Copy to clipboard',
+    label: t('ui.exportDialog.copyToClipboard'),
     value: 'clipboard',
-    description: 'Copy the conversation to your system clipboard'
+    description: t('ui.exportDialog.copyDescription')
   }, {
-    label: 'Save to file',
+    label: t('ui.exportDialog.saveToFile'),
     value: 'file',
-    description: 'Save the conversation to a file in the current directory'
+    description: t('ui.exportDialog.saveDescription')
   }];
 
   // Custom input guide that changes based on dialog state

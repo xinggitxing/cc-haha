@@ -1,7 +1,10 @@
 import { c as _c } from "react/compiler-runtime";
 import * as React from 'react';
 import { Box, Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import { isTaskAssignment, type TaskAssignmentMessage } from '../../utils/teammateMailbox.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   assignment: TaskAssignmentMessage;
 };
@@ -10,18 +13,17 @@ type Props = {
  * Renders a task assignment with a cyan border (team-related color).
  */
 export function TaskAssignmentDisplay(t0) {
-  const $ = _c(11);
+  const $ = _c(12);
   const {
     assignment
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   let t1;
-  if ($[0] !== assignment.assignedBy || $[1] !== assignment.taskId) {
-    t1 = <Box marginBottom={1}><Text color="cyan_FOR_SUBAGENTS_ONLY" bold={true}>Task #{assignment.taskId} assigned by {assignment.assignedBy}</Text></Box>;
-    $[0] = assignment.assignedBy;
-    $[1] = assignment.taskId;
-    $[2] = t1;
+  if ($[0] === Symbol.for("react.memo_cache_sentinel") || ($[0] != null && $[0].l !== locale)) {
+    t1 = <Box marginBottom={1}><Text color="cyan_FOR_SUBAGENTS_ONLY" bold={true}>{t('msg.taskAssignment.assignedBy', { taskId: assignment.taskId, assignedBy: assignment.assignedBy })}</Text></Box>;
+    $[0] = { l: locale, v: t1 };
   } else {
-    t1 = $[2];
+    t1 = $[0] != null ? $[0].v : $[0];
   }
   let t2;
   if ($[3] !== assignment.subject) {
@@ -69,7 +71,7 @@ export function tryRenderTaskAssignmentMessage(content: string): React.ReactNode
 export function getTaskAssignmentSummary(content: string): string | null {
   const assignment = isTaskAssignment(content);
   if (assignment) {
-    return `[Task Assigned] #${assignment.taskId} - ${assignment.subject}`;
+    return t('msg.taskAssignment.briefAssigned', { taskId: assignment.taskId, subject: assignment.subject });
   }
   return null;
 }

@@ -3,6 +3,7 @@ import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
 import React, { useContext, useMemo } from 'react';
 import { getKairosActive, getUserMsgOptIn } from '../../bootstrap/state.js';
 import { Box } from '../../ink.js';
+import { t } from '../../i18n/index.js';
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
 import { useAppState } from '../../state/AppState.js';
 import { isEnvTruthy } from '../../utils/envUtils.js';
@@ -66,7 +67,7 @@ export function UserPromptMessage({
     const head = text.slice(0, TRUNCATE_HEAD_CHARS);
     const tail = text.slice(-TRUNCATE_TAIL_CHARS);
     const hiddenLines = countCharInString(text, '\n', TRUNCATE_HEAD_CHARS) - countCharInString(tail, '\n');
-    return `${head}\n… +${hiddenLines} lines …\n${tail}`;
+    return `${head}\n${t('msg.userPrompt.truncatedLines', { hiddenLines })}\n${tail}`;
   }, [text]);
   const isSelected = useContext(MessageActionsSelectedContext);
   if (!text) {

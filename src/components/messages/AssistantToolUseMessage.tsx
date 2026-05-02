@@ -13,6 +13,7 @@ import type { ProgressMessage } from '../../types/message.js';
 import { useIsClassifierChecking } from '../../utils/classifierApprovalsHook.js';
 import { logError } from '../../utils/log.js';
 import type { buildMessageLookups } from '../../utils/messages.js';
+import { t } from '../../i18n/index.js';
 import { MessageResponse } from '../MessageResponse.js';
 import { useSelectedMessageBg } from '../messageActions.js';
 import { SentryErrorBoundary } from '../SentryErrorBoundary.js';
@@ -55,6 +56,7 @@ export function AssistantToolUseMessage(t0) {
   const isClassifierCheckingRaw = useIsClassifierChecking(param.id);
   const permissionMode = useAppStateMaybeOutsideOfProvider(_temp2);
   const hasStrippedRules = useAppStateMaybeOutsideOfProvider(_temp3);
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   const isAutoClassifier = permissionMode === "auto" || permissionMode === "plan" && hasStrippedRules;
   const isClassifierChecking = false && isClassifierCheckingRaw && permissionMode !== "auto";
   let t1;
@@ -236,8 +238,8 @@ export function AssistantToolUseMessage(t0) {
     t12 = $[53];
   }
   let t13;
-  if ($[54] !== inProgressToolCallCount || $[55] !== isAutoClassifier || $[56] !== isClassifierChecking || $[57] !== isQueued || $[58] !== isResolved || $[59] !== isTranscriptMode || $[60] !== isWaitingForPermission || $[61] !== lookups || $[62] !== param.id || $[63] !== progressMessagesForMessage || $[64] !== terminalSize || $[65] !== tool_0 || $[66] !== tools || $[67] !== verbose) {
-    t13 = !isResolved && !isQueued && (isClassifierChecking ? <MessageResponse height={1}><Text dimColor={true}>{isAutoClassifier ? "Auto classifier checking\u2026" : "Bash classifier checking\u2026"}</Text></MessageResponse> : isWaitingForPermission ? <MessageResponse height={1}><Text dimColor={true}>Waiting for permission…</Text></MessageResponse> : renderToolUseProgressMessage(tool_0, tools, lookups, param.id, progressMessagesForMessage, {
+  if ($[54] !== inProgressToolCallCount || $[55] !== isAutoClassifier || $[56] !== isClassifierChecking || $[57] !== isQueued || $[58] !== isResolved || $[59] !== isTranscriptMode || $[60] !== isWaitingForPermission || $[61] !== lookups || $[62] !== param.id || $[63] !== progressMessagesForMessage || $[64] !== terminalSize || $[65] !== tool_0 || $[66] !== tools || $[67] !== verbose || $[68].l !== locale) {
+    t13 = !isResolved && !isQueued && (isClassifierChecking ? <MessageResponse height={1}><Text dimColor={true}>{isAutoClassifier ? t('tool.autoClassifierChecking') : t('tool.bashClassifierChecking')}</Text></MessageResponse> : isWaitingForPermission ? <MessageResponse height={1}><Text dimColor={true}>{t('tool.waitingForPermission')}…</Text></MessageResponse> : renderToolUseProgressMessage(tool_0, tools, lookups, param.id, progressMessagesForMessage, {
       verbose,
       inProgressToolCallCount,
       isTranscriptMode
@@ -256,9 +258,9 @@ export function AssistantToolUseMessage(t0) {
     $[65] = tool_0;
     $[66] = tools;
     $[67] = verbose;
-    $[68] = t13;
+    $[68] = { v: t13, l: locale };
   } else {
-    t13 = $[68];
+    t13 = $[68].v;
   }
   let t14;
   if ($[69] !== isQueued || $[70] !== isResolved || $[71] !== tool_0) {
@@ -292,6 +294,7 @@ export function AssistantToolUseMessage(t0) {
   }
   return t16;
 }
+function _tempLocale(s: any) { return s.locale; }
 function _temp3(state_1) {
   return !!state_1.toolPermissionContext.strippedDangerousRules;
 }

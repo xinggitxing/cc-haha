@@ -2,6 +2,7 @@ import { c as _c } from "react/compiler-runtime";
 import * as React from 'react';
 import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
 import { Box, Text } from '../../ink.js';
+import { useTranslation } from '../../i18n/index.js';
 type Props = {
   instructions?: string;
 };
@@ -10,9 +11,10 @@ export function AgentNavigationFooter(t0) {
   const {
     instructions: t1
   } = t0;
-  const instructions = t1 === undefined ? "Press \u2191\u2193 to navigate \xB7 Enter to select \xB7 Esc to go back" : t1;
+  const { t } = useTranslation();
+  const instructions = t1 === undefined ? t('agent.nav.default') : t1;
   const exitState = useExitOnCtrlCDWithKeybindings();
-  const t2 = exitState.pending ? `Press ${exitState.keyName} again to exit` : instructions;
+  const t2 = exitState.pending ? t('agent.nav.exit', { key: exitState.keyName }) : instructions;
   let t3;
   if ($[0] !== t2) {
     t3 = <Box marginLeft={2}><Text dimColor={true}>{t2}</Text></Box>;

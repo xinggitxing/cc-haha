@@ -6,12 +6,14 @@ import type { AgentColorName } from '../../../../tools/AgentTool/agentColorManag
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
 import { Byline } from '../../../design-system/Byline.js';
 import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
+import { useTranslation } from '../../../../i18n/index.js';
 import { useWizard } from '../../../wizard/index.js';
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
 import { ColorPicker } from '../../ColorPicker.js';
 import type { AgentWizardData } from '../types.js';
 export function ColorStep() {
-  const $ = _c(14);
+  const $ = _c(15);
+  const { t } = useTranslation();
   const {
     goNext,
     goBack,
@@ -71,13 +73,14 @@ export function ColorStep() {
   }
   const t3 = wizardData.agentType || "agent";
   let t4;
-  if ($[11] !== handleConfirm || $[12] !== t3) {
-    t4 = <WizardDialogLayout subtitle="Choose background color" footerText={t2}><Box><ColorPicker agentName={t3} currentColor="automatic" onConfirm={handleConfirm} /></Box></WizardDialogLayout>;
+  if ($[11] !== handleConfirm || $[12] !== t3 || $[13] !== t) {
+    t4 = <WizardDialogLayout subtitle={t('agent.wizard.colorSubtitle')} footerText={t2}><Box><ColorPicker agentName={t3} currentColor="automatic" onConfirm={handleConfirm} /></Box></WizardDialogLayout>;
     $[11] = handleConfirm;
     $[12] = t3;
-    $[13] = t4;
+    $[13] = t;
+    $[14] = t4;
   } else {
-    t4 = $[13];
+    t4 = $[14];
   }
   return t4;
 }

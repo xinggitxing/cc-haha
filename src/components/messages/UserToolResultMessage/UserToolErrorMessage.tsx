@@ -4,7 +4,10 @@ import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs
 import * as React from 'react';
 import { BULLET_OPERATOR } from '../../../constants/figures.js';
 import { Text } from '../../../ink.js';
+import { t } from '../../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../../state/AppState.js';
 import { filterToolProgressMessages, type Tool, type Tools } from '../../../Tool.js';
+function _tempLocale(s: any) { return s.locale; }
 import type { ProgressMessage } from '../../../types/message.js';
 import { INTERRUPT_MESSAGE_FOR_TOOL_USE, isClassifierDenial, PLAN_REJECTION_PREFIX, REJECT_MESSAGE_WITH_REASON_PREFIX } from '../../../utils/messages.js';
 import { FallbackToolUseErrorMessage } from '../../FallbackToolUseErrorMessage.js';
@@ -21,7 +24,7 @@ type Props = {
   isTranscriptMode?: boolean;
 };
 export function UserToolErrorMessage(t0) {
-  const $ = _c(14);
+  const $ = _c(15);
   const {
     progressMessagesForMessage,
     tool,
@@ -30,6 +33,7 @@ export function UserToolErrorMessage(t0) {
     verbose,
     isTranscriptMode
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   if (typeof param.content === "string" && param.content.includes(INTERRUPT_MESSAGE_FOR_TOOL_USE)) {
     let t1;
     if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
@@ -72,11 +76,11 @@ export function UserToolErrorMessage(t0) {
   }
   if (feature("TRANSCRIPT_CLASSIFIER") && typeof param.content === "string" && isClassifierDenial(param.content)) {
     let t1;
-    if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
-      t1 = <MessageResponse height={1}><Text dimColor={true}>Denied by auto mode classifier {BULLET_OPERATOR} /feedback if incorrect</Text></MessageResponse>;
-      $[6] = t1;
+    if ($[6] === Symbol.for("react.memo_cache_sentinel") || ($[6] != null && $[6].l !== locale)) {
+      t1 = <MessageResponse height={1}><Text dimColor={true}>{t('msg.userToolError.classifierDenied', { bullet: BULLET_OPERATOR })}</Text></MessageResponse>;
+      $[6] = { l: locale, v: t1 };
     } else {
-      t1 = $[6];
+      t1 = $[6] != null ? $[6].v : $[6];
     }
     return t1;
   }

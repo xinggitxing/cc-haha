@@ -1,5 +1,6 @@
 import React, { type ReactNode, useState } from 'react'
 import { Box, Text } from '../../../ink.js'
+import { t } from '../../../i18n/index.js'
 import { useKeybinding } from '../../../hooks/useKeybinding.js'
 import TextInput from '../../TextInput.js'
 import { WizardDialogLayout } from '../../wizard/index.js'
@@ -17,7 +18,7 @@ export function NameStep(): ReactNode {
   const handleSubmit = () => {
     const trimmed = value.trim()
     if (!trimmed) {
-      setError('Name is required')
+      setError(t('task.name.error.required'))
       return
     }
     setError(null)
@@ -26,19 +27,18 @@ export function NameStep(): ReactNode {
   }
 
   return (
-    <WizardDialogLayout subtitle="Task name">
+    <WizardDialogLayout subtitle={t('task.name.subtitle')}>
       <Box flexDirection="column">
         <Box marginBottom={1}>
           <Text dimColor>
-            Give your scheduled task a short, descriptive name (e.g.
-            &quot;daily-code-review&quot;).
+            {t('task.name.description')}
           </Text>
         </Box>
         <TextInput
           value={value}
           onChange={setValue}
           onSubmit={handleSubmit}
-          placeholder="e.g. daily-code-review"
+          placeholder={t('task.name.placeholder')}
         />
         {error && (
           <Box marginTop={1}>

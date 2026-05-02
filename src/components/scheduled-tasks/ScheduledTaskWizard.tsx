@@ -1,4 +1,5 @@
 import React, { type ReactNode } from 'react'
+import { t } from '../../i18n/index.js'
 import { WizardProvider } from '../wizard/index.js'
 import type { ScheduledTaskWizardData } from './types.js'
 import { NameStep } from './steps/NameStep.js'
@@ -34,7 +35,7 @@ export function ScheduledTaskWizard({
     TaskConfirmStep,
   ]
 
-  const title = mode === 'create' ? 'New scheduled task' : 'Edit scheduled task'
+  const title = mode === 'create' ? t('task.wizard.title.create') : t('task.wizard.title.edit')
 
   return (
     <WizardProvider

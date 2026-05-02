@@ -1,0 +1,33 @@
+export const en = {
+  'common.ok': 'OK',
+  'common.cancel': 'Cancel',
+  'common.save': 'Save',
+  'common.close': 'Close',
+  'common.done': 'Done',
+  'common.loading': 'Loading...',
+  'common.enabled': 'Enabled',
+  'common.disabled': 'Disabled',
+  'common.yes': 'Yes',
+  'common.no': 'No',
+  'common.error': 'Error',
+  'common.warning': 'Warning',
+  'common.default': 'Default',
+  'common.pressEnter': 'Press Enter to continue',
+} as const
+
+export const zh: Record<string, string> = {
+  'common.ok': '确定',
+  'common.cancel': '取消',
+  'common.save': '保存',
+  'common.close': '关闭',
+  'common.done': '完成',
+  'common.loading': '加载中...',
+  'common.enabled': '已启用',
+  'common.disabled': '已禁用',
+  'common.yes': '是',
+  'common.no': '否',
+  'common.error': '错误',
+  'common.warning': '警告',
+  'common.default': '默认',
+  'common.pressEnter': '按 Enter 继续',
+}

@@ -5,6 +5,7 @@ import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
 import { Box, Text } from '../../ink.js';
 import { AGENT_COLOR_TO_THEME_COLOR, AGENT_COLORS, type AgentColorName } from '../../tools/AgentTool/agentColorManager.js';
 import { capitalize } from '../../utils/stringUtils.js';
+import { useTranslation } from '../../i18n/index.js';
 type ColorOption = AgentColorName | 'automatic';
 const COLOR_OPTIONS: ColorOption[] = ['automatic', ...AGENT_COLORS];
 type Props = {
@@ -13,7 +14,8 @@ type Props = {
   onConfirm: (color: AgentColorName | undefined) => void;
 };
 export function ColorPicker(t0) {
-  const $ = _c(17);
+  const $ = _c(19);
+  const { t } = useTranslation();
   const {
     agentName,
     currentColor: t1,
@@ -57,49 +59,51 @@ export function ColorPicker(t0) {
   const handleKeyDown = t3;
   const selectedValue = COLOR_OPTIONS[selectedIndex];
   let t4;
-  if ($[5] !== selectedIndex) {
+  if ($[5] !== selectedIndex || $[6] !== t) {
     t4 = COLOR_OPTIONS.map((option, index) => {
       const isSelected = index === selectedIndex;
-      return <Box key={option} flexDirection="row" gap={1}><Text color={isSelected ? "suggestion" : undefined}>{isSelected ? figures.pointer : " "}</Text>{option === "automatic" ? <Text bold={isSelected}>Automatic color</Text> : <Box gap={1}><Text backgroundColor={AGENT_COLOR_TO_THEME_COLOR[option]} color="inverseText">{" "}</Text><Text bold={isSelected}>{capitalize(option)}</Text></Box>}</Box>;
+      return <Box key={option} flexDirection="row" gap={1}><Text color={isSelected ? "suggestion" : undefined}>{isSelected ? figures.pointer : " "}</Text>{option === "automatic" ? <Text bold={isSelected}>{t('agent.color.automatic')}</Text> : <Box gap={1}><Text backgroundColor={AGENT_COLOR_TO_THEME_COLOR[option]} color="inverseText">{" "}</Text><Text bold={isSelected}>{capitalize(option)}</Text></Box>}</Box>;
     });
     $[5] = selectedIndex;
-    $[6] = t4;
+    $[6] = t;
+    $[7] = t4;
   } else {
-    t4 = $[6];
+    t4 = $[7];
   }
   let t5;
-  if ($[7] !== t4) {
+  if ($[8] !== t4) {
     t5 = <Box flexDirection="column">{t4}</Box>;
-    $[7] = t4;
-    $[8] = t5;
+    $[8] = t4;
+    $[9] = t5;
   } else {
-    t5 = $[8];
+    t5 = $[9];
   }
   let t6;
-  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
-    t6 = <Text>Preview: </Text>;
-    $[9] = t6;
+  if ($[10] !== t) {
+    t6 = <Text>{t('agent.color.preview')}</Text>;
+    $[10] = t;
+    $[11] = t6;
   } else {
-    t6 = $[9];
+    t6 = $[11];
   }
   let t7;
-  if ($[10] !== agentName || $[11] !== selectedValue) {
+  if ($[12] !== agentName || $[13] !== selectedValue) {
     t7 = <Box marginTop={1}>{t6}{selectedValue === undefined || selectedValue === "automatic" ? <Text inverse={true} bold={true}>{" "}@{agentName}{" "}</Text> : <Text backgroundColor={AGENT_COLOR_TO_THEME_COLOR[selectedValue]} color="inverseText" bold={true}>{" "}@{agentName}{" "}</Text>}</Box>;
-    $[10] = agentName;
-    $[11] = selectedValue;
-    $[12] = t7;
+    $[12] = agentName;
+    $[13] = selectedValue;
+    $[14] = t7;
   } else {
-    t7 = $[12];
+    t7 = $[14];
   }
   let t8;
-  if ($[13] !== handleKeyDown || $[14] !== t5 || $[15] !== t7) {
+  if ($[15] !== handleKeyDown || $[16] !== t5 || $[17] !== t7) {
     t8 = <Box flexDirection="column" gap={1} tabIndex={0} autoFocus={true} onKeyDown={handleKeyDown}>{t5}{t7}</Box>;
-    $[13] = handleKeyDown;
-    $[14] = t5;
-    $[15] = t7;
-    $[16] = t8;
+    $[15] = handleKeyDown;
+    $[16] = t5;
+    $[17] = t7;
+    $[18] = t8;
   } else {
-    t8 = $[16];
+    t8 = $[18];
   }
   return t8;
 }

@@ -1,6 +1,7 @@
 import { c as _c } from "react/compiler-runtime";
 import React, { useMemo } from 'react';
 import { Box, Text, useTheme } from '../../../ink.js';
+import { t } from '../../../i18n/index.js';
 import { WebFetchTool } from '../../../tools/WebFetchTool/WebFetchTool.js';
 import { shouldShowAlwaysAllowOptions } from '../../../utils/permissions/permissionsLoader.js';
 import { type OptionWithDescription, Select } from '../../CustomSelect/select.js';
@@ -73,7 +74,7 @@ export function WebFetchPermissionRequest(t0) {
   let t4;
   if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = {
-      label: "Yes",
+      label: t('perm.yes'),
       value: "yes"
     };
     $[4] = t4;
@@ -88,7 +89,7 @@ export function WebFetchPermissionRequest(t0) {
       let t6;
       if ($[7] !== t5) {
         t6 = {
-          label: <Text>Yes, and don't ask again for {t5}</Text>,
+          label: <Text>{t('perm.yesDontAskAgainShort')} {t5}</Text>,
           value: "yes-dont-ask-again-domain"
         };
         $[7] = t5;
@@ -101,7 +102,7 @@ export function WebFetchPermissionRequest(t0) {
     let t5;
     if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
       t5 = {
-        label: <Text>No, and tell Claude what to do differently <Text bold={true}>(esc)</Text></Text>,
+        label: <Text>{t('perm.tellClaudeDifferently')} <Text bold={true}>(esc)</Text></Text>,
         value: "no"
       };
       $[9] = t5;
@@ -211,7 +212,7 @@ export function WebFetchPermissionRequest(t0) {
   }
   let t11;
   if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
-    t11 = <Text>Do you want to allow Claude to fetch this content?</Text>;
+    t11 = <Text>{t('perm.fetchQuestion')}</Text>;
     $[27] = t11;
   } else {
     t11 = $[27];
@@ -245,7 +246,7 @@ export function WebFetchPermissionRequest(t0) {
   }
   let t15;
   if ($[37] !== t14 || $[38] !== t9 || $[39] !== workerBadge) {
-    t15 = <PermissionDialog title="Fetch" workerBadge={workerBadge}>{t9}{t14}</PermissionDialog>;
+    t15 = <PermissionDialog title={t('perm.titleFetch')} workerBadge={workerBadge}>{t9}{t14}</PermissionDialog>;
     $[37] = t14;
     $[38] = t9;
     $[39] = workerBadge;

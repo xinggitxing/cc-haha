@@ -6,6 +6,7 @@ import { useTerminalSize } from '../hooks/useTerminalSize.js';
 import { stringWidth } from '../ink/stringWidth.js';
 import { wrapAnsi } from '../ink/wrapAnsi.js';
 import { Box, Text } from '../ink.js';
+import { t } from '../i18n/index.js';
 import { logEvent } from '../services/analytics/index.js';
 import type { HistoryEntry } from '../utils/config.js';
 import { formatRelativeTimeAgo, truncateToWidth } from '../utils/format.js';

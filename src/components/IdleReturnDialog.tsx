@@ -4,6 +4,7 @@ import { Box, Text } from '../ink.js';
 import { formatTokens } from '../utils/format.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+import { t } from '../i18n/index.js';
 type IdleReturnAction = 'continue' | 'clear' | 'dismiss' | 'never';
 type Props = {
   idleMinutes: number;
@@ -35,7 +36,7 @@ export function IdleReturnDialog(t0) {
     t2 = $[3];
   }
   const formattedTokens = t2;
-  const t3 = `You've been away ${formattedIdle} and this conversation is ${formattedTokens} tokens.`;
+  const t3 = t('ui.idleReturn.description', { formattedIdle });
   let t4;
   if ($[4] !== onDone) {
     t4 = () => onDone("dismiss");
@@ -55,7 +56,7 @@ export function IdleReturnDialog(t0) {
   if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {
       value: "continue" as const,
-      label: "Continue this conversation"
+      label: t('ui.idleReturn.continue')
     };
     $[7] = t6;
   } else {
@@ -65,7 +66,7 @@ export function IdleReturnDialog(t0) {
   if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = {
       value: "clear" as const,
-      label: "Send message as a new conversation"
+      label: t('ui.idleReturn.newConversation')
     };
     $[8] = t7;
   } else {

@@ -11,6 +11,7 @@ import { Byline } from './Byline.js';
 import { KeyboardShortcutHint } from './KeyboardShortcutHint.js';
 import { ListItem } from './ListItem.js';
 import { Pane } from './Pane.js';
+import { t } from '../../i18n/index.js';
 type PickerAction<T> = {
   /** Hint label shown in the byline, e.g. "mention" → "Tab to mention". */
   action: string;

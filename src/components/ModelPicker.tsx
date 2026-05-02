@@ -18,6 +18,7 @@ import { Byline } from './design-system/Byline.js';
 import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
 import { Pane } from './design-system/Pane.js';
 import { effortLevelToSymbol } from './EffortIndicator.js';
+import { t } from '../i18n/index.js';
 export type Props = {
   initial: string | null;
   sessionModel?: ModelSetting;
@@ -90,7 +91,7 @@ export function ModelPicker(t0) {
         t6 = {
           value: initial,
           label: t5,
-          description: "Current model"
+          description: "t('ui.modelPicker.currentModel')"
         };
         $[6] = initial;
         $[7] = t5;

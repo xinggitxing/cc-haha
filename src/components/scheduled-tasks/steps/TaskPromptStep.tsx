@@ -1,5 +1,6 @@
 import React, { type ReactNode, useState } from 'react'
 import { Box, Text } from '../../../ink.js'
+import { t } from '../../../i18n/index.js'
 import { useKeybinding } from '../../../hooks/useKeybinding.js'
 import TextInput from '../../TextInput.js'
 import { WizardDialogLayout } from '../../wizard/index.js'
@@ -17,7 +18,7 @@ export function TaskPromptStep(): ReactNode {
   const handleSubmit = () => {
     const trimmed = value.trim()
     if (!trimmed) {
-      setError('Prompt is required')
+      setError(t('task.prompt.error.required'))
       return
     }
     setError(null)
@@ -26,18 +27,18 @@ export function TaskPromptStep(): ReactNode {
   }
 
   return (
-    <WizardDialogLayout subtitle="Prompt">
+    <WizardDialogLayout subtitle={t('task.prompt.subtitle')}>
       <Box flexDirection="column">
         <Box marginBottom={1}>
           <Text dimColor>
-            Enter the prompt that will be sent to Claude when this task runs.
+            {t('task.prompt.description')}
           </Text>
         </Box>
         <TextInput
           value={value}
           onChange={setValue}
           onSubmit={handleSubmit}
-          placeholder="e.g. Look at the commits from the last 24 hours..."
+          placeholder={t('task.prompt.placeholder')}
         />
         {error && (
           <Box marginTop={1}>

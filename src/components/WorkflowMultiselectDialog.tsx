@@ -8,6 +8,7 @@ import { SelectMulti } from './CustomSelect/SelectMulti.js';
 import { Byline } from './design-system/Byline.js';
 import { Dialog } from './design-system/Dialog.js';
 import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
+import { t } from '../i18n/index.js';
 type WorkflowOption = {
   value: Workflow;
   label: string;
@@ -110,7 +111,7 @@ export function WorkflowMultiselectDialog(t0) {
   }
   let t8;
   if ($[11] !== t6 || $[12] !== t7) {
-    t8 = <Dialog title="Select GitHub workflows to install" subtitle="We'll create a workflow file in your repository for each one you select." onCancel={handleCancel} inputGuide={renderInputGuide}>{t4}{t6}{t7}</Dialog>;
+    t8 = <Dialog title={t('ui.workflowSelect.title')} subtitle="We'll create a workflow file in your repository for each one you select." onCancel={handleCancel} inputGuide={renderInputGuide}>{t4}{t6}{t7}</Dialog>;
     $[11] = t6;
     $[12] = t7;
     $[13] = t8;

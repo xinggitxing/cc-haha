@@ -4,17 +4,21 @@ import figures from 'figures';
 import * as React from 'react';
 import { COMMAND_MESSAGE_TAG } from '../../constants/xml.js';
 import { Box, Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import { extractTag } from '../../utils/messages.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   addMargin: boolean;
   param: TextBlockParam;
 };
 export function UserCommandMessage(t0) {
-  const $ = _c(19);
+  const $ = _c(20);
   const {
     addMargin,
     param: t1
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   const {
     text
   } = t1;
@@ -50,12 +54,11 @@ export function UserCommandMessage(t0) {
       t5 = $[4];
     }
     let t6;
-    if ($[5] !== commandMessage) {
-      t6 = <Text>{t5}<Text color="text">Skill({commandMessage})</Text></Text>;
-      $[5] = commandMessage;
-      $[6] = t6;
+    if ($[5] === Symbol.for("react.memo_cache_sentinel") || ($[5] != null && ($[5].l !== locale || $[5].c !== commandMessage))) {
+      t6 = <Text>{t5}<Text color="text">{t('msg.userCommand.skillFormat', { command: commandMessage })}</Text></Text>;
+      $[5] = { l: locale, c: commandMessage, v: t6 };
     } else {
-      t6 = $[6];
+      t6 = $[5] != null ? $[5].v : $[5];
     }
     let t7;
     if ($[7] !== t4 || $[8] !== t6) {

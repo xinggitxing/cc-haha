@@ -17,6 +17,7 @@ import type { WorkerBadgeProps } from '../WorkerBadge.js';
 import type { IDEDiffSupport } from './ideDiffConfig.js';
 import type { FileOperationType, PermissionOption } from './permissionOptions.js';
 import { type ToolInput, useFilePermissionDialog } from './useFilePermissionDialog.js';
+import { t } from '../../../i18n/index.js';
 export type FilePermissionDialogProps<T extends ToolInput = ToolInput> = {
   // Required props from PermissionRequestProps
   toolUseConfirm: ToolUseConfirm;
@@ -52,7 +53,7 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
   onReject,
   title,
   subtitle,
-  question = 'Do you want to proceed?',
+  question = t('perm.proceed'),
   content,
   completionType = 'tool_use_single',
   path,
@@ -162,7 +163,7 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
   const isSymlinkOutsideCwd = symlinkTarget != null && relative(getCwd(), symlinkTarget).startsWith('..');
   const symlinkWarning = symlinkTarget ? <Box paddingX={1} marginBottom={1}>
       <Text color="warning">
-        {isSymlinkOutsideCwd ? `This will modify ${symlinkTarget} (outside working directory) via a symlink` : `Symlink target: ${symlinkTarget}`}
+        {isSymlinkOutsideCwd ? t('perm.symlinkWarning', { target: symlinkTarget }) : t('perm.symlinkTarget', { target: symlinkTarget })}
       </Text>
     </Box> : null;
   return <>
@@ -195,8 +196,8 @@ export function FilePermissionDialog<T extends ToolInput = ToolInput>({
       </PermissionDialog>
       <Box paddingX={1} marginTop={1}>
         <Text dimColor>
-          Esc to cancel
-          {(focusedOption === 'yes' && !yesInputMode || focusedOption === 'no' && !noInputMode) && ' · Tab to amend'}
+          {t('perm.escToCancel')}
+          {(focusedOption === 'yes' && !yesInputMode || focusedOption === 'no' && !noInputMode) && t('perm.tabToAmend')}
         </Text>
       </Box>
     </>;

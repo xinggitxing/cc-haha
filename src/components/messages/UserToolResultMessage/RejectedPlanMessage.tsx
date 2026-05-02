@@ -3,20 +3,24 @@ import * as React from 'react';
 import { Markdown } from 'src/components/Markdown.js';
 import { MessageResponse } from 'src/components/MessageResponse.js';
 import { Box, Text } from '../../../ink.js';
+import { t } from '../../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../../state/AppState.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   plan: string;
 };
 export function RejectedPlanMessage(t0) {
-  const $ = _c(3);
+  const $ = _c(4);
   const {
     plan
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   let t1;
-  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
-    t1 = <Text color="subtle">User rejected Claude's plan:</Text>;
-    $[0] = t1;
+  if ($[0] === Symbol.for("react.memo_cache_sentinel") || ($[0] != null && $[0].l !== locale)) {
+    t1 = <Text color="subtle">{t('msg.rejectedPlan')}</Text>;
+    $[0] = { l: locale, v: t1 };
   } else {
-    t1 = $[0];
+    t1 = $[0] != null ? $[0].v : $[0];
   }
   let t2;
   if ($[1] !== plan) {

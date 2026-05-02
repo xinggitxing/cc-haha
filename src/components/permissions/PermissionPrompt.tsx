@@ -4,8 +4,9 @@ import { Box, Text } from '../../ink.js';
 import type { KeybindingAction } from '../../keybindings/types.js';
 import { useKeybindings } from '../../keybindings/useKeybinding.js';
 import { type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS, logEvent } from '../../services/analytics/index.js';
-import { useSetAppState } from '../../state/AppState.js';
+import { useSetAppState, useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import { type OptionWithDescription, Select } from '../CustomSelect/select.js';
+import { t } from '../../i18n/index.js';
 export type FeedbackType = 'accept' | 'reject';
 export type PermissionPromptOption<T extends string> = {
   value: T;
@@ -27,11 +28,6 @@ export type PermissionPromptProps<T extends string> = {
   question?: string | ReactNode;
   toolAnalyticsContext?: ToolAnalyticsContext;
 };
-const DEFAULT_PLACEHOLDERS: Record<FeedbackType, string> = {
-  accept: 'tell Claude what to do next',
-  reject: 'tell Claude what to do differently'
-};
-
 /**
  * Shared component for permission prompts with optional feedback input.
  *
@@ -51,8 +47,9 @@ export function PermissionPrompt(t0) {
     question: t1,
     toolAnalyticsContext
   } = t0;
-  const question = t1 === undefined ? "Do you want to proceed?" : t1;
+  const question = t1 === undefined ? t('perm.proceed') : t1;
   const setAppState = useSetAppState();
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   const [acceptFeedback, setAcceptFeedback] = useState("");
   const [rejectFeedback, setRejectFeedback] = useState("");
   const [acceptInputMode, setAcceptInputMode] = useState(false);
@@ -81,7 +78,7 @@ export function PermissionPrompt(t0) {
   const focusedFeedbackType = focusedOption?.feedbackConfig?.type;
   const showTabHint = focusedFeedbackType === "accept" && !acceptInputMode || focusedFeedbackType === "reject" && !rejectInputMode;
   let t3;
-  if ($[5] !== acceptInputMode || $[6] !== options || $[7] !== rejectInputMode) {
+  if ($[5] !== acceptInputMode || $[6] !== options || $[7] !== rejectInputMode || $[8].l !== locale) {
     let t4;
     if ($[9] !== acceptInputMode || $[10] !== rejectInputMode) {
       t4 = opt_0 => {
@@ -102,7 +99,7 @@ export function PermissionPrompt(t0) {
         } = feedbackConfig;
         const isInputMode = type === "accept" ? acceptInputMode : rejectInputMode;
         const onChange = type === "accept" ? setAcceptFeedback : setRejectFeedback;
-        const defaultPlaceholder = DEFAULT_PLACEHOLDERS[type];
+        const defaultPlaceholder = type === 'accept' ? t('perm.tellClaudeNext') : t('perm.tellClaudeDifferently');
         if (isInputMode) {
           return {
             type: "input" as const,
@@ -128,9 +125,9 @@ export function PermissionPrompt(t0) {
     $[5] = acceptInputMode;
     $[6] = options;
     $[7] = rejectInputMode;
-    $[8] = t3;
+    $[8] = { v: t3, l: locale };
   } else {
-    t3 = $[8];
+    t3 = $[8].v;
   }
   const selectOptions = t3;
   let t4;
@@ -303,10 +300,10 @@ export function PermissionPrompt(t0) {
   } else {
     t10 = $[47];
   }
-  const t11 = showTabHint && " \xB7 Tab to amend";
+  const t11 = showTabHint && t('perm.tabToAmend');
   let t12;
   if ($[48] !== t11) {
-    t12 = <Box marginTop={1}><Text dimColor={true}>Esc to cancel{t11}</Text></Box>;
+    t12 = <Box marginTop={1}><Text dimColor={true}>{t('perm.escToCancel')}{t11}</Text></Box>;
     $[48] = t11;
     $[49] = t12;
   } else {
@@ -324,6 +321,7 @@ export function PermissionPrompt(t0) {
   }
   return t13;
 }
+function _tempLocale(s: any) { return s.locale; }
 function _temp(prev) {
   return {
     ...prev,

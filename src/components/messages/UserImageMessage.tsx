@@ -4,8 +4,11 @@ import { pathToFileURL } from 'url';
 import Link from '../../ink/components/Link.js';
 import { supportsHyperlinks } from '../../ink/supports-hyperlinks.js';
 import { Box, Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import { getStoredImagePath } from '../../utils/imageStore.js';
 import { MessageResponse } from '../MessageResponse.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   imageId?: number;
   addMargin?: boolean;
@@ -23,16 +26,15 @@ export function UserImageMessage(t0) {
     imageId,
     addMargin
   } = t0;
-  const label = imageId ? `[Image #${imageId}]` : "[Image]";
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   let t1;
-  if ($[0] !== imageId || $[1] !== label) {
+  if ($[0] === Symbol.for("react.memo_cache_sentinel") || ($[0] != null && ($[0].l !== locale || $[0].id !== imageId))) {
+    const label = imageId ? t('msg.userImage.imageWithId', { imageId }) : t('msg.userImage.image');
     const imagePath = imageId ? getStoredImagePath(imageId) : null;
     t1 = imagePath && supportsHyperlinks() ? <Link url={pathToFileURL(imagePath).href}><Text>{label}</Text></Link> : <Text>{label}</Text>;
-    $[0] = imageId;
-    $[1] = label;
-    $[2] = t1;
+    $[0] = { l: locale, id: imageId, v: t1 };
   } else {
-    t1 = $[2];
+    t1 = $[0] != null ? $[0].v : $[0];
   }
   const content = t1;
   if (addMargin) {

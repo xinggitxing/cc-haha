@@ -3,6 +3,7 @@ import React, { type ReactNode } from 'react';
 import { isAutoMemoryEnabled } from '../../../memdir/paths.js';
 import type { Tools } from '../../../Tool.js';
 import type { AgentDefinition } from '../../../tools/AgentTool/loadAgentsDir.js';
+import { useTranslation } from '../../../i18n/index.js';
 import { WizardProvider } from '../../wizard/index.js';
 import type { WizardStepComponent } from '../../wizard/types.js';
 import type { AgentWizardData } from './types.js';
@@ -24,7 +25,8 @@ type Props = {
   onCancel: () => void;
 };
 export function CreateAgentWizard(t0) {
-  const $ = _c(17);
+  const $ = _c(18);
+  const { t } = useTranslation();
   const {
     tools,
     existingAgents,
@@ -83,13 +85,14 @@ export function CreateAgentWizard(t0) {
     t6 = $[13];
   }
   let t7;
-  if ($[14] !== onCancel || $[15] !== steps) {
-    t7 = <WizardProvider steps={steps} initialData={t6} onComplete={_temp} onCancel={onCancel} title="Create new agent" showStepCounter={false} />;
+  if ($[14] !== onCancel || $[15] !== steps || $[16] !== t) {
+    t7 = <WizardProvider steps={steps} initialData={t6} onComplete={_temp} onCancel={onCancel} title={t('agent.wizard.title')} showStepCounter={false} />;
     $[14] = onCancel;
     $[15] = steps;
-    $[16] = t7;
+    $[16] = t;
+    $[17] = t7;
   } else {
-    t7 = $[16];
+    t7 = $[17];
   }
   return t7;
 }

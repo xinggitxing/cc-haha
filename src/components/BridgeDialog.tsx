@@ -3,6 +3,7 @@ import { basename } from 'path';
 import { toString as qrToString } from 'qrcode';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { t } from '../i18n/index.js';
 import { getOriginalCwd } from '../bootstrap/state.js';
 import { buildActiveFooterText, buildIdleFooterText, FAILED_FOOTER_TEXT, getBridgeStatus } from '../bridge/bridgeStatusUtil.js';
 import { BRIDGE_FAILED_INDICATOR, BRIDGE_READY_INDICATOR } from '../constants/figures.js';
@@ -193,7 +194,7 @@ export function BridgeDialog(t0) {
     }
     footerText = t18;
     T1 = Dialog;
-    t15 = "Remote Control";
+    t15 = t('ui.bridgeDialog.title');
     t16 = onDone;
     t17 = true;
     T0 = Box;
@@ -308,7 +309,7 @@ export function BridgeDialog(t0) {
   }
   let t19;
   if ($[73] === Symbol.for("react.memo_cache_sentinel")) {
-    t19 = <Text dimColor={true}>d to disconnect · space for QR code · Enter/Esc to close</Text>;
+    t19 = <Text dimColor={true}>{t('ui.bridgeDialog.keyboardHint')}</Text>;
     $[73] = t19;
   } else {
     t19 = $[73];

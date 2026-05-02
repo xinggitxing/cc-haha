@@ -11,6 +11,7 @@ import { count } from '../../utils/array.js';
 import { Dialog } from '../design-system/Dialog.js';
 import { Divider } from '../design-system/Divider.js';
 import { getAgentSourceDisplayName } from './utils.js';
+import { t } from '../../i18n/index.js';
 type Props = {
   source: SettingSource | 'all' | 'built-in' | 'plugin';
   agents: ResolvedAgent[];
@@ -43,7 +44,7 @@ export function AgentsList(t0) {
   const getOverrideInfo = _temp;
   let t2;
   if ($[2] !== isCreateNewSelected) {
-    t2 = () => <Box><Text color={isCreateNewSelected ? "suggestion" : undefined}>{isCreateNewSelected ? `${figures.pointer} ` : "  "}</Text><Text color={isCreateNewSelected ? "suggestion" : undefined}>Create new agent</Text></Box>;
+    t2 = () => <Box><Text color={isCreateNewSelected ? "suggestion" : undefined}>{isCreateNewSelected ? `${figures.pointer} ` : "  "}</Text><Text color={isCreateNewSelected ? "suggestion" : undefined}>{t('agent.list.createNew')}</Text></Box>;
     $[2] = isCreateNewSelected;
     $[3] = t2;
   } else {
@@ -62,7 +63,7 @@ export function AgentsList(t0) {
       const dimmed = isBuiltIn || isOverridden;
       const textColor = !isBuiltIn && isSelected ? "suggestion" : undefined;
       const resolvedModel = resolveAgentModelDisplay(agent_0);
-      return <Box key={`${agent_0.agentType}-${agent_0.source}`}><Text dimColor={dimmed && !isSelected} color={textColor}>{isBuiltIn ? "" : isSelected ? `${figures.pointer} ` : "  "}</Text><Text dimColor={dimmed && !isSelected} color={textColor}>{agent_0.agentType}</Text>{resolvedModel && <Text dimColor={true} color={textColor}>{" \xB7 "}{resolvedModel}</Text>}{agent_0.memory && <Text dimColor={true} color={textColor}>{" \xB7 "}{agent_0.memory} memory</Text>}{overriddenBy && <Text dimColor={!isSelected} color={isSelected ? "warning" : undefined}>{" "}{figures.warning} shadowed by {getOverrideSourceLabel(overriddenBy)}</Text>}</Box>;
+      return <Box key={`${agent_0.agentType}-${agent_0.source}`}><Text dimColor={dimmed && !isSelected} color={textColor}>{isBuiltIn ? "" : isSelected ? `${figures.pointer} ` : "  "}</Text><Text dimColor={dimmed && !isSelected} color={textColor}>{agent_0.agentType}</Text>{resolvedModel && <Text dimColor={true} color={textColor}>{" \xB7 "}{resolvedModel}</Text>}{agent_0.memory && <Text dimColor={true} color={textColor}>{" \xB7 "}{agent_0.memory} {t('agent.list.memory')}</Text>}{overriddenBy && <Text dimColor={!isSelected} color={isSelected ? "warning" : undefined}>{" "}{figures.warning} {t('agent.list.shadowedBy')} {getOverrideSourceLabel(overriddenBy)}</Text>}</Box>;
     };
     $[4] = isCreateNewSelected;
     $[5] = selectedAgent?.agentType;
@@ -174,7 +175,7 @@ export function AgentsList(t0) {
   let t8;
   if ($[23] !== renderAgent || $[24] !== sortedAgents) {
     t8 = t9 => {
-      const title = t9 === undefined ? "Built-in (always available):" : t9;
+      const title = t9 === undefined ? t('agent.list.builtIn') : t9;
       const builtInAgents = sortedAgents.filter(_temp4);
       return <Box flexDirection="column" marginBottom={1} paddingLeft={2}><Text bold={true} dimColor={true}>{title}</Text>{builtInAgents.map(renderAgent)}</Box>;
     };
@@ -242,7 +243,7 @@ export function AgentsList(t0) {
         let t25;
         let t26;
         if ($[58] === Symbol.for("react.memo_cache_sentinel")) {
-          t24 = <Text dimColor={true}>No agents found. Create specialized subagents that Claude can delegate to.</Text>;
+          t24 = <Text dimColor={true}>{t('agent.list.emptyDesc')}</Text>;
           t25 = <Text dimColor={true}>Each subagent has its own context window, custom system prompt, and specific tools.</Text>;
           t26 = <Text dimColor={true}>Try creating: Code Reviewer, Code Simplifier, Security Reviewer, Tech Lead, or UX Reviewer.</Text>;
           $[58] = t24;
@@ -275,7 +276,7 @@ export function AgentsList(t0) {
         }
         let t29;
         if ($[69] !== onBack || $[70] !== sourceTitle || $[71] !== t28) {
-          t29 = <Dialog title={sourceTitle} subtitle="No agents found" onCancel={onBack} hideInputGuide={true}>{t28}</Dialog>;
+          t29 = <Dialog title={sourceTitle} subtitle={t('agent.list.emptyTitle')} onCancel={onBack} hideInputGuide={true}>{t28}</Dialog>;
           $[69] = onBack;
           $[70] = sourceTitle;
           $[71] = t28;
@@ -325,7 +326,7 @@ export function AgentsList(t0) {
             source: groupSource_0
           } = t24;
           return <React.Fragment key={groupSource_0}>{renderAgentGroup(label, sortedAgents.filter(a_7 => a_7.source === groupSource_0))}</React.Fragment>;
-        })}{builtInAgents_0.length > 0 && <Box flexDirection="column" marginBottom={1} paddingLeft={2}><Text dimColor={true}><Text bold={true}>Built-in agents</Text> (always available)</Text>{builtInAgents_0.map(renderAgent)}</Box>}</> : source === "built-in" ? <><Text dimColor={true} italic={true}>Built-in agents are provided by default and cannot be modified.</Text><Box marginTop={1} flexDirection="column">{sortedAgents.map(agent_2 => renderAgent(agent_2))}</Box></> : <>{sortedAgents.filter(_temp0).map(agent_3 => renderAgent(agent_3))}{sortedAgents.some(_temp1) && <><Divider />{renderBuiltInAgentsSection()}</>}</>;
+        })}{builtInAgents_0.length > 0 && <Box flexDirection="column" marginBottom={1} paddingLeft={2}><Text dimColor={true}><Text bold={true}>{t('agent.list.builtInSection')}</Text> {t('agent.list.builtInAlways')}</Text>{builtInAgents_0.map(renderAgent)}</Box>}</> : source === "built-in" ? <><Text dimColor={true} italic={true}>{t('agent.list.builtInDesc')}</Text><Box marginTop={1} flexDirection="column">{sortedAgents.map(agent_2 => renderAgent(agent_2))}</Box></> : <>{sortedAgents.filter(_temp0).map(agent_3 => renderAgent(agent_3))}{sortedAgents.some(_temp1) && <><Divider />{renderBuiltInAgentsSection()}</>}</>;
     }
     $[30] = changes;
     $[31] = handleKeyDown;

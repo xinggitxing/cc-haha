@@ -1,5 +1,6 @@
 import { c as _c } from "react/compiler-runtime";
 import React from 'react';
+import { t } from '../i18n/index.js';
 import { type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS, logEvent } from 'src/services/analytics/index.js';
 import { getSettings_DEPRECATED, updateSettingsForSource } from '../utils/settings/settings.js';
 import { Select } from './CustomSelect/index.js';

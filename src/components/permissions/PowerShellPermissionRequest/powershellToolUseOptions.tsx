@@ -3,6 +3,7 @@ import type { PermissionUpdate } from '../../../utils/permissions/PermissionUpda
 import { shouldShowAlwaysAllowOptions } from '../../../utils/permissions/permissionsLoader.js';
 import type { OptionWithDescription } from '../../CustomSelect/select.js';
 import { generateShellSuggestionsLabel } from '../shellPermissionHelpers.js';
+import { t } from '../../../i18n/index.js';
 export type PowerShellToolUseOption = 'yes' | 'yes-apply-suggestions' | 'yes-prefix-edited' | 'no';
 export function powershellToolUseOptions({
   suggestions = [],
@@ -25,15 +26,15 @@ export function powershellToolUseOptions({
   if (yesInputMode) {
     options.push({
       type: 'input',
-      label: 'Yes',
+      label: t('perm.yes'),
       value: 'yes',
-      placeholder: 'and tell Claude what to do next',
+      placeholder: t('perm.tellClaudeNext'),
       onChange: onAcceptFeedbackChange,
       allowEmptySubmitToCancel: true
     });
   } else {
     options.push({
-      label: 'Yes',
+      label: t('perm.yes'),
       value: 'yes'
     });
   }
@@ -51,9 +52,9 @@ export function powershellToolUseOptions({
     if (editablePrefix !== undefined && onEditablePrefixChange && !hasNonPowerShellSuggestions) {
       options.push({
         type: 'input',
-        label: 'Yes, and don\u2019t ask again for',
+        label: t('perm.yesDontAskAgainShort'),
         value: 'yes-prefix-edited',
-        placeholder: 'command prefix (e.g., Get-Process:*)',
+        placeholder: t('perm.psPrefixPlaceholder'),
         initialValue: editablePrefix,
         onChange: onEditablePrefixChange,
         allowEmptySubmitToCancel: true,
@@ -74,15 +75,15 @@ export function powershellToolUseOptions({
   if (noInputMode) {
     options.push({
       type: 'input',
-      label: 'No',
+      label: t('perm.no'),
       value: 'no',
-      placeholder: 'and tell Claude what to do differently',
+      placeholder: t('perm.tellClaudeDifferently'),
       onChange: onRejectFeedbackChange,
       allowEmptySubmitToCancel: true
     });
   } else {
     options.push({
-      label: 'No',
+      label: t('perm.no'),
       value: 'no'
     });
   }

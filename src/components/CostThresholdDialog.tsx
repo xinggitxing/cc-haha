@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Link, Text } from '../ink.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+import { t } from '../i18n/index.js';
 type Props = {
   onDone: () => void;
 };
@@ -38,7 +39,7 @@ export function CostThresholdDialog(t0) {
   }
   let t4;
   if ($[4] !== onDone || $[5] !== t3) {
-    t4 = <Dialog title="You've spent $5 on the Anthropic API this session." onCancel={onDone}>{t1}{t3}</Dialog>;
+    t4 = <Dialog title={t('ui.costThreshold.title')} onCancel={onDone}>{t1}{t3}</Dialog>;
     $[4] = onDone;
     $[5] = t3;
     $[6] = t4;

@@ -5,6 +5,7 @@ import { mcpInfoFromString } from 'src/services/mcp/mcpStringUtils.js';
 import { isMcpTool } from 'src/services/mcp/utils.js';
 import type { Tool, Tools } from 'src/Tool.js';
 import { filterToolsForAgent } from 'src/tools/AgentTool/agentToolUtils.js';
+import { t } from '../../i18n/index.js';
 import { AGENT_TOOL_NAME } from 'src/tools/AgentTool/constants.js';
 import { BashTool } from 'src/tools/BashTool/BashTool.js';
 import { ExitPlanModeV2Tool } from 'src/tools/ExitPlanModeTool/ExitPlanModeV2Tool.js';
@@ -49,25 +50,25 @@ type ToolBuckets = {
 function getToolBuckets(): ToolBuckets {
   return {
     READ_ONLY: {
-      name: 'Read-only tools',
+      name: t('agent.tools.readOnly'),
       toolNames: new Set([GlobTool.name, GrepTool.name, ExitPlanModeV2Tool.name, FileReadTool.name, WebFetchTool.name, TodoWriteTool.name, WebSearchTool.name, TaskStopTool.name, TaskOutputTool.name, ListMcpResourcesTool.name, ReadMcpResourceTool.name])
     },
     EDIT: {
-      name: 'Edit tools',
+      name: t('agent.tools.edit'),
       toolNames: new Set([FileEditTool.name, FileWriteTool.name, NotebookEditTool.name])
     },
     EXECUTION: {
-      name: 'Execution tools',
+      name: t('agent.tools.execution'),
       toolNames: new Set([BashTool.name, "external" === 'ant' ? TungstenTool.name : undefined].filter(n => n !== undefined))
     },
     MCP: {
-      name: 'MCP tools',
+      name: t('agent.tools.mcp'),
       toolNames: new Set(),
       // Dynamic - no static list
       isMcp: true
     },
     OTHER: {
-      name: 'Other tools',
+      name: t('agent.tools.other'),
       toolNames: new Set() // Dynamic - catch-all for uncategorized tools
     }
   };
@@ -269,7 +270,7 @@ export function ToolSelector(t0) {
     navigableItems = [];
     navigableItems.push({
       id: "continue",
-      label: "Continue",
+      label: t('agent.tools.continue'),
       action: handleConfirm,
       isContinue: true
     });
@@ -347,7 +348,7 @@ export function ToolSelector(t0) {
     }
     navigableItems.push({
       id: "toggle-individual",
-      label: showIndividualTools ? "Hide advanced options" : "Show advanced options",
+      label: showIndividualTools ? t('agent.tools.hideAdvanced') : t('agent.tools.showAdvanced'),
       action: t12,
       isToggle: true
     });

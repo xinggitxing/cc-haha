@@ -3,10 +3,13 @@ import sample from 'lodash-es/sample.js';
 import * as React from 'react';
 import { useMemo } from 'react';
 import { Box, Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import { extractTag } from '../../utils/messages.js';
 import { MessageResponse } from '../MessageResponse.js';
+function _tempLocale(s: any) { return s.locale; }
 function getSavingMessage(): string {
-  return sample(['Got it.', 'Good to know.', 'Noted.']);
+  return sample([t('msg.userMemory.gotIt'), t('msg.userMemory.goodToKnow'), t('msg.userMemory.noted')]);
 }
 type Props = {
   addMargin: boolean;
@@ -18,6 +21,7 @@ export function UserMemoryInputMessage(t0) {
     text,
     addMargin
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   let t1;
   if ($[0] !== text) {
     t1 = extractTag(text, "user-memory-input");
@@ -28,11 +32,11 @@ export function UserMemoryInputMessage(t0) {
   }
   const input = t1;
   let t2;
-  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($[2] === Symbol.for("react.memo_cache_sentinel") || ($[2] != null && $[2].l !== locale)) {
     t2 = getSavingMessage();
-    $[2] = t2;
+    $[2] = { l: locale, v: t2 };
   } else {
-    t2 = $[2];
+    t2 = $[2] != null ? $[2].v : $[2];
   }
   const savingText = t2;
   if (!input) {

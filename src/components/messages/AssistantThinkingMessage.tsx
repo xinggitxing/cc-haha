@@ -4,6 +4,9 @@ import React from 'react';
 import { Box, Text } from '../../ink.js';
 import { CtrlOToExpand } from '../CtrlOToExpand.js';
 import { Markdown } from '../Markdown.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   // Accept either full ThinkingBlock/ThinkingBlockParam or a minimal shape with just type and thinking
   param: ThinkingBlock | ThinkingBlockParam | {
@@ -25,6 +28,7 @@ export function AssistantThinkingMessage(t0) {
     verbose,
     hideInTranscript: t3
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   const {
     thinking
   } = t1;
@@ -40,11 +44,11 @@ export function AssistantThinkingMessage(t0) {
   if (!shouldShowFullThinking) {
     const t4 = addMargin ? 1 : 0;
     let t5;
-    if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
-      t5 = <Text dimColor={true} italic={true}>{"\u2234 Thinking"} <CtrlOToExpand /></Text>;
-      $[0] = t5;
+    if ($[0] === Symbol.for("react.memo_cache_sentinel") || ($[0] != null && $[0].l !== locale)) {
+      t5 = <Text dimColor={true} italic={true}>{"\u2234 " + t('repl.thinking')} <CtrlOToExpand /></Text>;
+      $[0] = { l: locale, v: t5 };
     } else {
-      t5 = $[0];
+      t5 = $[0] != null ? $[0].v : $[0];
     }
     let t6;
     if ($[1] !== t4) {
@@ -58,11 +62,11 @@ export function AssistantThinkingMessage(t0) {
   }
   const t4 = addMargin ? 1 : 0;
   let t5;
-  if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
-    t5 = <Text dimColor={true} italic={true}>{"\u2234 Thinking"}…</Text>;
-    $[3] = t5;
+  if ($[3] === Symbol.for("react.memo_cache_sentinel") || ($[3] != null && $[3].l !== locale)) {
+    t5 = <Text dimColor={true} italic={true}>{"\u2234 " + t('repl.thinking') + '\u2026'}</Text>;
+    $[3] = { l: locale, v: t5 };
   } else {
-    t5 = $[3];
+    t5 = $[3] != null ? $[3].v : $[3];
   }
   let t6;
   if ($[4] !== thinking) {

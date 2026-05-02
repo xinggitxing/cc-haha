@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { isBridgeEnabled } from '../bridge/bridgeEnabled.js';
 import { Box, Text } from '../ink.js';
+import { t } from '../i18n/index.js';
 import { getClaudeAIOAuthTokens } from '../utils/auth.js';
 import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
 import type { OptionWithDescription } from './CustomSelect/select.js';
@@ -33,15 +34,15 @@ export function RemoteCallout({
     onDoneRef.current(value);
   }, []);
   const options: OptionWithDescription<RemoteCalloutSelection>[] = [{
-    label: 'Enable Remote Control for this session',
+    label: t('ui.remoteCallout.enable'),
     description: 'Opens a secure connection to claude.ai.',
     value: 'enable'
   }, {
-    label: 'Never mind',
+    label: t('ui.remoteCallout.neverMind'),
     description: 'You can always enable it later with /remote-control.',
     value: 'dismiss'
   }];
-  return <PermissionDialog title="Remote Control">
+  return <PermissionDialog title={t('ui.remoteCallout.title')}>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Box marginBottom={1} flexDirection="column">
           <Text>

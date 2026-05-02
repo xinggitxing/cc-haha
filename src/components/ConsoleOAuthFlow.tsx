@@ -1,5 +1,6 @@
 import { c as _c } from "react/compiler-runtime";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { t } from '../i18n/index.js';
 import { type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS, logEvent } from 'src/services/analytics/index.js';
 import { installOAuthTokens } from '../cli/handlers/auth.js';
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
@@ -299,7 +300,7 @@ export function ConsoleOAuthFlow({
             <Text dimColor>
               Browser didn&apos;t open? Use the url below to sign in{' '}
             </Text>
-            {urlCopied ? <Text color="success">(Copied!)</Text> : <Text dimColor>
+            {urlCopied ? <Text color="success">{t('ui.oauth.codeCopied')}</Text> : <Text dimColor>
                 <KeyboardShortcutHint shortcut="c" action="copy" parens />
               </Text>}
           </Box>
@@ -383,7 +384,7 @@ function OAuthStatusMessage(t0) {
         let t4;
         if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
           t4 = {
-            label: <Text>Claude account with subscription ·{" "}<Text dimColor={true}>Pro, Max, Team, or Enterprise</Text>{false && <Text>{"\n"}<Text color="warning">[ANT-ONLY]</Text>{" "}<Text dimColor={true}>Please use this option unless you need to login to a special org for accessing sensitive data (e.g. customer data, HIPI data) with the Console option</Text></Text>}{"\n"}</Text>,
+            label: <Text>t('ui.oauth.claudeAccount') ·{" "}<Text dimColor={true}>Pro, Max, Team, or Enterprise</Text>{false && <Text>{"\n"}<Text color="warning">[ANT-ONLY]</Text>{" "}<Text dimColor={true}>Please use this option unless you need to login to a special org for accessing sensitive data (e.g. customer data, HIPI data) with the Console option</Text></Text>}{"\n"}</Text>,
             value: "claudeai"
           };
           $[3] = t4;
@@ -393,7 +394,7 @@ function OAuthStatusMessage(t0) {
         let t5;
         if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
           t5 = {
-            label: <Text>Anthropic Console account ·{" "}<Text dimColor={true}>API usage billing</Text>{"\n"}</Text>,
+            label: <Text>t('ui.oauth.consoleAccount') ·{" "}<Text dimColor={true}>API usage billing</Text>{"\n"}</Text>,
             value: "console"
           };
           $[4] = t5;
@@ -403,7 +404,7 @@ function OAuthStatusMessage(t0) {
         let t6;
         if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
           t6 = [t4, t5, {
-            label: <Text>3rd-party platform ·{" "}<Text dimColor={true}>Amazon Bedrock, Microsoft Foundry, or Vertex AI</Text>{"\n"}</Text>,
+            label: <Text>t('ui.oauth.thirdParty') ·{" "}<Text dimColor={true}>Amazon Bedrock, Microsoft Foundry, or Vertex AI</Text>{"\n"}</Text>,
             value: "platform"
           }];
           $[5] = t6;
@@ -452,7 +453,7 @@ function OAuthStatusMessage(t0) {
       {
         let t1;
         if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
-          t1 = <Text bold={true}>Using 3rd-party platforms</Text>;
+          t1 = <Text bold={true}>Using t('ui.oauth.thirdParty')s</Text>;
           $[12] = t1;
         } else {
           t1 = $[12];

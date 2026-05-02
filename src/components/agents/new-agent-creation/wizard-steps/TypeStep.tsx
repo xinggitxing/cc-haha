@@ -6,6 +6,7 @@ import type { AgentDefinition } from '../../../../tools/AgentTool/loadAgentsDir.
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
 import { Byline } from '../../../design-system/Byline.js';
 import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
+import { useTranslation } from '../../../../i18n/index.js';
 import TextInput from '../../../TextInput.js';
 import { useWizard } from '../../../wizard/index.js';
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
@@ -15,7 +16,8 @@ type Props = {
   existingAgents: AgentDefinition[];
 };
 export function TypeStep(_props) {
-  const $ = _c(15);
+  const $ = _c(17);
+  const { t } = useTranslation();
   const {
     goNext,
     goBack,
@@ -65,38 +67,40 @@ export function TypeStep(_props) {
     t2 = $[4];
   }
   let t3;
-  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
-    t3 = <Text>Enter a unique identifier for your agent:</Text>;
-    $[5] = t3;
+  if ($[5] !== t) {
+    t3 = <Text>{t('agent.wizard.typeLabel')}</Text>;
+    $[5] = t;
+    $[6] = t3;
   } else {
-    t3 = $[5];
+    t3 = $[6];
   }
   let t4;
-  if ($[6] !== agentType || $[7] !== cursorOffset || $[8] !== handleSubmit) {
-    t4 = <Box marginTop={1}><TextInput value={agentType} onChange={setAgentType} onSubmit={handleSubmit} placeholder="e.g., test-runner, tech-lead, etc" columns={60} cursorOffset={cursorOffset} onChangeCursorOffset={setCursorOffset} focus={true} showCursor={true} /></Box>;
-    $[6] = agentType;
-    $[7] = cursorOffset;
-    $[8] = handleSubmit;
-    $[9] = t4;
+  if ($[7] !== agentType || $[8] !== cursorOffset || $[9] !== handleSubmit || $[10] !== t) {
+    t4 = <Box marginTop={1}><TextInput value={agentType} onChange={setAgentType} onSubmit={handleSubmit} placeholder={t('agent.wizard.typePlaceholder')} columns={60} cursorOffset={cursorOffset} onChangeCursorOffset={setCursorOffset} focus={true} showCursor={true} /></Box>;
+    $[7] = agentType;
+    $[8] = cursorOffset;
+    $[9] = handleSubmit;
+    $[10] = t;
+    $[11] = t4;
   } else {
-    t4 = $[9];
+    t4 = $[11];
   }
   let t5;
-  if ($[10] !== error) {
+  if ($[12] !== error) {
     t5 = error && <Box marginTop={1}><Text color="error">{error}</Text></Box>;
-    $[10] = error;
-    $[11] = t5;
+    $[12] = error;
+    $[13] = t5;
   } else {
-    t5 = $[11];
+    t5 = $[13];
   }
   let t6;
-  if ($[12] !== t4 || $[13] !== t5) {
-    t6 = <WizardDialogLayout subtitle="Agent type (identifier)" footerText={t2}><Box flexDirection="column">{t3}{t4}{t5}</Box></WizardDialogLayout>;
-    $[12] = t4;
-    $[13] = t5;
-    $[14] = t6;
+  if ($[14] !== t4 || $[15] !== t5) {
+    t6 = <WizardDialogLayout subtitle={t('agent.wizard.typeSubtitle')} footerText={t2}><Box flexDirection="column">{t3}{t4}{t5}</Box></WizardDialogLayout>;
+    $[14] = t4;
+    $[15] = t5;
+    $[16] = t6;
   } else {
-    t6 = $[14];
+    t6 = $[16];
   }
   return t6;
 }

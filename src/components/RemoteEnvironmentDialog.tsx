@@ -17,8 +17,9 @@ import { Byline } from './design-system/Byline.js';
 import { Dialog } from './design-system/Dialog.js';
 import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
 import { LoadingState } from './design-system/LoadingState.js';
-const DIALOG_TITLE = 'Select Remote Environment';
-const SETUP_HINT = `Configure environments at: https://claude.ai/code`;
+import { t } from '../i18n/index.js';
+const DIALOG_TITLE = t('ui.remoteEnv.title');
+const SETUP_HINT = t('ui.remoteEnv.configure');
 type Props = {
   onDone: (message?: string) => void;
 };

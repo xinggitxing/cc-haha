@@ -15,6 +15,7 @@ import { ColorPicker } from './ColorPicker.js';
 import { ModelSelector } from './ModelSelector.js';
 import { ToolSelector } from './ToolSelector.js';
 import { getAgentSourceDisplayName } from './utils.js';
+import { useTranslation } from '../../i18n/index.js';
 type Props = {
   agent: AgentDefinition;
   tools: Tools;
@@ -38,13 +39,15 @@ export function AgentEditor({
   const [selectedMenuIndex, setSelectedMenuIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<AgentColorName | undefined>(agent.color as AgentColorName | undefined);
+  const { t } = useTranslation();
+
   const handleOpenInEditor = useCallback(async () => {
     const filePath = getActualAgentFilePath(agent);
     const result = await editFileInEditor(filePath);
     if (result.error) {
       setError(result.error);
     } else {
-      onSaved(`Opened ${agent.agentType} in editor. If you made edits, restart to load the latest version.`);
+      onSaved(t('agent.editor.openedInEditor', { name: agent.agentType }));
     }
   }, [agent, onSaved]);
   const handleSave = useCallback(async (changes: SaveChanges = {}) => {
@@ -86,26 +89,26 @@ export function AgentEditor({
           }
         };
       });
-      onSaved(`Updated agent: ${chalk.bold(agent.agentType)}`);
+      onSaved(t('agent.editor.updated', { name: chalk.bold(agent.agentType) }));
       return true;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save agent');
+      setError(err instanceof Error ? err.message : t('agent.editor.failedToSave'));
       return false;
     }
   }, [agent, selectedColor, onSaved, setAppState]);
   const menuItems = useMemo(() => [{
-    label: 'Open in editor',
+    label: t('agent.editor.openInEditor'),
     action: handleOpenInEditor
   }, {
-    label: 'Edit tools',
+    label: t('agent.editor.editTools'),
     action: () => setEditMode('edit-tools')
   }, {
-    label: 'Edit model',
+    label: t('agent.editor.editModel'),
     action: () => setEditMode('edit-model')
   }, {
-    label: 'Edit color',
+    label: t('agent.editor.editColor'),
     action: () => setEditMode('edit-color')
-  }], [handleOpenInEditor]);
+  }], [handleOpenInEditor, t]);
   const handleEscape = useCallback(() => {
     setError(null);
     if (editMode === 'menu') {
@@ -133,7 +136,7 @@ export function AgentEditor({
     context: 'Confirmation'
   });
   const renderMenu = (): React.ReactNode => <Box flexDirection="column" tabIndex={0} autoFocus onKeyDown={handleMenuKeyDown}>
-      <Text dimColor>Source: {getAgentSourceDisplayName(agent.source)}</Text>
+      <Text dimColor>{t('agent.editor.sourceLabel', { source: getAgentSourceDisplayName(agent.source) })}</Text>
 
       <Box marginTop={1} flexDirection="column">
         {menuItems.map((item, index_1) => <Text key={item.label} color={index_1 === selectedMenuIndex ? 'suggestion' : undefined}>

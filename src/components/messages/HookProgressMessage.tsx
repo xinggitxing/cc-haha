@@ -3,7 +3,10 @@ import * as React from 'react';
 import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
 import type { buildMessageLookups } from 'src/utils/messages.js';
 import { Box, Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import { MessageResponse } from '../MessageResponse.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   hookEvent: HookEvent;
   lookups: ReturnType<typeof buildMessageLookups>;
@@ -19,6 +22,7 @@ export function HookProgressMessage(t0) {
     toolUseID,
     isTranscriptMode
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   let t1;
   if ($[0] !== hookEvent || $[1] !== lookups.inProgressHookCounts || $[2] !== toolUseID) {
     t1 = lookups.inProgressHookCounts.get(toolUseID)?.get(hookEvent) ?? 0;
@@ -52,14 +56,13 @@ export function HookProgressMessage(t0) {
       } else {
         t3 = $[7];
       }
-      const t4 = inProgressHookCount === 1 ? " hook" : " hooks";
       let t5;
-      if ($[8] !== t4) {
-        t5 = <Text dimColor={true}>{t4} ran</Text>;
-        $[8] = t4;
-        $[9] = t5;
+      const isSingular = inProgressHookCount === 1;
+      if ($[8] === Symbol.for("react.memo_cache_sentinel") || ($[8] != null && ($[8].l !== locale || $[8].s !== isSingular))) {
+        t5 = <Text dimColor={true}>{isSingular ? t('msg.hookProgress.hook') : t('msg.hookProgress.hooks')}{t('msg.hookProgress.ran')}</Text>;
+        $[8] = { l: locale, s: isSingular, v: t5 };
       } else {
-        t5 = $[9];
+        t5 = $[8] != null ? $[8].v : $[8];
       }
       let t6;
       if ($[10] !== t2 || $[11] !== t3 || $[12] !== t5) {
@@ -79,11 +82,11 @@ export function HookProgressMessage(t0) {
     return null;
   }
   let t2;
-  if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
-    t2 = <Text dimColor={true}>Running </Text>;
-    $[14] = t2;
+  if ($[14] === Symbol.for("react.memo_cache_sentinel") || ($[14] != null && $[14].l !== locale)) {
+    t2 = <Text dimColor={true}>{t('msg.hookProgress.running')}</Text>;
+    $[14] = { l: locale, v: t2 };
   } else {
-    t2 = $[14];
+    t2 = $[14] != null ? $[14].v : $[14];
   }
   let t3;
   if ($[15] !== hookEvent) {
@@ -93,14 +96,13 @@ export function HookProgressMessage(t0) {
   } else {
     t3 = $[16];
   }
-  const t4 = inProgressHookCount === 1 ? " hook\u2026" : " hooks\u2026";
   let t5;
-  if ($[17] !== t4) {
-    t5 = <Text dimColor={true}>{t4}</Text>;
-    $[17] = t4;
-    $[18] = t5;
+  const isSingle = inProgressHookCount === 1;
+  if ($[17] === Symbol.for("react.memo_cache_sentinel") || ($[17] != null && ($[17].l !== locale || $[17].s !== isSingle))) {
+    t5 = <Text dimColor={true}>{isSingle ? t('msg.hookProgress.hookEllipsis') : t('msg.hookProgress.hooksEllipsis')}</Text>;
+    $[17] = { l: locale, s: isSingle, v: t5 };
   } else {
-    t5 = $[18];
+    t5 = $[17] != null ? $[17].v : $[17];
   }
   let t6;
   if ($[19] !== t3 || $[20] !== t5) {

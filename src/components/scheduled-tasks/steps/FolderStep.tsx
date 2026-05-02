@@ -6,6 +6,7 @@ import TextInput from '../../TextInput.js'
 import { Select } from '../../CustomSelect/select.js'
 import { WizardDialogLayout } from '../../wizard/index.js'
 import { useWizard } from '../../wizard/useWizard.js'
+import { t } from '../../../i18n/index.js'
 import type { ScheduledTaskWizardData } from '../types.js'
 
 /** Reject paths that escape the filesystem root or contain dangerous patterns. */
@@ -53,10 +54,10 @@ export function FolderStep(): ReactNode {
   // Custom path input mode — uses TextInput instead of Select input type
   if (customPath) {
     return (
-      <WizardDialogLayout subtitle="Working directory">
+      <WizardDialogLayout subtitle={t('task.folder.subtitle')}>
         <Box flexDirection="column">
           <Box marginBottom={1}>
-            <Text dimColor>Enter the full path to the working directory:</Text>
+            <Text dimColor>{t('task.folder.customDesc')}</Text>
           </Box>
           <TextInput
             value={pathValue}
@@ -67,18 +68,18 @@ export function FolderStep(): ReactNode {
             onSubmit={() => {
               const trimmed = pathValue.trim()
               if (!trimmed) {
-                setPathError('Path cannot be empty')
+                setPathError(t('task.folder.error.empty'))
                 return
               }
               if (!isSafePath(trimmed)) {
-                setPathError('Invalid path')
+                setPathError(t('task.folder.error.invalid'))
                 return
               }
               setPathError(null)
               updateWizardData({ folder: trimmed })
               goNext()
             }}
-            placeholder="/path/to/project"
+            placeholder={t('task.folder.placeholder')}
           />
           {pathError && (
             <Box marginTop={1}>
@@ -91,20 +92,20 @@ export function FolderStep(): ReactNode {
   }
 
   return (
-    <WizardDialogLayout subtitle="Working directory">
+    <WizardDialogLayout subtitle={t('task.folder.subtitle')}>
       <Box flexDirection="column">
         <Box marginBottom={1}>
           <Text dimColor>
-            Select the folder where this task will run.
+            {t('task.folder.description')}
           </Text>
         </Box>
         <Select
           options={[
             ...folderOptions,
             {
-              label: '+ Choose a different folder',
+              label: t('task.folder.customOption'),
               value: '__custom__',
-              description: 'Enter a custom path',
+              description: t('task.folder.customOptionDesc'),
             },
           ]}
           defaultValue={wizardData.folder ?? currentProject}

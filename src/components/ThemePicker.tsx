@@ -16,6 +16,7 @@ import { Byline } from './design-system/Byline.js';
 import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
 import { getColorModuleUnavailableReason, getSyntaxTheme } from './StructuredDiff/colorDiff.js';
 import { StructuredDiff } from './StructuredDiff.js';
+import { t } from '../i18n/index.js';
 export type ThemePickerProps = {
   onThemeSelect: (setting: ThemeSetting) => void;
   showIntroText?: boolean;
@@ -139,7 +140,7 @@ export function ThemePicker(t0) {
   const themeOptions = t10;
   let t11;
   if ($[8] !== showIntroText) {
-    t11 = showIntroText ? <Text>Let's get started.</Text> : <Text bold={true} color="permission">Theme</Text>;
+    t11 = showIntroText ? <Text>Let's get started.</Text> : <Text bold={true} color="permission">{t('ui.themePicker.title')}</Text>;
     $[8] = showIntroText;
     $[9] = t11;
   } else {

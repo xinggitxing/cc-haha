@@ -421,6 +421,8 @@ export type AppState = DeepImmutable<{
   activeOverlays: ReadonlySet<string>
   // Fast mode
   fastMode?: boolean
+  /** UI locale ('en' or 'zh') */
+  locale: 'en' | 'zh'
   // Advisor model for server-side advisor tool (undefined = disabled).
   advisorModel?: string
   // Effort value
@@ -565,5 +567,6 @@ export function getDefaultAppState(): AppState {
     effortValue: undefined,
     activeOverlays: new Set<string>(),
     fastMode: false,
+    locale: (getInitialSettings()?.locale as 'en' | 'zh') ?? 'en',
   }
 }

@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from 'react';
 import type { SettingSource } from 'src/utils/settings/constants.js';
 import type { CommandResultDisplay } from '../../commands.js';
 import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
+import { t } from '../../i18n/index.js';
 import { useMergedTools } from '../../hooks/useMergedTools.js';
 import { Box, Text } from '../../ink.js';
 import { useAppState, useSetAppState } from '../../state/AppState.js';
@@ -329,7 +330,7 @@ export function AgentsMenu(t0) {
         let t14;
         if ($[60] === Symbol.for("react.memo_cache_sentinel")) {
           t14 = {
-            label: "View agent",
+            label: t('agent.menu.viewAgent'),
             value: "view"
           };
           $[60] = t14;
@@ -339,10 +340,10 @@ export function AgentsMenu(t0) {
         let t15;
         if ($[61] !== isEditable) {
           t15 = isEditable ? [{
-            label: "Edit agent",
+            label: t('agent.menu.editAgent'),
             value: "edit"
           }, {
-            label: "Delete agent",
+            label: t('agent.menu.deleteAgent'),
             value: "delete"
           }] : [];
           $[61] = isEditable;
@@ -353,7 +354,7 @@ export function AgentsMenu(t0) {
         let t16;
         if ($[63] === Symbol.for("react.memo_cache_sentinel")) {
           t16 = {
-            label: "Back",
+            label: t('agent.menu.back'),
             value: "back"
           };
           $[63] = t16;
@@ -573,10 +574,10 @@ export function AgentsMenu(t0) {
         let t13;
         if ($[112] === Symbol.for("react.memo_cache_sentinel")) {
           t13 = [{
-            label: "Yes, delete",
+            label: t('agent.menu.yesDelete'),
             value: "yes"
           }, {
-            label: "No, cancel",
+            label: t('agent.menu.noCancel'),
             value: "no"
           }];
           $[112] = t13;
@@ -652,7 +653,7 @@ export function AgentsMenu(t0) {
         }
         let t20;
         if ($[127] !== t14 || $[128] !== t15 || $[129] !== t16 || $[130] !== t19) {
-          t20 = <Dialog title="Delete agent" onCancel={t14} color="error">{t15}{t16}{t19}</Dialog>;
+          t20 = <Dialog title=t('agent.menu.deleteAgent') onCancel={t14} color="error">{t15}{t16}{t19}</Dialog>;
           $[127] = t14;
           $[128] = t15;
           $[129] = t16;

@@ -1,4 +1,5 @@
 import React, { type ReactNode } from 'react'
+import { t } from '../../../i18n/index.js'
 import { WizardDialogLayout } from '../../wizard/index.js'
 import { useWizard } from '../../wizard/useWizard.js'
 import { ModelSelector } from '../../agents/ModelSelector.js'
@@ -9,7 +10,7 @@ export function TaskModelStep(): ReactNode {
     useWizard<ScheduledTaskWizardData>()
 
   return (
-    <WizardDialogLayout subtitle="Model">
+    <WizardDialogLayout subtitle={t('task.model.subtitle')}>
       <ModelSelector
         initialModel={wizardData.model}
         onComplete={(model) => {

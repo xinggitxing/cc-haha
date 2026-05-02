@@ -1,5 +1,6 @@
 import React, { type ReactNode, useState } from 'react'
 import { Box, Text } from '../../../ink.js'
+import { t } from '../../../i18n/index.js'
 import { useKeybinding } from '../../../hooks/useKeybinding.js'
 import TextInput from '../../TextInput.js'
 import { WizardDialogLayout } from '../../wizard/index.js'
@@ -17,7 +18,7 @@ export function TaskDescriptionStep(): ReactNode {
   const handleSubmit = () => {
     const trimmed = value.trim()
     if (!trimmed) {
-      setError('Description is required')
+      setError(t('task.desc.error.required'))
       return
     }
     setError(null)
@@ -26,18 +27,18 @@ export function TaskDescriptionStep(): ReactNode {
   }
 
   return (
-    <WizardDialogLayout subtitle="Description">
+    <WizardDialogLayout subtitle={t('task.desc.subtitle')}>
       <Box flexDirection="column">
         <Box marginBottom={1}>
           <Text dimColor>
-            Briefly describe what this scheduled task does.
+            {t('task.desc.description')}
           </Text>
         </Box>
         <TextInput
           value={value}
           onChange={setValue}
           onSubmit={handleSubmit}
-          placeholder="e.g. Review yesterday's commits and flag anything concerning"
+          placeholder={t('task.desc.placeholder')}
         />
         {error && (
           <Box marginTop={1}>

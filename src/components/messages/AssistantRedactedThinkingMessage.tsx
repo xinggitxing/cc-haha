@@ -1,30 +1,35 @@
 import { c as _c } from "react/compiler-runtime";
 import React from 'react';
 import { Box, Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   addMargin: boolean;
 };
 export function AssistantRedactedThinkingMessage(t0) {
-  const $ = _c(3);
+  const $ = _c(4);
   const {
     addMargin: t1
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   const addMargin = t1 === undefined ? false : t1;
   const t2 = addMargin ? 1 : 0;
   let t3;
-  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
-    t3 = <Text dimColor={true} italic={true}>✻ Thinking…</Text>;
-    $[0] = t3;
+  if ($[0] === Symbol.for("react.memo_cache_sentinel") || ($[0] != null && $[0].l !== locale)) {
+    t3 = <Text dimColor={true} italic={true}>{t('msg.redactedThinking')}</Text>;
+    $[0] = { l: locale, v: t3 };
   } else {
-    t3 = $[0];
+    t3 = $[0] != null ? $[0].v : $[0];
   }
   let t4;
-  if ($[1] !== t2) {
+  if ($[1] !== t2 || ($[2] !== locale)) {
     t4 = <Box marginTop={t2}>{t3}</Box>;
     $[1] = t2;
-    $[2] = t4;
+    $[2] = locale;
+    $[3] = t4;
   } else {
-    t4 = $[2];
+    t4 = $[3];
   }
   return t4;
 }

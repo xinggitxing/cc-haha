@@ -4,9 +4,12 @@ import * as React from 'react';
 import { useContext } from 'react';
 import { useQueuedMessage } from '../../context/QueuedMessageContext.js';
 import { Box, Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import { formatBriefTimestamp } from '../../utils/formatBriefTimestamp.js';
 import { findThinkingTriggerPositions, getRainbowColor, isUltrathinkEnabled } from '../../utils/thinking.js';
 import { MessageActionsSelectedContext } from '../messageActions.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   text: string;
   useBriefLayout?: boolean;
@@ -23,6 +26,7 @@ export function HighlightedThinkingText(t0) {
   const isSelected = useContext(MessageActionsSelectedContext);
   const pointerColor = isSelected ? "suggestion" : "subtle";
   if (useBriefLayout) {
+    const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
     let t1;
     if ($[0] !== timestamp) {
       t1 = timestamp ? formatBriefTimestamp(timestamp) : "";
@@ -34,12 +38,11 @@ export function HighlightedThinkingText(t0) {
     const ts = t1;
     const t2 = isQueued ? "subtle" : "briefLabelYou";
     let t3;
-    if ($[2] !== t2) {
-      t3 = <Text color={t2}>You</Text>;
-      $[2] = t2;
-      $[3] = t3;
+    if ($[2] === Symbol.for("react.memo_cache_sentinel") || ($[2] != null && ($[2].l !== locale || $[2].c !== t2))) {
+      t3 = <Text color={t2}>{t('msg.highlightedThinking.you')}</Text>;
+      $[2] = { l: locale, c: t2, v: t3 };
     } else {
-      t3 = $[3];
+      t3 = $[2] != null ? $[2].v : $[2];
     }
     let t4;
     if ($[4] !== ts) {

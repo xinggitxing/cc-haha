@@ -1,6 +1,7 @@
 import { c as _c } from "react/compiler-runtime";
 import * as React from 'react';
 import { Box, Text } from 'src/ink.js';
+import { t } from '../../i18n/index.js';
 import { type NetworkHostPattern, shouldAllowManagedSandboxDomainsOnly } from 'src/utils/sandbox/sandbox-adapter.js';
 import { type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS, logEvent } from '../../services/analytics/index.js';
 import { Select } from '../CustomSelect/select.js';
@@ -67,7 +68,7 @@ export function SandboxPermissionRequest(t0) {
   let t4;
   if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = {
-      label: "Yes",
+      label: t('perm.yes'),
       value: "yes"
     };
     $[3] = t4;
@@ -77,7 +78,7 @@ export function SandboxPermissionRequest(t0) {
   let t5;
   if ($[4] !== host) {
     t5 = !managedDomainsOnly ? [{
-      label: <Text>Yes, and don't ask again for <Text bold={true}>{host}</Text></Text>,
+      label: <Text>{t('perm.yesDontAskAgain')} <Text bold={true}>{host}</Text></Text>,
       value: "yes-dont-ask-again"
     }] : [];
     $[4] = host;
@@ -88,7 +89,7 @@ export function SandboxPermissionRequest(t0) {
   let t6;
   if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {
-      label: <Text>No, and tell Claude what to do differently <Text bold={true}>(esc)</Text></Text>,
+      label: <Text>{t('perm.tellClaudeDifferently')} <Text bold={true}>(esc)</Text></Text>,
       value: "no"
     };
     $[6] = t6;
@@ -106,7 +107,7 @@ export function SandboxPermissionRequest(t0) {
   const options = t7;
   let t8;
   if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
-    t8 = <Text dimColor={true}>Host:</Text>;
+    t8 = <Text dimColor={true}>{t('perm.hostLabel')}</Text>;
     $[9] = t8;
   } else {
     t8 = $[9];
@@ -121,7 +122,7 @@ export function SandboxPermissionRequest(t0) {
   }
   let t10;
   if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
-    t10 = <Box marginTop={1}><Text>Do you want to allow this connection?</Text></Box>;
+    t10 = <Box marginTop={1}><Text>{t('perm.allowConnection')}</Text></Box>;
     $[12] = t10;
   } else {
     t10 = $[12];
@@ -151,7 +152,7 @@ export function SandboxPermissionRequest(t0) {
   }
   let t13;
   if ($[19] !== t12 || $[20] !== t9) {
-    t13 = <PermissionDialog title="Network request outside of sandbox"><Box flexDirection="column" paddingX={2} paddingY={1}>{t9}{t10}{t12}</Box></PermissionDialog>;
+    t13 = <PermissionDialog title={t('perm.titleNetworkSandbox')}><Box flexDirection="column" paddingX={2} paddingY={1}>{t9}{t10}{t12}</Box></PermissionDialog>;
     $[19] = t12;
     $[20] = t9;
     $[21] = t13;

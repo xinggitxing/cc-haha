@@ -29,6 +29,7 @@ import { Byline } from './design-system/Byline.js';
 import { Dialog } from './design-system/Dialog.js';
 import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
 import TextInput from './TextInput.js';
+import { t } from '../i18n/index.js';
 
 // This value was determined experimentally by testing the URL length limit
 const GITHUB_URL_LIMIT = 7250;
@@ -307,7 +308,7 @@ export function Feedback({
       void submitReport();
     }
   });
-  return <Dialog title="Submit Feedback / Bug Report" onCancel={handleCancel} isCancelActive={step !== 'userInput'} inputGuide={exitState => exitState.pending ? <Text>Press {exitState.keyName} again to exit</Text> : step === 'userInput' ? <Byline>
+  return <Dialog title={t('ui.feedback.title')} onCancel={handleCancel} isCancelActive={step !== 'userInput'} inputGuide={exitState => exitState.pending ? <Text>Press {exitState.keyName} again to exit</Text> : step === 'userInput' ? <Byline>
             <KeyboardShortcutHint shortcut="Enter" action="continue" />
             <ConfigurableShortcutHint action="confirm:no" context="Confirmation" fallback="Esc" description="cancel" />
           </Byline> : step === 'consent' ? <Byline>
@@ -315,7 +316,7 @@ export function Feedback({
             <ConfigurableShortcutHint action="confirm:no" context="Confirmation" fallback="Esc" description="cancel" />
           </Byline> : null}>
       {step === 'userInput' && <Box flexDirection="column" gap={1}>
-          <Text>Describe the issue below:</Text>
+          <Text>{t('ui.feedback.describeIssue')}</Text>
           <TextInput value={description} onChange={value => {
         setDescription(value);
         // Clear error when user starts editing to allow retry

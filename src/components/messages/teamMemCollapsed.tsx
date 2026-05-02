@@ -1,7 +1,10 @@
 import { c as _c } from "react/compiler-runtime";
 import React from 'react';
 import { Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import type { CollapsedReadSearchGroup } from '../../types/message.js';
+function _tempLocale(s: any) { return s.locale; }
 
 /**
  * Plain function (not a React component) so the React Compiler won't

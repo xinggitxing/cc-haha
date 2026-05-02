@@ -6,12 +6,14 @@ import { editPromptInEditor } from '../../../../utils/promptEditor.js';
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
 import { Byline } from '../../../design-system/Byline.js';
 import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
+import { useTranslation } from '../../../../i18n/index.js';
 import TextInput from '../../../TextInput.js';
 import { useWizard } from '../../../wizard/index.js';
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
 import type { AgentWizardData } from '../types.js';
 export function PromptStep() {
-  const $ = _c(20);
+  const $ = _c(24);
+  const { t } = useTranslation();
   const {
     goNext,
     goBack,
@@ -57,11 +59,11 @@ export function PromptStep() {
   }
   useKeybinding("chat:externalEditor", handleExternalEditor, t2);
   let t3;
-  if ($[4] !== goNext || $[5] !== systemPrompt || $[6] !== updateWizardData) {
+  if ($[4] !== goNext || $[5] !== systemPrompt || $[6] !== updateWizardData || $[7] !== t) {
     t3 = () => {
       const trimmedPrompt = systemPrompt.trim();
       if (!trimmedPrompt) {
-        setError("System prompt is required");
+        setError(t('agent.validation.systemPromptRequired'));
         return;
       }
       setError(null);
@@ -73,55 +75,62 @@ export function PromptStep() {
     $[4] = goNext;
     $[5] = systemPrompt;
     $[6] = updateWizardData;
-    $[7] = t3;
+    $[7] = t;
+    $[8] = t3;
   } else {
-    t3 = $[7];
+    t3 = $[8];
   }
   const handleSubmit = t3;
   let t4;
-  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Byline><KeyboardShortcutHint shortcut="Type" action="enter text" /><KeyboardShortcutHint shortcut="Enter" action="continue" /><ConfigurableShortcutHint action="chat:externalEditor" context="Chat" fallback="ctrl+g" description="open in editor" /><ConfigurableShortcutHint action="confirm:no" context="Settings" fallback="Esc" description="go back" /></Byline>;
-    $[8] = t4;
+    $[9] = t4;
   } else {
-    t4 = $[8];
+    t4 = $[9];
   }
   let t5;
-  let t6;
-  if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
-    t5 = <Text>Enter the system prompt for your agent:</Text>;
-    t6 = <Text dimColor={true}>Be comprehensive for best results</Text>;
-    $[9] = t5;
-    $[10] = t6;
+  if ($[10] !== t) {
+    t5 = <Text>{t('agent.wizard.promptLabel')}</Text>;
+    $[10] = t;
+    $[11] = t5;
   } else {
-    t5 = $[9];
-    t6 = $[10];
+    t5 = $[11];
+  }
+  let t6;
+  if ($[12] !== t) {
+    t6 = <Text dimColor={true}>{t('agent.wizard.promptHelper')}</Text>;
+    $[12] = t;
+    $[13] = t6;
+  } else {
+    t6 = $[13];
   }
   let t7;
-  if ($[11] !== cursorOffset || $[12] !== handleSubmit || $[13] !== systemPrompt) {
-    t7 = <Box marginTop={1}><TextInput value={systemPrompt} onChange={setSystemPrompt} onSubmit={handleSubmit} placeholder="You are a helpful code reviewer who..." columns={80} cursorOffset={cursorOffset} onChangeCursorOffset={setCursorOffset} focus={true} showCursor={true} /></Box>;
-    $[11] = cursorOffset;
-    $[12] = handleSubmit;
-    $[13] = systemPrompt;
-    $[14] = t7;
+  if ($[14] !== cursorOffset || $[15] !== handleSubmit || $[16] !== systemPrompt || $[17] !== t) {
+    t7 = <Box marginTop={1}><TextInput value={systemPrompt} onChange={setSystemPrompt} onSubmit={handleSubmit} placeholder={t('agent.wizard.promptPlaceholder')} columns={80} cursorOffset={cursorOffset} onChangeCursorOffset={setCursorOffset} focus={true} showCursor={true} /></Box>;
+    $[14] = cursorOffset;
+    $[15] = handleSubmit;
+    $[16] = systemPrompt;
+    $[17] = t;
+    $[18] = t7;
   } else {
-    t7 = $[14];
+    t7 = $[18];
   }
   let t8;
-  if ($[15] !== error) {
+  if ($[19] !== error) {
     t8 = error && <Box marginTop={1}><Text color="error">{error}</Text></Box>;
-    $[15] = error;
-    $[16] = t8;
+    $[19] = error;
+    $[20] = t8;
   } else {
-    t8 = $[16];
+    t8 = $[20];
   }
   let t9;
-  if ($[17] !== t7 || $[18] !== t8) {
-    t9 = <WizardDialogLayout subtitle="System prompt" footerText={t4}><Box flexDirection="column">{t5}{t6}{t7}{t8}</Box></WizardDialogLayout>;
-    $[17] = t7;
-    $[18] = t8;
-    $[19] = t9;
+  if ($[21] !== t7 || $[22] !== t8) {
+    t9 = <WizardDialogLayout subtitle={t('agent.wizard.promptSubtitle')} footerText={t4}><Box flexDirection="column">{t5}{t6}{t7}{t8}</Box></WizardDialogLayout>;
+    $[21] = t7;
+    $[22] = t8;
+    $[23] = t9;
   } else {
-    t9 = $[19];
+    t9 = $[23];
   }
   return t9;
 }

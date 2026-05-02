@@ -2,12 +2,15 @@ import { c as _c } from "react/compiler-runtime";
 import figures from 'figures';
 import React from 'react';
 import { Box, Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import type { AdvisorBlock } from '../../utils/advisor.js';
 import { renderModelName } from '../../utils/model/model.js';
 import { jsonStringify } from '../../utils/slowOperations.js';
 import { CtrlOToExpand } from '../CtrlOToExpand.js';
 import { MessageResponse } from '../MessageResponse.js';
 import { ToolUseLoader } from '../ToolUseLoader.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   block: AdvisorBlock;
   addMargin: boolean;
@@ -18,7 +21,7 @@ type Props = {
   advisorModel?: string;
 };
 export function AdvisorMessage(t0) {
-  const $ = _c(30);
+  const $ = _c(31);
   const {
     block,
     addMargin,
@@ -28,6 +31,7 @@ export function AdvisorMessage(t0) {
     verbose,
     advisorModel
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   if (block.type === "server_tool_use") {
     let t1;
     if ($[0] !== block.input) {
@@ -69,11 +73,11 @@ export function AdvisorMessage(t0) {
       t6 = $[11];
     }
     let t7;
-    if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
-      t7 = <Text bold={true}>Advising</Text>;
-      $[12] = t7;
+    if ($[12] === Symbol.for("react.memo_cache_sentinel") || ($[12] != null && $[12].l !== locale)) {
+      t7 = <Text bold={true}>{t('msg.advisor.advising')}</Text>;
+      $[12] = { l: locale, v: t7 };
     } else {
-      t7 = $[12];
+      t7 = $[12] != null ? $[12].v : $[12];
     }
     let t8;
     if ($[13] !== advisorModel) {
@@ -92,12 +96,13 @@ export function AdvisorMessage(t0) {
       t9 = $[16];
     }
     let t10;
-    if ($[17] !== t2 || $[18] !== t6 || $[19] !== t8 || $[20] !== t9) {
+    if ($[17] !== t2 || $[18] !== t6 || $[19] !== t8 || $[20] !== t9 || ($[30] !== locale)) {
       t10 = <Box marginTop={t2} paddingRight={2} flexDirection="row">{t6}{t7}{t8}{t9}</Box>;
       $[17] = t2;
       $[18] = t6;
       $[19] = t8;
       $[20] = t9;
+      $[30] = locale;
       $[21] = t10;
     } else {
       t10 = $[21];
@@ -109,12 +114,11 @@ export function AdvisorMessage(t0) {
     case "advisor_tool_result_error":
       {
         let t1;
-        if ($[22] !== block.content.error_code) {
-          t1 = <Text color="error">Advisor unavailable ({block.content.error_code})</Text>;
-          $[22] = block.content.error_code;
-          $[23] = t1;
+        if ($[22] === Symbol.for("react.memo_cache_sentinel") || ($[22] != null && ($[22].l !== locale || $[22].c !== block.content.error_code))) {
+          t1 = <Text color="error">{t('msg.advisor.unavailable', { error_code: block.content.error_code })}</Text>;
+          $[22] = { l: locale, c: block.content.error_code, v: t1 };
         } else {
-          t1 = $[23];
+          t1 = $[22] != null ? $[22].v : $[22];
         }
         body = t1;
         break bb0;
@@ -122,13 +126,13 @@ export function AdvisorMessage(t0) {
     case "advisor_result":
       {
         let t1;
-        if ($[24] !== block.content.text || $[25] !== verbose) {
-          t1 = verbose ? <Text dimColor={true}>{block.content.text}</Text> : <Text dimColor={true}>{figures.tick} Advisor has reviewed the conversation and will apply the feedback <CtrlOToExpand /></Text>;
+        if ($[24] !== block.content.text || $[25] !== verbose || ($[26] != null && $[26].l !== locale)) {
+          t1 = verbose ? <Text dimColor={true}>{block.content.text}</Text> : <Text dimColor={true}>{figures.tick} {t('msg.advisor.reviewed')} <CtrlOToExpand /></Text>;
           $[24] = block.content.text;
           $[25] = verbose;
-          $[26] = t1;
+          $[26] = { l: locale, v: t1 };
         } else {
-          t1 = $[26];
+          t1 = $[26] != null ? $[26].v : $[26];
         }
         body = t1;
         break bb0;
@@ -136,11 +140,11 @@ export function AdvisorMessage(t0) {
     case "advisor_redacted_result":
       {
         let t1;
-        if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
-          t1 = <Text dimColor={true}>{figures.tick} Advisor has reviewed the conversation and will apply the feedback</Text>;
-          $[27] = t1;
+        if ($[27] === Symbol.for("react.memo_cache_sentinel") || ($[27] != null && $[27].l !== locale)) {
+          t1 = <Text dimColor={true}>{figures.tick} {t('msg.advisor.reviewed')}</Text>;
+          $[27] = { l: locale, v: t1 };
         } else {
-          t1 = $[27];
+          t1 = $[27] != null ? $[27].v : $[27];
         }
         body = t1;
       }

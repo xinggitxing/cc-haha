@@ -93,6 +93,7 @@ import { useTeammateViewAutoExit } from '../hooks/useTeammateViewAutoExit.js';
 import { errorMessage } from '../utils/errors.js';
 import { isHumanTurn } from '../utils/messagePredicates.js';
 import { logError } from '../utils/log.js';
+import { t } from '../i18n/index.js';
 // Dead code elimination: conditional imports
 /* eslint-disable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
 const useVoiceIntegration: typeof import('../hooks/useVoiceIntegration.js').useVoiceIntegration = feature('VOICE_MODE') ? require('../hooks/useVoiceIntegration.js').useVoiceIntegration : () => ({
@@ -2336,7 +2337,7 @@ export function REPL({
     addNotification({
       key: 'sandbox-unavailable',
       jsx: <>
-          <Text color="warning">sandbox disabled</Text>
+          <Text color="warning">{t('repl.sandboxDisabled')}</Text>
           <Text dimColor> · /sandbox</Text>
         </>,
       priority: 'medium'
@@ -3983,7 +3984,7 @@ export function REPL({
       addNotif({
         key: 'idle-return-hint',
         jsx: mode === 'hint_v2' ? <>
-                <Text dimColor>new task? </Text>
+                <Text dimColor>{t('repl.newTask')} </Text>
                 <Text color="suggestion">/clear</Text>
                 <Text dimColor> to save </Text>
                 <Text color="suggestion">{formattedTokens} tokens</Text>

@@ -9,6 +9,7 @@ import { Select } from './CustomSelect/index.js';
 import { Byline } from './design-system/Byline.js';
 import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
 import { Pane } from './design-system/Pane.js';
+import { t } from '../i18n/index.js';
 export type Props = {
   currentValue: boolean;
   onSelect: (enabled: boolean) => void;
@@ -112,7 +113,7 @@ export function ThinkingToggle(t0) {
   const handleSelectChange = t7;
   let t8;
   if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
-    t8 = <Box marginBottom={1} flexDirection="column"><Text color="remember" bold={true}>Toggle thinking mode</Text><Text dimColor={true}>Enable or disable thinking for this session.</Text></Box>;
+    t8 = <Box marginBottom={1} flexDirection="column"><Text color="remember" bold={true}>t('ui.thinkingToggle.title')</Text><Text dimColor={true}>t('ui.thinkingToggle.description')</Text></Box>;
     $[14] = t8;
   } else {
     t8 = $[14];

@@ -8,6 +8,7 @@ import { getCwd } from '../utils/cwd.js';
 import type { OptionWithDescription } from './CustomSelect/select.js';
 import { Select } from './CustomSelect/select.js';
 import { Dialog } from './design-system/Dialog.js';
+import { t } from '../i18n/index.js';
 const DEFAULT_OUTPUT_STYLE_LABEL = 'Default';
 const DEFAULT_OUTPUT_STYLE_DESCRIPTION = 'Claude completes coding tasks efficiently and provides concise responses';
 function mapConfigsToOptions(styles: {
@@ -98,7 +99,7 @@ export function OutputStylePicker(t0) {
   }
   let t9;
   if ($[11] !== onCancel || $[12] !== t5 || $[13] !== t6 || $[14] !== t8) {
-    t9 = <Dialog title="Preferred output style" onCancel={onCancel} hideInputGuide={t5} hideBorder={t6}>{t8}</Dialog>;
+    t9 = <Dialog title={t('ui.outputStylePicker.title')} onCancel={onCancel} hideInputGuide={t5} hideBorder={t6}>{t8}</Dialog>;
     $[11] = onCancel;
     $[12] = t5;
     $[13] = t6;

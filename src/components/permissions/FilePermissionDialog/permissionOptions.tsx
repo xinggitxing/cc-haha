@@ -8,6 +8,7 @@ import type { ToolPermissionContext } from '../../../Tool.js';
 import { expandPath, getDirectoryForPath } from '../../../utils/path.js';
 import { normalizeCaseForComparison, pathInAllowedWorkingPath } from '../../../utils/permissions/filesystem.js';
 import type { OptionWithDescription } from '../../CustomSelect/select.js';
+import { t } from '../../../i18n/index.js';
 /**
  * Check if a path is within the project's .claude/ folder.
  * This is used to determine whether to show the special ".claude folder" permission option.
@@ -74,9 +75,9 @@ export function getFilePermissionOptions({
   if (yesInputMode && onAcceptFeedbackChange) {
     options.push({
       type: 'input',
-      label: 'Yes',
+      label: t('perm.yes'),
       value: 'yes',
-      placeholder: 'and tell Claude what to do next',
+      placeholder: t('perm.tellClaudeNext'),
       onChange: onAcceptFeedbackChange,
       allowEmptySubmitToCancel: true,
       option: {
@@ -85,13 +86,14 @@ export function getFilePermissionOptions({
     });
   } else {
     options.push({
-      label: 'Yes',
+      label: t('perm.yes'),
       value: 'yes',
       option: {
         type: 'accept-once'
       }
     });
   }
+
   const inAllowedPath = pathInAllowedWorkingPath(filePath, toolPermissionContext);
 
   // Check if this is a .claude/ folder path (project or global)
@@ -104,7 +106,7 @@ export function getFilePermissionOptions({
   // persisted permission rules.
   if ((inClaudeFolder || inGlobalClaudeFolder) && operationType !== 'read') {
     options.push({
-      label: 'Yes, and allow Claude to edit its own settings for this session',
+      label: t('perm.fileClaudeSettings'),
       value: 'yes-claude-folder',
       option: {
         type: 'accept-session',
@@ -117,26 +119,24 @@ export function getFilePermissionOptions({
     if (inAllowedPath) {
       // Inside working directory
       if (operationType === 'read') {
-        sessionLabel = 'Yes, during this session';
+        sessionLabel = t('perm.sessionAllowDuring');
       } else {
         sessionLabel = <Text>
-            Yes, allow all edits during this session{' '}
+            {t('perm.sessionAllowEdits')}{' '}
             <Text bold>({modeCycleShortcut})</Text>
           </Text>;
       }
     } else {
       // Outside working directory - include directory name
       const dirPath = getDirectoryForPath(filePath);
-      const dirName = basename(dirPath) || 'this directory';
+      const dirName = basename(dirPath) || t('perm.thisDirectory');
       if (operationType === 'read') {
         sessionLabel = <Text>
-            Yes, allow reading from <Text bold>{dirName}/</Text> during this
-            session
+            {t('perm.sessionAllowReadFrom')} <Text bold>{dirName}/</Text> {t('perm.duringThisSession')}
           </Text>;
       } else {
         sessionLabel = <Text>
-            Yes, allow all edits in <Text bold>{dirName}/</Text> during this
-            session <Text bold>({modeCycleShortcut})</Text>
+            {t('perm.sessionAllowEditsIn')} <Text bold>{dirName}/</Text> {t('perm.duringThisSession')} <Text bold>({modeCycleShortcut})</Text>
           </Text>;
       }
     }
@@ -153,9 +153,9 @@ export function getFilePermissionOptions({
   if (noInputMode && onRejectFeedbackChange) {
     options.push({
       type: 'input',
-      label: 'No',
+      label: t('perm.no'),
       value: 'no',
-      placeholder: 'and tell Claude what to do differently',
+      placeholder: t('perm.tellClaudeDifferently'),
       onChange: onRejectFeedbackChange,
       allowEmptySubmitToCancel: true,
       option: {
@@ -165,7 +165,7 @@ export function getFilePermissionOptions({
   } else {
     // Not in input mode - simple option
     options.push({
-      label: 'No',
+      label: t('perm.no'),
       value: 'no',
       option: {
         type: 'reject'

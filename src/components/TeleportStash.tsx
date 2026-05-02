@@ -1,9 +1,9 @@
-import figures from 'figures';
 import React, { useEffect, useState } from 'react';
 import { Box, Text } from '../ink.js';
 import { logForDebugging } from '../utils/debug.js';
 import type { GitFileStatus } from '../utils/git.js';
 import { getFileStatus, stashToCleanState } from '../utils/git.js';
+import { useTranslation } from '../i18n/index.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
 import { Spinner } from './Spinner.js';
@@ -15,6 +15,7 @@ export function TeleportStash({
   onStashAndContinue,
   onCancel
 }: TeleportStashProps): React.ReactNode {
+  const t = useTranslation()
   const [gitFileStatus, setGitFileStatus] = useState<GitFileStatus | null>(null);
   const changedFiles = gitFileStatus !== null ? [...gitFileStatus.tracked, ...gitFileStatus.untracked] : [];
   const [loading, setLoading] = useState(true);
@@ -32,7 +33,7 @@ export function TeleportStash({
         logForDebugging(`Error getting changed files: ${errorMessage}`, {
           level: 'error'
         });
-        setError('Failed to get changed files');
+        setError(t('ui.teleportStash.failedGetChanges'));
       } finally {
         setLoading(false);
       }
@@ -48,14 +49,14 @@ export function TeleportStash({
         logForDebugging('Successfully stashed changes');
         onStashAndContinue();
       } else {
-        setError('Failed to stash changes');
+        setError(t('ui.teleportStash.failedStash'));
       }
     } catch (err_0) {
       const errorMessage_0 = err_0 instanceof Error ? err_0.message : String(err_0);
       logForDebugging(`Error stashing changes: ${errorMessage_0}`, {
         level: 'error'
       });
-      setError('Failed to stash changes');
+      setError(t('ui.teleportStash.failedStash'));
     } finally {
       setStashing(false);
     }
@@ -71,7 +72,7 @@ export function TeleportStash({
     return <Box flexDirection="column" padding={1}>
         <Box marginBottom={1}>
           <Spinner />
-          <Text> Checking git status{figures.ellipsis}</Text>
+          <Text>{' '}{t('ui.teleportStash.checkingStatus')}</Text>
         </Box>
       </Box>;
   }
@@ -88,27 +89,27 @@ export function TeleportStash({
       </Box>;
   }
   const showFileCount = changedFiles.length > 8;
-  return <Dialog title="Working Directory Has Changes" onCancel={onCancel}>
+  return <Dialog title={t('ui.teleportStash.title')} onCancel={onCancel}>
       <Text>
-        Teleport will switch git branches. The following changes were found:
+        {t('ui.teleportStash.foundChanges')}
       </Text>
 
       <Box flexDirection="column" paddingLeft={2}>
-        {changedFiles.length > 0 ? showFileCount ? <Text>{changedFiles.length} files changed</Text> : changedFiles.map((file: string, index: number) => <Text key={index}>{file}</Text>) : <Text dimColor>No changes detected</Text>}
+        {changedFiles.length > 0 ? showFileCount ? <Text>{t('ui.teleportStash.filesChanged', { count: changedFiles.length })}</Text> : changedFiles.map((file: string, index: number) => <Text key={index}>{file}</Text>) : <Text dimColor>{t('ui.teleportStash.noChangesDetected')}</Text>}
       </Box>
 
       <Text>
-        Would you like to stash these changes and continue with teleport?
+        {t('ui.teleportStash.description')}
       </Text>
 
       {stashing ? <Box>
           <Spinner />
-          <Text> Stashing changes...</Text>
+          <Text>{' '}{t('ui.teleportStash.stashing')}</Text>
         </Box> : <Select options={[{
-      label: 'Stash changes and continue',
+      label: t('ui.teleportStash.stashAndContinue'),
       value: 'stash'
     }, {
-      label: 'Exit',
+      label: t('ui.teleportStash.exit'),
       value: 'exit'
     }]} onChange={handleSelectChange} />}
     </Dialog>;

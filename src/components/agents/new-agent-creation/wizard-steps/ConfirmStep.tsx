@@ -6,6 +6,7 @@ import { useKeybinding } from '../../../../keybindings/useKeybinding.js';
 import { isAutoMemoryEnabled } from '../../../../memdir/paths.js';
 import type { Tools } from '../../../../Tool.js';
 import { getMemoryScopeDisplay } from '../../../../tools/AgentTool/agentMemory.js';
+import { t } from '../../../../i18n/index.js';
 import type { AgentDefinition } from '../../../../tools/AgentTool/loadAgentsDir.js';
 import { truncateToWidth } from '../../../../utils/format.js';
 import { getAgentModelDisplay } from '../../../../utils/model/agent.js';
@@ -118,7 +119,7 @@ export function ConfirmStep(t0) {
     }
     const memoryDisplayElement = t22;
     T1 = WizardDialogLayout;
-    t18 = "Confirm and save";
+    t18 = t('agent.confirm.title');
     if ($[34] === Symbol.for("react.memo_cache_sentinel")) {
       t19 = <Byline><KeyboardShortcutHint shortcut="s/Enter" action="save" /><KeyboardShortcutHint shortcut="e" action="edit in your editor" /><ConfigurableShortcutHint action="confirm:no" context="Confirmation" fallback="Esc" description="cancel" /></Byline>;
       $[34] = t19;

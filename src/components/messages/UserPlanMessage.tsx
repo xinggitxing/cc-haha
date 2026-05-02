@@ -1,24 +1,28 @@
 import { c as _c } from "react/compiler-runtime";
 import * as React from 'react';
 import { Box, Text } from '../../ink.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
 import { Markdown } from '../Markdown.js';
+function _tempLocale(s: any) { return s.locale; }
 type Props = {
   addMargin: boolean;
   planContent: string;
 };
 export function UserPlanMessage(t0) {
-  const $ = _c(6);
+  const $ = _c(7);
   const {
     addMargin,
     planContent
   } = t0;
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   const t1 = addMargin ? 1 : 0;
   let t2;
-  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
-    t2 = <Box marginBottom={1}><Text bold={true} color="planMode">Plan to implement</Text></Box>;
-    $[0] = t2;
+  if ($[0] === Symbol.for("react.memo_cache_sentinel") || ($[0] != null && $[0].l !== locale)) {
+    t2 = <Box marginBottom={1}><Text bold={true} color="planMode">{t('msg.userPlan.planToImplement')}</Text></Box>;
+    $[0] = { l: locale, v: t2 };
   } else {
-    t2 = $[0];
+    t2 = $[0] != null ? $[0].v : $[0];
   }
   let t3;
   if ($[1] !== planContent) {
@@ -29,13 +33,14 @@ export function UserPlanMessage(t0) {
     t3 = $[2];
   }
   let t4;
-  if ($[3] !== t1 || $[4] !== t3) {
+  if ($[3] !== t1 || $[4] !== t3 || ($[5] !== locale)) {
     t4 = <Box flexDirection="column" borderStyle="round" borderColor="planMode" marginTop={t1} paddingX={1}>{t2}{t3}</Box>;
     $[3] = t1;
     $[4] = t3;
-    $[5] = t4;
+    $[5] = locale;
+    $[6] = t4;
   } else {
-    t4 = $[5];
+    t4 = $[6];
   }
   return t4;
 }

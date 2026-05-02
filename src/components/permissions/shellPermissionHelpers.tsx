@@ -4,6 +4,7 @@ import { getOriginalCwd } from '../../bootstrap/state.js';
 import { Text } from '../../ink.js';
 import type { PermissionUpdate } from '../../utils/permissions/PermissionUpdateSchema.js';
 import { permissionRuleExtractPrefix } from '../../utils/permissions/shellRuleMatching.js';
+import { t } from '../../i18n/index.js';
 function commandListDisplay(commands: string[]): ReactNode {
   switch (commands.length) {
     case 0:
@@ -12,11 +13,11 @@ function commandListDisplay(commands: string[]): ReactNode {
       return <Text bold>{commands[0]}</Text>;
     case 2:
       return <Text>
-          <Text bold>{commands[0]}</Text> and <Text bold>{commands[1]}</Text>
+          <Text bold>{commands[0]}</Text> {t('perm.and')} <Text bold>{commands[1]}</Text>
         </Text>;
     default:
       return <Text>
-          <Text bold>{commands.slice(0, -1).join(', ')}</Text>, and{' '}
+          <Text bold>{commands.slice(0, -1).join(', ')}</Text>{t('perm.commaAnd')}{' '}
           <Text bold>{commands.slice(-1)[0]}</Text>
         </Text>;
   }
@@ -25,7 +26,7 @@ function commandListDisplayTruncated(commands: string[]): ReactNode {
   // Check if the plain text representation would be too long
   const plainText = commands.join(', ');
   if (plainText.length > 50) {
-    return 'similar';
+    return t('perm.similar');
   }
   return commandListDisplay(commands);
 }
@@ -43,7 +44,7 @@ function formatPathList(paths: string[]): ReactNode {
   if (names.length === 2) {
     return <Text>
         <Text bold>{names[0]}</Text>
-        {sep} and <Text bold>{names[1]}</Text>
+        {sep} {t('perm.and')} <Text bold>{names[1]}</Text>
         {sep}
       </Text>;
   }
@@ -52,7 +53,7 @@ function formatPathList(paths: string[]): ReactNode {
   return <Text>
       <Text bold>{names[0]}</Text>
       {sep}, <Text bold>{names[1]}</Text>
-      {sep} and {paths.length - 2} more
+      {sep} {t('perm.andNMore', { count: paths.length - 2 })}
     </Text>;
 }
 
@@ -95,14 +96,14 @@ export function generateShellSuggestionsLabel(suggestions: PermissionUpdate[], s
       const firstPath = readPaths[0]!;
       const dirName = basename(firstPath) || firstPath;
       return <Text>
-          Yes, allow reading from <Text bold>{dirName}</Text>
-          {sep} from this project
+          {t('perm.shellReadFrom')} <Text bold>{dirName}</Text>
+          {sep} {t('perm.shellFromProject')}
         </Text>;
     }
 
     // Multiple read paths
     return <Text>
-        Yes, allow reading from {formatPathList(readPaths)} from this project
+        {t('perm.shellReadFrom')} {formatPathList(readPaths)} {t('perm.shellFromProject')}
       </Text>;
   }
   if (hasDirectories && !hasReadPaths && !hasCommands) {
@@ -111,22 +112,21 @@ export function generateShellSuggestionsLabel(suggestions: PermissionUpdate[], s
       const firstDir = directories[0]!;
       const dirName = basename(firstDir) || firstDir;
       return <Text>
-          Yes, and always allow access to <Text bold>{dirName}</Text>
-          {sep} from this project
+          {t('perm.shellAlwaysAccess')} <Text bold>{dirName}</Text>
+          {sep} {t('perm.shellFromProject')}
         </Text>;
     }
 
     // Multiple directories
     return <Text>
-        Yes, and always allow access to {formatPathList(directories)} from this
-        project
+        {t('perm.shellAlwaysAccess')} {formatPathList(directories)} {t('perm.shellFromProject')}
       </Text>;
   }
   if (hasCommands && !hasDirectories && !hasReadPaths) {
     // Only shell command permissions
     return <Text>
-        {"Yes, and don't ask again for "}
-        {commandListDisplayTruncated(shellCommands)} commands in{' '}
+        {t('perm.shellDontAskFor')}{' '}
+        {commandListDisplayTruncated(shellCommands)} {t('perm.shellCommandsIn')}{' '}
         <Text bold>{getOriginalCwd()}</Text>
       </Text>;
   }
@@ -138,8 +138,7 @@ export function generateShellSuggestionsLabel(suggestions: PermissionUpdate[], s
     if (hasDirectories && hasReadPaths) {
       // Mixed - use generic "access to"
       return <Text>
-          Yes, and always allow access to {formatPathList(allPaths)} from this
-          project
+          {t('perm.shellAlwaysAccess')} {formatPathList(allPaths)} {t('perm.shellFromProject')}
         </Text>;
     }
   }
@@ -150,13 +149,13 @@ export function generateShellSuggestionsLabel(suggestions: PermissionUpdate[], s
     // Keep it concise but informative
     if (allPaths.length === 1 && shellCommands.length === 1) {
       return <Text>
-          Yes, and allow access to {formatPathList(allPaths)} and{' '}
-          {commandListDisplayTruncated(shellCommands)} commands
+          {t('perm.shellAllowAccess')} {formatPathList(allPaths)} {t('perm.and')}{' '}
+          {commandListDisplayTruncated(shellCommands)} {t('perm.commands')}
         </Text>;
     }
     return <Text>
-        Yes, and allow {formatPathList(allPaths)} access and{' '}
-        {commandListDisplayTruncated(shellCommands)} commands
+        {t('perm.shellAllow')} {formatPathList(allPaths)} {t('perm.shellAccessAnd')}{' '}
+        {commandListDisplayTruncated(shellCommands)} {t('perm.commands')}
       </Text>;
   }
   return null;

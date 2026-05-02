@@ -4,6 +4,7 @@ import type { Tools } from '../../../../Tool.js';
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
 import { Byline } from '../../../design-system/Byline.js';
 import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
+import { useTranslation } from '../../../../i18n/index.js';
 import { useWizard } from '../../../wizard/index.js';
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
 import { ToolSelector } from '../../ToolSelector.js';
@@ -12,7 +13,8 @@ type Props = {
   tools: Tools;
 };
 export function ToolsStep(t0) {
-  const $ = _c(9);
+  const $ = _c(10);
+  const { t } = useTranslation();
   const {
     tools
   } = t0;
@@ -46,15 +48,16 @@ export function ToolsStep(t0) {
     t2 = $[3];
   }
   let t3;
-  if ($[4] !== goBack || $[5] !== handleComplete || $[6] !== initialTools || $[7] !== tools) {
-    t3 = <WizardDialogLayout subtitle="Select tools" footerText={t2}><ToolSelector tools={tools} initialTools={initialTools} onComplete={handleComplete} onCancel={goBack} /></WizardDialogLayout>;
+  if ($[4] !== goBack || $[5] !== handleComplete || $[6] !== initialTools || $[7] !== tools || $[8] !== t) {
+    t3 = <WizardDialogLayout subtitle={t('agent.wizard.toolsSubtitle')} footerText={t2}><ToolSelector tools={tools} initialTools={initialTools} onComplete={handleComplete} onCancel={goBack} /></WizardDialogLayout>;
     $[4] = goBack;
     $[5] = handleComplete;
     $[6] = initialTools;
     $[7] = tools;
-    $[8] = t3;
+    $[8] = t;
+    $[9] = t3;
   } else {
-    t3 = $[8];
+    t3 = $[9];
   }
   return t3;
 }

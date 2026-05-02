@@ -6,6 +6,7 @@ import { gracefulShutdownSync } from '../utils/gracefulShutdown.js';
 import { updateSettingsForSource } from '../utils/settings/settings.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+import { t } from '../i18n/index.js';
 type Props = {
   onAccept(): void;
 };
@@ -70,7 +71,7 @@ export function BypassPermissionsModeDialog(t0) {
   }
   let t5;
   if ($[5] !== onChange) {
-    t5 = <Dialog title="WARNING: Claude Code running in Bypass Permissions mode" color="error" onCancel={handleEscape}>{t3}<Select options={t4} onChange={value_0 => onChange(value_0 as 'accept' | 'decline')} /></Dialog>;
+    t5 = <Dialog title={t('ui.bypassPermissions.warning')} color="error" onCancel={handleEscape}>{t3}<Select options={t4} onChange={value_0 => onChange(value_0 as 'accept' | 'decline')} /></Dialog>;
     $[5] = onChange;
     $[6] = t5;
   } else {

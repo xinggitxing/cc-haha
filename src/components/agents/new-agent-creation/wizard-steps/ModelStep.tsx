@@ -3,18 +3,22 @@ import React, { type ReactNode } from 'react';
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
 import { Byline } from '../../../design-system/Byline.js';
 import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
+import { useTranslation } from '../../../../i18n/index.js';
 import { useWizard } from '../../../wizard/index.js';
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
 import { ModelSelector } from '../../ModelSelector.js';
 import type { AgentWizardData } from '../types.js';
 export function ModelStep() {
-  const $ = _c(8);
+  const $ = _c(9);
+  const { t } = useTranslation();
   const {
     goNext,
     goBack,
     updateWizardData,
     wizardData
   } = useWizard();
+  let t0;
+  if ($[0] !== goNext || $[1] !== updateWizardData) {
   let t0;
   if ($[0] !== goNext || $[1] !== updateWizardData) {
     t0 = model => {
@@ -38,13 +42,15 @@ export function ModelStep() {
     t1 = $[3];
   }
   let t2;
-  if ($[4] !== goBack || $[5] !== handleComplete || $[6] !== wizardData.selectedModel) {
-    t2 = <WizardDialogLayout subtitle="Select model" footerText={t1}><ModelSelector initialModel={wizardData.selectedModel} onComplete={handleComplete} onCancel={goBack} /></WizardDialogLayout>;
+  if ($[4] !== goBack || $[5] !== handleComplete || $[6] !== wizardData.selectedModel || $[7] !== t) {
+    t2 = <WizardDialogLayout subtitle={t('agent.wizard.modelSubtitle')} footerText={t1}><ModelSelector initialModel={wizardData.selectedModel} onComplete={handleComplete} onCancel={goBack} /></WizardDialogLayout>;
     $[4] = goBack;
     $[5] = handleComplete;
     $[6] = wizardData.selectedModel;
-    $[7] = t2;
+    $[7] = t;
+    $[8] = t2;
   } else {
+    t2 = $[8];
     t2 = $[7];
   }
   return t2;

@@ -18,6 +18,7 @@ import {
   type SessionExternalMetadata,
 } from '../utils/sessionState.js'
 import { updateSettingsForSource } from '../utils/settings/settings.js'
+import { syncLocaleFromAppState } from '../i18n/index.js'
 import type { AppState } from './AppStateStore.js'
 
 // Inverse of the push below — restore on worker restart.
@@ -149,6 +150,11 @@ export function onChangeAppState({
       const tungstenPanelVisible = newState.tungstenPanelVisible
       saveGlobalConfig(current => ({ ...current, tungstenPanelVisible }))
     }
+  }
+
+  // locale: sync to i18n module so t() returns correct translations
+  if (newState.locale !== oldState.locale) {
+    syncLocaleFromAppState(newState.locale)
   }
 
   // settings: clear auth-related caches when settings change

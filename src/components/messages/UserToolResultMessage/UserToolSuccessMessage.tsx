@@ -3,7 +3,8 @@ import figures from 'figures';
 import * as React from 'react';
 import { SentryErrorBoundary } from 'src/components/SentryErrorBoundary.js';
 import { Box, Text, useTheme } from '../../../ink.js';
-import { useAppState } from '../../../state/AppState.js';
+import { t } from '../../../i18n/index.js';
+import { useAppState, useAppStateMaybeOutsideOfProvider } from '../../../state/AppState.js';
 import { filterToolProgressMessages, type Tool, type Tools } from '../../../Tool.js';
 import type { NormalizedUserMessage, ProgressMessage } from '../../../types/message.js';
 import { deleteClassifierApproval, getClassifierApproval, getYoloClassifierApproval } from '../../../utils/classifierApprovals.js';
@@ -35,6 +36,7 @@ export function UserToolSuccessMessage({
   isTranscriptMode
 }: Props): React.ReactNode {
   const [theme] = useTheme();
+  const locale = useAppStateMaybeOutsideOfProvider(s => s.locale);
   // Hook stays inside feature() ternary so external builds don't pay a
   // per-scrollback-message store subscription — same pattern as
   // UserPromptMessage.tsx.
@@ -88,12 +90,12 @@ export function UserToolSuccessMessage({
         {feature('BASH_CLASSIFIER') ? classifierRule && <MessageResponse height={1}>
                 <Text dimColor>
                   <Text color="success">{figures.tick}</Text>
-                  {' Auto-approved \u00b7 matched '}
+                  {t('msg.userToolSuccess.autoApproved')}
                   {`"${classifierRule}"`}
                 </Text>
               </MessageResponse> : null}
         {feature('TRANSCRIPT_CLASSIFIER') ? yoloReason && <MessageResponse height={1}>
-                <Text dimColor>Allowed by auto mode classifier</Text>
+                <Text dimColor>{t('msg.userToolSuccess.classifierAllowed')}</Text>
               </MessageResponse> : null}
       </Box>
       <SentryErrorBoundary>

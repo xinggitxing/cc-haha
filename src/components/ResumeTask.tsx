@@ -5,6 +5,7 @@ import { type CodeSession, fetchCodeSessionsFromSessionsAPI } from 'src/utils/te
 import { Box, Text, useInput } from '../ink.js';
 import { useKeybinding } from '../keybindings/useKeybinding.js';
 import { useShortcutDisplay } from '../keybindings/useShortcutDisplay.js';
+import { useTranslation } from '../i18n/index.js';
 import { logForDebugging } from '../utils/debug.js';
 import { detectCurrentRepository } from '../utils/detectRepository.js';
 import { formatRelativeTime } from '../utils/format.js';
@@ -40,6 +41,7 @@ export function ResumeTask({
   // Track focused index for scroll position display in title
   const [focusedIndex, setFocusedIndex] = useState(1);
   const escKey = useShortcutDisplay('confirm:no', 'Confirmation', 'Esc');
+  const t = useTranslation();
   const loadSessions = useCallback(async () => {
     try {
       setLoading(true);
@@ -119,17 +121,17 @@ export function ResumeTask({
     return <Box flexDirection="column" padding={1}>
         <Box flexDirection="row">
           <Spinner />
-          <Text bold>Loading Claude Code sessions…</Text>
+          <Text bold>{t('ui.resumeTask.loading')}</Text>
         </Box>
         <Text dimColor>
-          {retrying ? 'Retrying…' : 'Fetching your Claude Code sessions…'}
+          {retrying ? t('ui.resumeTask.retrying') : t('ui.resumeTask.fetching')}
         </Text>
       </Box>;
   }
   if (loadErrorType) {
     return <Box flexDirection="column" padding={1}>
         <Text bold color="error">
-          Error loading Claude Code sessions
+          {t('ui.resumeTask.error')}
         </Text>
 
         {renderErrorSpecificGuidance(loadErrorType)}
@@ -143,7 +145,7 @@ export function ResumeTask({
   if (sessions.length === 0) {
     return <Box flexDirection="column" padding={1}>
         <Text bold>
-          No Claude Code sessions found
+          {t('ui.resumeTask.noSessions')}
           {currentRepo && <Text> for {currentRepo}</Text>}
         </Text>
         <Box marginTop={1}>
@@ -182,7 +184,7 @@ export function ResumeTask({
   const showScrollPosition = sessions.length > maxVisibleOptions;
   return <Box flexDirection="column" padding={1} height={maxHeight}>
       <Text bold>
-        Select a session to resume
+        {t('ui.resumeTask.selectToResume')}
         {showScrollPosition && <Text dimColor>
             {' '}
             ({focusedIndex} of {sessions.length})
@@ -194,7 +196,7 @@ export function ResumeTask({
           <Text bold>
             {UPDATED_STRING.padEnd(maxTimeStringLength, ' ')}
             {SPACE_BETWEEN_TABLE_COLUMNS}
-            {'Session Title'}
+            {t('ui.resumeTask.sessionTitle')}
           </Text>
         </Box>
         <Select visibleOptionCount={maxVisibleOptions} options={options} onChange={value => {
@@ -245,23 +247,22 @@ function renderErrorSpecificGuidance(errorType: LoadErrorType): React.ReactNode 
   switch (errorType) {
     case 'network':
       return <Box marginY={1} flexDirection="column">
-          <Text dimColor>Check your internet connection</Text>
+          <Text dimColor>{t('ui.resumeTask.checkInternet')}</Text>
         </Box>;
     case 'auth':
       return <Box marginY={1} flexDirection="column">
-          <Text dimColor>Teleport requires a Claude account</Text>
+          <Text dimColor>{t('ui.resumeTask.requiresAccount')}</Text>
           <Text dimColor>
-            Run <Text bold>/login</Text> and select &quot;Claude account with
-            subscription&quot;
+            {t('ui.resumeTask.loginHint')}
           </Text>
         </Box>;
     case 'api':
       return <Box marginY={1} flexDirection="column">
-          <Text dimColor>Sorry, Claude encountered an error</Text>
+          <Text dimColor>{t('ui.resumeTask.claudeError')}</Text>
         </Box>;
     case 'other':
       return <Box marginY={1} flexDirection="row">
-          <Text dimColor>Sorry, Claude Code encountered an error</Text>
+          <Text dimColor>{t('ui.resumeTask.claudeCodeError')}</Text>
         </Box>;
   }
 }

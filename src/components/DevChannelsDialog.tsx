@@ -5,6 +5,7 @@ import { Box, Text } from '../ink.js';
 import { gracefulShutdownSync } from '../utils/gracefulShutdown.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+import { t } from '../i18n/index.js';
 type Props = {
   channels: ChannelEntry[];
   onAccept(): void;
@@ -87,7 +88,7 @@ export function DevChannelsDialog(t0) {
   }
   let t8;
   if ($[11] !== t5 || $[12] !== t7) {
-    t8 = <Dialog title="WARNING: Loading development channels" color="error" onCancel={handleEscape}>{t5}{t7}</Dialog>;
+    t8 = <Dialog title={t('ui.devChannels.warning')} color="error" onCancel={handleEscape}>{t5}{t7}</Dialog>;
     $[11] = t5;
     $[12] = t7;
     $[13] = t8;

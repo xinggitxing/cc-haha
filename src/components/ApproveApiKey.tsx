@@ -4,6 +4,7 @@ import { Text } from '../ink.js';
 import { saveGlobalConfig } from '../utils/config.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+import { t } from '../i18n/index.js';
 type Props = {
   customApiKeyTruncated: string;
   onDone(approved: boolean): void;
@@ -83,7 +84,7 @@ export function ApproveApiKey(t0) {
   let t6;
   if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = {
-      label: "Yes",
+      label: t('ui.approveApiKey.yes'),
       value: "yes"
     };
     $[9] = t6;
@@ -93,7 +94,7 @@ export function ApproveApiKey(t0) {
   let t7;
   if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t7 = [t6, {
-      label: <Text>No (<Text bold={true}>recommended</Text>)</Text>,
+      label: t('ui.approveApiKey.noRecommended'),
       value: "no"
     }];
     $[10] = t7;
@@ -110,7 +111,7 @@ export function ApproveApiKey(t0) {
   }
   let t9;
   if ($[13] !== t2 || $[14] !== t4 || $[15] !== t8) {
-    t9 = <Dialog title="Detected a custom API key in your environment" color="warning" onCancel={t2}>{t4}{t5}{t8}</Dialog>;
+    t9 = <Dialog title={t('ui.approveApiKey.description')} color="warning" onCancel={t2}>{t4}{t5}{t8}</Dialog>;
     $[13] = t2;
     $[14] = t4;
     $[15] = t8;

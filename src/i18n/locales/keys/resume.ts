@@ -1,0 +1,31 @@
+export const en = {
+  'resume.title': 'Resume Session',
+  'resume.loading': 'Loading sessions...',
+  'resume.resuming': 'Resuming conversation...',
+  'resume.noSessions': 'No conversations found to resume.',
+  'resume.pressCtrlC': 'Press Ctrl+C to exit and start a new conversation.',
+  'resume.differentDir': 'This conversation is from a different directory.',
+  'resume.toResumeRun': 'To resume, run:',
+  'resume.copiedToClipboard': '(Command copied to clipboard)',
+  'resume.searchPlaceholder': 'Search sessions...',
+  'resume.pressEnter': 'Press Enter to resume',
+  'resume.resumeFromFile': 'Resume from file',
+  'resume.showAllProjects': 'Show all projects',
+  'resume.filterByPr': 'Filter by PR',
+} as const
+
+export const zh: Record<string, string> = {
+  'resume.title': '恢复会话',
+  'resume.loading': '正在加载会话...',
+  'resume.resuming': '正在恢复会话...',
+  'resume.noSessions': '没有找到可恢复的会话。',
+  'resume.pressCtrlC': '按 Ctrl+C 退出并开始新会话。',
+  'resume.differentDir': '此会话来自不同的目录。',
+  'resume.toResumeRun': '要恢复，请运行:',
+  'resume.copiedToClipboard': '(命令已复制到剪贴板)',
+  'resume.searchPlaceholder': '搜索会话...',
+  'resume.pressEnter': '按 Enter 恢复',
+  'resume.resumeFromFile': '从文件恢复',
+  'resume.showAllProjects': '显示所有项目',
+  'resume.filterByPr': '按 PR 筛选',
+}

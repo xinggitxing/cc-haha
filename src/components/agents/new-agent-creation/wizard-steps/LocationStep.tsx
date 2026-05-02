@@ -6,74 +6,80 @@ import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
 import { Select } from '../../../CustomSelect/select.js';
 import { Byline } from '../../../design-system/Byline.js';
 import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
+import { useTranslation } from '../../../../i18n/index.js';
 import { useWizard } from '../../../wizard/index.js';
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
 import type { AgentWizardData } from '../types.js';
 export function LocationStep() {
-  const $ = _c(11);
+  const $ = _c(15);
+  const { t } = useTranslation();
   const {
     goNext,
     updateWizardData,
     cancel
   } = useWizard();
   let t0;
-  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($[0] !== t) {
     t0 = {
-      label: "Project (.claude/agents/)",
+      label: t('agent.wizard.locationProject'),
       value: "projectSettings" as SettingSource
     };
-    $[0] = t0;
+    $[0] = t;
+    $[1] = t0;
   } else {
-    t0 = $[0];
+    t0 = $[1];
   }
   let t1;
-  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($[2] !== t || $[3] !== t0) {
     t1 = [t0, {
-      label: "Personal (~/.claude/agents/)",
+      label: t('agent.wizard.locationPersonal'),
       value: "userSettings" as SettingSource
     }];
-    $[1] = t1;
+    $[2] = t;
+    $[3] = t0;
+    $[4] = t1;
   } else {
-    t1 = $[1];
+    t1 = $[4];
   }
   const locationOptions = t1;
   let t2;
-  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = <Byline><KeyboardShortcutHint shortcut={"\u2191\u2193"} action="navigate" /><KeyboardShortcutHint shortcut="Enter" action="select" /><ConfigurableShortcutHint action="confirm:no" context="Confirmation" fallback="Esc" description="cancel" /></Byline>;
-    $[2] = t2;
+    $[5] = t2;
   } else {
-    t2 = $[2];
+    t2 = $[5];
   }
   let t3;
-  if ($[3] !== goNext || $[4] !== updateWizardData) {
+  if ($[6] !== goNext || $[7] !== updateWizardData) {
     t3 = value => {
       updateWizardData({
         location: value as SettingSource
       });
       goNext();
     };
-    $[3] = goNext;
-    $[4] = updateWizardData;
-    $[5] = t3;
+    $[6] = goNext;
+    $[7] = updateWizardData;
+    $[8] = t3;
   } else {
-    t3 = $[5];
+    t3 = $[8];
   }
   let t4;
-  if ($[6] !== cancel) {
+  if ($[9] !== cancel) {
     t4 = () => cancel();
-    $[6] = cancel;
-    $[7] = t4;
+    $[9] = cancel;
+    $[10] = t4;
   } else {
-    t4 = $[7];
+    t4 = $[10];
   }
   let t5;
-  if ($[8] !== t3 || $[9] !== t4) {
-    t5 = <WizardDialogLayout subtitle="Choose location" footerText={t2}><Box><Select key="location-select" options={locationOptions} onChange={t3} onCancel={t4} /></Box></WizardDialogLayout>;
-    $[8] = t3;
-    $[9] = t4;
-    $[10] = t5;
+  if ($[11] !== t3 || $[12] !== t4 || $[13] !== t) {
+    t5 = <WizardDialogLayout subtitle={t('agent.wizard.locationSubtitle')} footerText={t2}><Box><Select key="location-select" options={locationOptions} onChange={t3} onCancel={t4} /></Box></WizardDialogLayout>;
+    $[11] = t3;
+    $[12] = t4;
+    $[13] = t;
+    $[14] = t5;
   } else {
-    t5 = $[10];
+    t5 = $[14];
   }
   return t5;
 }

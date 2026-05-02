@@ -3,6 +3,7 @@ import React from 'react';
 import { Text } from '../ink.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+import { t } from '../i18n/index.js';
 export type ChannelDowngradeChoice = 'downgrade' | 'stay' | 'cancel';
 type Props = {
   currentVersion: string;
@@ -59,7 +60,7 @@ export function ChannelDowngradeDialog(t0) {
   let t5;
   if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
     t5 = {
-      label: "Allow possible downgrade to stable version",
+      label: t('ui.channelDowngrade.description'),
       value: "downgrade" as ChannelDowngradeChoice
     };
     $[7] = t5;
@@ -89,7 +90,7 @@ export function ChannelDowngradeDialog(t0) {
   }
   let t9;
   if ($[13] !== handleCancel || $[14] !== t3 || $[15] !== t8) {
-    t9 = <Dialog title="Switch to Stable Channel" onCancel={handleCancel} color="permission" hideBorder={true} hideInputGuide={true}>{t3}{t4}{t8}</Dialog>;
+    t9 = <Dialog title={t('ui.channelDowngrade.title')} onCancel={handleCancel} color="permission" hideBorder={true} hideInputGuide={true}>{t3}{t4}{t8}</Dialog>;
     $[13] = handleCancel;
     $[14] = t3;
     $[15] = t8;

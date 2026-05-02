@@ -6,12 +6,14 @@ import { editPromptInEditor } from '../../../../utils/promptEditor.js';
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
 import { Byline } from '../../../design-system/Byline.js';
 import { KeyboardShortcutHint } from '../../../design-system/KeyboardShortcutHint.js';
+import { useTranslation } from '../../../../i18n/index.js';
 import TextInput from '../../../TextInput.js';
 import { useWizard } from '../../../wizard/index.js';
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
 import type { AgentWizardData } from '../types.js';
 export function DescriptionStep() {
-  const $ = _c(18);
+  const $ = _c(21);
+  const { t } = useTranslation();
   const {
     goNext,
     goBack,
@@ -57,11 +59,11 @@ export function DescriptionStep() {
   }
   useKeybinding("chat:externalEditor", handleExternalEditor, t2);
   let t3;
-  if ($[4] !== goNext || $[5] !== updateWizardData) {
+  if ($[4] !== goNext || $[5] !== updateWizardData || $[6] !== t) {
     t3 = value => {
       const trimmedValue = value.trim();
       if (!trimmedValue) {
-        setError("Description is required");
+        setError(t('agent.wizard.descriptionRequired'));
         return;
       }
       setError(null);
@@ -72,51 +74,54 @@ export function DescriptionStep() {
     };
     $[4] = goNext;
     $[5] = updateWizardData;
-    $[6] = t3;
+    $[6] = t;
+    $[7] = t3;
   } else {
-    t3 = $[6];
+    t3 = $[7];
   }
   const handleSubmit = t3;
   let t4;
-  if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = <Byline><KeyboardShortcutHint shortcut="Type" action="enter text" /><KeyboardShortcutHint shortcut="Enter" action="continue" /><ConfigurableShortcutHint action="chat:externalEditor" context="Chat" fallback="ctrl+g" description="open in editor" /><ConfigurableShortcutHint action="confirm:no" context="Settings" fallback="Esc" description="go back" /></Byline>;
-    $[7] = t4;
+    $[8] = t4;
   } else {
-    t4 = $[7];
+    t4 = $[8];
   }
   let t5;
-  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
-    t5 = <Text>When should Claude use this agent?</Text>;
-    $[8] = t5;
+  if ($[9] !== t) {
+    t5 = <Text>{t('agent.wizard.descriptionPrompt')}</Text>;
+    $[9] = t;
+    $[10] = t5;
   } else {
-    t5 = $[8];
+    t5 = $[10];
   }
   let t6;
-  if ($[9] !== cursorOffset || $[10] !== handleSubmit || $[11] !== whenToUse) {
-    t6 = <Box marginTop={1}><TextInput value={whenToUse} onChange={setWhenToUse} onSubmit={handleSubmit} placeholder="e.g., use this agent after you're done writing code..." columns={80} cursorOffset={cursorOffset} onChangeCursorOffset={setCursorOffset} focus={true} showCursor={true} /></Box>;
-    $[9] = cursorOffset;
-    $[10] = handleSubmit;
-    $[11] = whenToUse;
-    $[12] = t6;
+  if ($[11] !== cursorOffset || $[12] !== handleSubmit || $[13] !== whenToUse || $[14] !== t) {
+    t6 = <Box marginTop={1}><TextInput value={whenToUse} onChange={setWhenToUse} onSubmit={handleSubmit} placeholder={t('agent.wizard.descriptionPlaceholder')} columns={80} cursorOffset={cursorOffset} onChangeCursorOffset={setCursorOffset} focus={true} showCursor={true} /></Box>;
+    $[11] = cursorOffset;
+    $[12] = handleSubmit;
+    $[13] = whenToUse;
+    $[14] = t;
+    $[15] = t6;
   } else {
-    t6 = $[12];
+    t6 = $[15];
   }
   let t7;
-  if ($[13] !== error) {
+  if ($[16] !== error) {
     t7 = error && <Box marginTop={1}><Text color="error">{error}</Text></Box>;
-    $[13] = error;
-    $[14] = t7;
+    $[16] = error;
+    $[17] = t7;
   } else {
-    t7 = $[14];
+    t7 = $[17];
   }
   let t8;
-  if ($[15] !== t6 || $[16] !== t7) {
-    t8 = <WizardDialogLayout subtitle="Description (tell Claude when to use this agent)" footerText={t4}><Box flexDirection="column">{t5}{t6}{t7}</Box></WizardDialogLayout>;
-    $[15] = t6;
-    $[16] = t7;
-    $[17] = t8;
+  if ($[18] !== t6 || $[19] !== t7) {
+    t8 = <WizardDialogLayout subtitle={t('agent.wizard.descriptionSubtitle')} footerText={t4}><Box flexDirection="column">{t5}{t6}{t7}</Box></WizardDialogLayout>;
+    $[18] = t6;
+    $[19] = t7;
+    $[20] = t8;
   } else {
-    t8 = $[17];
+    t8 = $[20];
   }
   return t8;
 }

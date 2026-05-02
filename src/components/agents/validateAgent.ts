@@ -5,6 +5,7 @@ import type {
   CustomAgentDefinition,
 } from '../../tools/AgentTool/loadAgentsDir.js'
 import { getAgentSourceDisplayName } from './utils.js'
+import { t } from '../../i18n/index.js'
 
 export type AgentValidationResult = {
   isValid: boolean
@@ -14,19 +15,19 @@ export type AgentValidationResult = {
 
 export function validateAgentType(agentType: string): string | null {
   if (!agentType) {
-    return 'Agent type is required'
+    return t('agent.validation.typeRequired')
   }
 
   if (!/^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]$/.test(agentType)) {
-    return 'Agent type must start and end with alphanumeric characters and contain only letters, numbers, and hyphens'
+    return t('agent.validation.typePattern')
   }
 
   if (agentType.length < 3) {
-    return 'Agent type must be at least 3 characters long'
+    return t('agent.validation.typeMinLength')
   }
 
   if (agentType.length > 50) {
-    return 'Agent type must be less than 50 characters'
+    return t('agent.validation.typeMaxLength')
   }
 
   return null
@@ -42,7 +43,7 @@ export function validateAgent(
 
   // Validate agent type
   if (!agent.agentType) {
-    errors.push('Agent type is required')
+    errors.push(t('agent.validation.typeRequired'))
   } else {
     const typeError = validateAgentType(agent.agentType)
     if (typeError) {
@@ -55,31 +56,31 @@ export function validateAgent(
     )
     if (duplicate) {
       errors.push(
-        `Agent type "${agent.agentType}" already exists in ${getAgentSourceDisplayName(duplicate.source)}`,
+        t('agent.validation.typeDuplicate', { agentType: agent.agentType, source: getAgentSourceDisplayName(duplicate.source) }),
       )
     }
   }
 
   // Validate description
   if (!agent.whenToUse) {
-    errors.push('Description (description) is required')
+    errors.push(t('agent.validation.descriptionRequired'))
   } else if (agent.whenToUse.length < 10) {
     warnings.push(
-      'Description should be more descriptive (at least 10 characters)',
+      t('agent.validation.descriptionMinLength'),
     )
   } else if (agent.whenToUse.length > 5000) {
-    warnings.push('Description is very long (over 5000 characters)')
+    warnings.push(t('agent.validation.descriptionMaxLength'))
   }
 
   // Validate tools
   if (agent.tools !== undefined && !Array.isArray(agent.tools)) {
-    errors.push('Tools must be an array')
+    errors.push(t('agent.validation.toolsMustBeArray'))
   } else {
     if (agent.tools === undefined) {
-      warnings.push('Agent has access to all tools')
+      warnings.push(t('agent.validation.allTools'))
     } else if (agent.tools.length === 0) {
       warnings.push(
-        'No tools selected - agent will have very limited capabilities',
+        t('agent.validation.noTools'),
       )
     }
 
@@ -87,18 +88,18 @@ export function validateAgent(
     const resolvedTools = resolveAgentTools(agent, availableTools, false)
 
     if (resolvedTools.invalidTools.length > 0) {
-      errors.push(`Invalid tools: ${resolvedTools.invalidTools.join(', ')}`)
+      errors.push(t('agent.validation.invalidTools', { tools: resolvedTools.invalidTools.join(', ') }))
     }
   }
 
   // Validate system prompt
   const systemPrompt = agent.getSystemPrompt()
   if (!systemPrompt) {
-    errors.push('System prompt is required')
+    errors.push(t('agent.validation.systemPromptRequired'))
   } else if (systemPrompt.length < 20) {
-    errors.push('System prompt is too short (minimum 20 characters)')
+    errors.push(t('agent.validation.systemPromptMinLength'))
   } else if (systemPrompt.length > 10000) {
-    warnings.push('System prompt is very long (over 10,000 characters)')
+    warnings.push(t('agent.validation.systemPromptMaxLength'))
   }
 
   return {

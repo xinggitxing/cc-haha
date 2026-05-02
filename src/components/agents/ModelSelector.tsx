@@ -3,65 +3,69 @@ import * as React from 'react';
 import { Box, Text } from '../../ink.js';
 import { getAgentModelOptions } from '../../utils/model/agent.js';
 import { Select } from '../CustomSelect/select.js';
+import { useTranslation } from '../../i18n/index.js';
 interface ModelSelectorProps {
   initialModel?: string;
   onComplete: (model?: string) => void;
   onCancel?: () => void;
 }
 export function ModelSelector(t0) {
-  const $ = _c(11);
+  const $ = _c(13);
+  const { t } = useTranslation();
   const {
     initialModel,
     onComplete,
     onCancel
   } = t0;
   let t1;
-  if ($[0] !== initialModel) {
+  if ($[0] !== initialModel || $[1] !== t) {
     bb0: {
       const base = getAgentModelOptions();
       if (initialModel && !base.some(o => o.value === initialModel)) {
         t1 = [{
           value: initialModel,
           label: initialModel,
-          description: "Current model (custom ID)"
+          description: t('agent.model.customId')
         }, ...base];
         break bb0;
       }
       t1 = base;
     }
     $[0] = initialModel;
-    $[1] = t1;
+    $[1] = t;
+    $[2] = t1;
   } else {
-    t1 = $[1];
+    t1 = $[2];
   }
   const modelOptions = t1;
   const defaultModel = initialModel ?? "sonnet";
   let t2;
-  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
-    t2 = <Box marginBottom={1}><Text dimColor={true}>Model determines the agent's reasoning capabilities and speed.</Text></Box>;
-    $[2] = t2;
+  if ($[3] !== t) {
+    t2 = <Box marginBottom={1}><Text dimColor={true}>{t('agent.model.description')}</Text></Box>;
+    $[3] = t;
+    $[4] = t2;
   } else {
-    t2 = $[2];
+    t2 = $[4];
   }
   let t3;
-  if ($[3] !== onCancel || $[4] !== onComplete) {
+  if ($[5] !== onCancel || $[6] !== onComplete) {
     t3 = () => onCancel ? onCancel() : onComplete(undefined);
-    $[3] = onCancel;
-    $[4] = onComplete;
-    $[5] = t3;
+    $[5] = onCancel;
+    $[6] = onComplete;
+    $[7] = t3;
   } else {
-    t3 = $[5];
+    t3 = $[7];
   }
   let t4;
-  if ($[6] !== defaultModel || $[7] !== modelOptions || $[8] !== onComplete || $[9] !== t3) {
+  if ($[8] !== defaultModel || $[9] !== modelOptions || $[10] !== onComplete || $[11] !== t3) {
     t4 = <Box flexDirection="column">{t2}<Select options={modelOptions} defaultValue={defaultModel} onChange={onComplete} onCancel={t3} /></Box>;
-    $[6] = defaultModel;
-    $[7] = modelOptions;
-    $[8] = onComplete;
-    $[9] = t3;
-    $[10] = t4;
+    $[8] = defaultModel;
+    $[9] = modelOptions;
+    $[10] = onComplete;
+    $[11] = t3;
+    $[12] = t4;
   } else {
-    t4 = $[10];
+    t4 = $[12];
   }
   return t4;
 }

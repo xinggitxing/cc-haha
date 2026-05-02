@@ -2,16 +2,19 @@ import { c as _c } from "react/compiler-runtime";
 import * as React from 'react';
 import { Box, Text } from '../../ink.js';
 import { useShortcutDisplay } from '../../keybindings/useShortcutDisplay.js';
+import { t } from '../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../state/AppState.js';
+function _tempLocale(s: any) { return s.locale; }
 export function CompactBoundaryMessage() {
-  const $ = _c(2);
+  const $ = _c(4);
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   const historyShortcut = useShortcutDisplay("app:toggleTranscript", "Global", "ctrl+o");
   let t0;
-  if ($[0] !== historyShortcut) {
-    t0 = <Box marginY={1}><Text dimColor={true}>✻ Conversation compacted ({historyShortcut} for history)</Text></Box>;
-    $[0] = historyShortcut;
-    $[1] = t0;
+  if ($[0] === Symbol.for("react.memo_cache_sentinel") || ($[0] != null && ($[0].l !== locale || $[0].s !== historyShortcut))) {
+    t0 = <Box marginY={1}><Text dimColor={true}>{t('msg.compactBoundary', { shortcut: historyShortcut })}</Text></Box>;
+    $[0] = { l: locale, s: historyShortcut, v: t0 };
   } else {
-    t0 = $[1];
+    t0 = $[0] != null ? $[0].v : $[0];
   }
   return t0;
 }

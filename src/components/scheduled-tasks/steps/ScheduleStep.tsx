@@ -1,4 +1,4 @@
-import React, { type ReactNode, useState } from 'react'
+import React, { type ReactNode, useMemo, useState } from 'react'
 import { Box, Text } from '../../../ink.js'
 import { useKeybinding } from '../../../hooks/useKeybinding.js'
 import { Select } from '../../CustomSelect/select.js'
@@ -6,15 +6,26 @@ import TextInput from '../../TextInput.js'
 import { WizardDialogLayout } from '../../wizard/index.js'
 import { useWizard } from '../../wizard/useWizard.js'
 import {
-  FREQUENCY_OPTIONS,
   frequencyToCron,
   type Frequency,
 } from '../../../utils/cronFrequency.js'
+import { t } from '../../../i18n/index.js'
 import type { ScheduledTaskWizardData } from '../types.js'
 
 export function ScheduleStep(): ReactNode {
   const { goNext, goBack, updateWizardData, wizardData } =
     useWizard<ScheduledTaskWizardData>()
+
+  const frequencyOptions = useMemo(
+    () => [
+      { label: t('task.freq.manual'), value: 'manual' as Frequency },
+      { label: t('task.freq.hourly'), value: 'hourly' as Frequency },
+      { label: t('task.freq.daily'), value: 'daily' as Frequency },
+      { label: t('task.freq.weekdays'), value: 'weekdays' as Frequency },
+      { label: t('task.freq.weekly'), value: 'weekly' as Frequency },
+    ],
+    [],
+  )
 
   const [frequency, setFrequency] = useState<Frequency>(
     (wizardData.frequency as Frequency) ?? 'daily',
@@ -59,23 +70,22 @@ export function ScheduleStep(): ReactNode {
 
   if (showTimePicker && needsTime) {
     return (
-      <WizardDialogLayout subtitle="Schedule time">
+      <WizardDialogLayout subtitle={t('task.schedule.timeSubtitle')}>
         <Box flexDirection="column">
           <Box marginBottom={1}>
             <Text dimColor>
-              Enter the time for this task (24-hour format, e.g. 09:00):
+              {t('task.schedule.timeDescription')}
             </Text>
           </Box>
           <TextInput
             value={time}
             onChange={setTime}
             onSubmit={handleTimeSubmit}
-            placeholder="09:00"
+            placeholder={t('task.schedule.timePlaceholder')}
           />
           <Box marginTop={1}>
             <Text dimColor>
-              Scheduled tasks use a randomized delay of several minutes for
-              server performance.
+              {t('task.schedule.delayHint')}
             </Text>
           </Box>
         </Box>
@@ -84,13 +94,13 @@ export function ScheduleStep(): ReactNode {
   }
 
   return (
-    <WizardDialogLayout subtitle="Frequency">
+    <WizardDialogLayout subtitle={t('task.schedule.freqSubtitle')}>
       <Box flexDirection="column">
         <Box marginBottom={1}>
-          <Text dimColor>How often should this task run?</Text>
+          <Text dimColor>{t('task.schedule.freqDescription')}</Text>
         </Box>
         <Select
-          options={FREQUENCY_OPTIONS}
+          options={frequencyOptions}
           defaultValue={frequency}
           onChange={handleFrequencySelect}
           onCancel={goBack}

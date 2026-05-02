@@ -2,14 +2,18 @@ import { c as _c } from "react/compiler-runtime";
 import * as React from 'react';
 import { Text } from '../../../ink.js';
 import { MessageResponse } from '../../MessageResponse.js';
+import { t } from '../../../i18n/index.js';
+import { useAppStateMaybeOutsideOfProvider } from '../../../state/AppState.js';
+function _tempLocale(s: any) { return s.locale; }
 export function RejectedToolUseMessage() {
-  const $ = _c(1);
+  const $ = _c(2);
+  const locale = useAppStateMaybeOutsideOfProvider(_tempLocale);
   let t0;
-  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
-    t0 = <MessageResponse height={1}><Text dimColor={true}>Tool use rejected</Text></MessageResponse>;
-    $[0] = t0;
+  if ($[0] === Symbol.for("react.memo_cache_sentinel") || ($[0] != null && $[0].l !== locale)) {
+    t0 = <MessageResponse height={1}><Text dimColor={true}>{t('msg.rejectedToolUse')}</Text></MessageResponse>;
+    $[0] = { l: locale, v: t0 };
   } else {
-    t0 = $[0];
+    t0 = $[0] != null ? $[0].v : $[0];
   }
   return t0;
 }
