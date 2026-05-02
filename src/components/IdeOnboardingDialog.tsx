@@ -7,6 +7,7 @@ import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
 import { env } from '../utils/env.js';
 import { getTerminalIdeType, type IDEExtensionInstallationStatus, isJetBrainsIde, toIDEDisplayName } from '../utils/ide.js';
 import { Dialog } from './design-system/Dialog.js';
+import { t } from '../i18n/index.js';
 interface Props {
   onDone: () => void;
   installationStatus: IDEExtensionInstallationStatus | null;
@@ -69,14 +70,13 @@ export function IdeOnboardingDialog(t0) {
     t5 = $[7];
   }
   let t6;
-  if ($[8] !== ideName) {
-    t6 = <>{t5}<Text>Welcome to Claude Code for {ideName}</Text></>;
-    $[8] = ideName;
-    $[9] = t6;
+  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
+    t6 = t('ui.ideOnboarding.title');
+    $[8] = t6;
   } else {
-    t6 = $[9];
+    t6 = $[8];
   }
-  const t7 = installedVersion ? `installed ${pluginOrExtension} v${installedVersion}` : undefined;
+  const t7 = t('ui.ideOnboarding.description');
   let t8;
   if ($[10] === Symbol.for("react.memo_cache_sentinel")) {
     t8 = <Text color="suggestion">⧉ open files</Text>;

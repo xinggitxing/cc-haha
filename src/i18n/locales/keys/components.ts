@@ -401,6 +401,142 @@ export const en = {
   'ui.logoV2.messageFrom': 'Message from {org}:',
   'ui.logoV2.sandboxWarning':
     'Your bash commands will be sandboxed. Disable with /sandbox.',
+
+  // FeedbackSurvey
+  'ui.feedbackSurvey.thanks': 'Thanks for the feedback!',
+  'ui.feedbackSurvey.submitted': '\u2713 Thanks for sharing your transcript!',
+  'ui.feedbackSurvey.submitting': 'Sharing transcript\u2026',
+  'ui.feedbackSurvey.followUp':
+    '(Optional) Press [1] to tell us what went well \u00b7 {command}',
+  'ui.feedbackSurvey.reportIssue':
+    'Use /issue to report model behavior issues.',
+  'ui.feedbackSurvey.shareFeedback':
+    'Use {command} to share detailed feedback anytime.',
+
+  // FeedbackSurveyView
+  'ui.feedbackSurveyView.question':
+    'How is Claude doing this session? (optional)',
+  'ui.feedbackSurveyView.bad': 'Bad',
+  'ui.feedbackSurveyView.fine': 'Fine',
+  'ui.feedbackSurveyView.good': 'Good',
+  'ui.feedbackSurveyView.dismiss': 'Dismiss',
+
+  // TranscriptSharePrompt
+  'ui.transcriptShare.question':
+    'Can Anthropic look at your session transcript to help us improve Claude Code?',
+  'ui.transcriptShare.learnMore':
+    'Learn more: https://code.claude.com/docs/en/data-usage#session-quality-surveys',
+  'ui.transcriptShare.yes': 'Yes',
+  'ui.transcriptShare.no': 'No',
+  'ui.transcriptShare.dontAsk': 'Don\u2019t ask again',
+
+  // MCPServerMultiselectDialog
+  'ui.mcpMultiselect.title':
+    '{count} new MCP servers found in .mcp.json',
+  'ui.mcpMultiselect.subtitle': 'Select any you wish to enable.',
+
+  // MCPServerDialogCopy
+  'ui.mcpDialogCopy.text':
+    'MCP servers may execute code or access system resources. All tool calls require approval. Learn more in the ',
+  'ui.mcpDialogCopy.docLink': 'MCP documentation',
+
+  // MCPServerDesktopImportDialog
+  'ui.mcpDesktopImport.title': 'Import MCP Servers from Claude Desktop',
+  'ui.mcpDesktopImport.subtitle': 'Found {count} MCP {servers} in Claude Desktop.',
+  'ui.mcpDesktopImport.success': 'Successfully imported {count} MCP {servers} to {scope} config.',
+  'ui.mcpDesktopImport.noneImported': 'No servers were imported.',
+  'ui.mcpDesktopImport.noteCollisions':
+    'Note: Some servers already exist with the same name. If selected, they will be imported with a numbered suffix.',
+  'ui.mcpDesktopImport.selectPrompt': 'Please select the servers you want to import:',
+  'ui.mcpDesktopImport.alreadyExists': ' (already exists)',
+  'ui.mcpDesktopImport.cancel': 'cancel',
+
+  // IdeAutoConnectDialog
+  'ui.ideAutoConnect.title': 'Automatically connect to IDE on startup?',
+  'ui.ideAutoConnect.description':
+    'You can also configure this in /config or with the --ide flag',
+
+  // IdeOnboardingDialog
+  'ui.ideOnboarding.title': 'IDE Extension Setup',
+  'ui.ideOnboarding.description':
+    'Claude Code integrates with your IDE to provide better context awareness.',
+
+  // IdeStatusIndicator
+  'ui.ideStatus.linesSelected': '{count} {lines} selected',
+  'ui.ideStatus.inFile': 'In {name}',
+  'ui.ideStatus.line': 'line',
+  'ui.ideStatus.lines': 'lines',
+
+  // TeleportError
+  'ui.teleportError.loginRequired':
+    'You need to log in with a Claude account to use Teleport.',
+  'ui.teleportError.gitStashRequired':
+    'Please stash or commit your changes before teleporting.',
+
+  // TeleportRepoMismatch
+  'ui.teleportRepoMismatch.title': 'Repository path mismatch',
+  'ui.teleportRepoMismatch.selectPath':
+    'Select the local path matching {repo}:',
+  'ui.teleportRepoMismatch.cancel': 'Cancel teleport',
+  'ui.teleportRepoMismatch.validating': 'Validating path...',
+
+  // QuickOpenDialog
+  'ui.quickOpen.placeholder': 'Search files by name...',
+  'ui.quickOpen.noResults': 'No files found',
+
+  // GlobalSearchDialog
+  'ui.globalSearch.placeholder': 'Search across files...',
+  'ui.globalSearch.noResults': 'No matches found',
+  'ui.globalSearch.searching': 'Searching...',
+  'ui.globalSearch.truncated': 'Results truncated. Refine your search.',
+  'ui.globalSearch.matchesIn': 'matches in {file}',
+
+  // LogSelector
+  'ui.logSelector.title': 'Select a session to resume',
+  'ui.logSelector.empty': 'No sessions found',
+  'ui.logSelector.loading': 'Loading sessions...',
+  'ui.logSelector.deleteConfirm': 'Are you sure you want to delete this session?',
+
+  // Spinner
+  'ui.spinner.thinking': 'Thinking',
+  'ui.spinner.working': 'Working',
+  'ui.spinner.searching': 'Searching',
+  'ui.spinner.editing': 'Editing',
+  'ui.spinner.reading': 'Reading',
+  'ui.spinner.waiting': 'Waiting',
+  'ui.spinner.processing': 'Processing',
+
+  // AutoUpdater
+  'ui.autoUpdater.updateAvailable': 'Update available: v{version}',
+  'ui.autoUpdater.updating': 'Updating...',
+  'ui.autoUpdater.updated': 'Updated to v{version}',
+  'ui.autoUpdater.latest': 'You have the latest version.',
+  'ui.autoUpdater.error': 'Update failed: {error}',
+  'ui.autoUpdater.skipVersion': 'Skip this version',
+  'ui.autoUpdater.installNow': 'Install now',
+  'ui.autoUpdater.later': 'Later',
+
+  // Stats
+  'ui.stats.title': 'Session Statistics',
+  'ui.stats.tokensUsed': 'Tokens used',
+  'ui.stats.apiCalls': 'API calls',
+  'ui.stats.toolsUsed': 'Tools used',
+  'ui.stats.sessionTime': 'Session time',
+
+  // ClaudeMdExternalIncludes
+  'ui.claudeMdExternal.title': 'External Configuration Includes',
+  'ui.claudeMdExternal.description':
+    'CLAUDE.md files in the following locations will be included:',
+
+  // WorktreeExitDialog
+  'ui.worktreeExit.title': 'Exit Worktree',
+  'ui.worktreeExit.keep': 'Keep changes',
+  'ui.worktreeExit.discard': 'Discard changes',
+
+  // ClaudeInChromeOnboarding
+  'ui.claudeChromeOnboarding.title': 'Claude in Chrome',
+  'ui.claudeChromeOnboarding.description':
+    'Enable Claude in Chrome to browse the web during conversations.',
 } as const
 
 // ── Root-level UI component keys (zh) ────────────────────
@@ -793,4 +929,124 @@ export const zh: Record<string, string> = {
   'ui.logoV2.tmuxSession': 'tmux 会话：{session}',
   'ui.logoV2.messageFrom': '来自 {org} 的消息：',
   'ui.logoV2.sandboxWarning': '你的 bash 命令将被沙箱化。使用 /sandbox 禁用。',
+
+  // FeedbackSurvey
+  'ui.feedbackSurvey.thanks': '感谢您的反馈！',
+  'ui.feedbackSurvey.submitted': '\u2713 感谢分享您的对话记录！',
+  'ui.feedbackSurvey.submitting': '正在分享对话记录\u2026',
+  'ui.feedbackSurvey.followUp': '（可选）按 [1] 告诉我们哪些地方做得好 \u00b7 {command}',
+  'ui.feedbackSurvey.reportIssue': '使用 /issue 报告模型行为问题。',
+  'ui.feedbackSurvey.shareFeedback': '使用 {command} 随时分享详细反馈。',
+
+  // FeedbackSurveyView
+  'ui.feedbackSurveyView.question': 'Claude 本次会话表现如何？（可选）',
+  'ui.feedbackSurveyView.bad': '不好',
+  'ui.feedbackSurveyView.fine': '还行',
+  'ui.feedbackSurveyView.good': '很好',
+  'ui.feedbackSurveyView.dismiss': '忽略',
+
+  // TranscriptSharePrompt
+  'ui.transcriptShare.question': 'Anthropic 是否可以查看您的会话记录以帮助改进 Claude Code？',
+  'ui.transcriptShare.learnMore': '了解更多：https://code.claude.com/docs/en/data-usage#session-quality-surveys',
+  'ui.transcriptShare.yes': '是',
+  'ui.transcriptShare.no': '否',
+  'ui.transcriptShare.dontAsk': '不再询问',
+
+  // MCPServerMultiselectDialog
+  'ui.mcpMultiselect.title': '在 .mcp.json 中发现 {count} 个新 MCP 服务器',
+  'ui.mcpMultiselect.subtitle': '选择您想要启用的服务器。',
+
+  // MCPServerDialogCopy
+  'ui.mcpDialogCopy.text': 'MCP 服务器可以执行代码或访问系统资源。所有工具调用都需要批准。了解更多请参阅 ',
+  'ui.mcpDialogCopy.docLink': 'MCP 文档',
+
+  // MCPServerDesktopImportDialog
+  'ui.mcpDesktopImport.title': '从 Claude Desktop 导入 MCP 服务器',
+  'ui.mcpDesktopImport.subtitle': '在 Claude Desktop 中发现 {count} 个 MCP {servers}。',
+  'ui.mcpDesktopImport.success': '成功将 {count} 个 MCP {servers} 导入到 {scope} 配置。',
+  'ui.mcpDesktopImport.noneImported': '没有导入任何服务器。',
+  'ui.mcpDesktopImport.noteCollisions': '注意：部分服务器已存在同名。如果选中，它们将以编号后缀导入。',
+  'ui.mcpDesktopImport.selectPrompt': '请选择您要导入的服务器：',
+  'ui.mcpDesktopImport.alreadyExists': '（已存在）',
+  'ui.mcpDesktopImport.cancel': '取消',
+
+  // IdeAutoConnectDialog
+  'ui.ideAutoConnect.title': '启动时自动连接到 IDE？',
+  'ui.ideAutoConnect.description': '您也可以在 /config 或使用 --ide 标志进行配置',
+
+  // IdeOnboardingDialog
+  'ui.ideOnboarding.title': 'IDE 扩展设置',
+  'ui.ideOnboarding.description': 'Claude Code 与您的 IDE 集成，以提供更好的上下文感知能力。',
+
+  // IdeStatusIndicator
+  'ui.ideStatus.linesSelected': '已选择 {count} {lines}',
+  'ui.ideStatus.inFile': '在 {name} 中',
+  'ui.ideStatus.line': '行',
+  'ui.ideStatus.lines': '行',
+
+  // TeleportError
+  'ui.teleportError.loginRequired': '您需要使用 Claude 账户登录才能使用 Teleport。',
+  'ui.teleportError.gitStashRequired': '请在传输前暂存或提交您的更改。',
+
+  // TeleportRepoMismatch
+  'ui.teleportRepoMismatch.title': '仓库路径不匹配',
+  'ui.teleportRepoMismatch.selectPath': '选择与 {repo} 匹配的本地路径：',
+  'ui.teleportRepoMismatch.cancel': '取消传输',
+  'ui.teleportRepoMismatch.validating': '正在验证路径...',
+
+  // QuickOpenDialog
+  'ui.quickOpen.placeholder': '按名称搜索文件...',
+  'ui.quickOpen.noResults': '未找到文件',
+
+  // GlobalSearchDialog
+  'ui.globalSearch.placeholder': '跨文件搜索...',
+  'ui.globalSearch.noResults': '未找到匹配项',
+  'ui.globalSearch.searching': '正在搜索...',
+  'ui.globalSearch.truncated': '结果已截断。请优化搜索条件。',
+  'ui.globalSearch.matchesIn': '在 {file} 中的匹配项',
+
+  // LogSelector
+  'ui.logSelector.title': '选择要恢复的会话',
+  'ui.logSelector.empty': '未找到会话',
+  'ui.logSelector.loading': '正在加载会话...',
+  'ui.logSelector.deleteConfirm': '确定要删除此会话吗？',
+
+  // Spinner
+  'ui.spinner.thinking': '思考中',
+  'ui.spinner.working': '工作中',
+  'ui.spinner.searching': '搜索中',
+  'ui.spinner.editing': '编辑中',
+  'ui.spinner.reading': '读取中',
+  'ui.spinner.waiting': '等待中',
+  'ui.spinner.processing': '处理中',
+
+  // AutoUpdater
+  'ui.autoUpdater.updateAvailable': '有可用更新：v{version}',
+  'ui.autoUpdater.updating': '正在更新...',
+  'ui.autoUpdater.updated': '已更新到 v{version}',
+  'ui.autoUpdater.latest': '您已使用最新版本。',
+  'ui.autoUpdater.error': '更新失败：{error}',
+  'ui.autoUpdater.skipVersion': '跳过此版本',
+  'ui.autoUpdater.installNow': '立即安装',
+  'ui.autoUpdater.later': '稍后',
+
+  // Stats
+  'ui.stats.title': '会话统计',
+  'ui.stats.tokensUsed': '已使用 Tokens',
+  'ui.stats.apiCalls': 'API 调用',
+  'ui.stats.toolsUsed': '工具使用',
+  'ui.stats.sessionTime': '会话时间',
+
+  // ClaudeMdExternalIncludes
+  'ui.claudeMdExternal.title': '外部配置包含',
+  'ui.claudeMdExternal.description': '以下位置的 CLAUDE.md 文件将被包含：',
+
+  // WorktreeExitDialog
+  'ui.worktreeExit.title': '退出 Worktree',
+  'ui.worktreeExit.keep': '保留更改',
+  'ui.worktreeExit.discard': '放弃更改',
+
+  // ClaudeInChromeOnboarding
+  'ui.claudeChromeOnboarding.title': 'Claude in Chrome',
+  'ui.claudeChromeOnboarding.description': '启用 Claude in Chrome 以在对话期间浏览网页。',
 }

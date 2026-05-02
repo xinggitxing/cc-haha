@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useIdeConnectionStatus } from '../hooks/useIdeConnectionStatus.js';
 import type { IDESelection } from '../hooks/useIdeSelection.js';
 import { Text } from '../ink.js';
+import { t } from '../i18n/index.js';
 import type { MCPServerConnection } from '../services/mcp/types.js';
 type IdeStatusIndicatorProps = {
   ideSelection: IDESelection | undefined;
@@ -23,10 +24,10 @@ export function IdeStatusIndicator(t0) {
     return null;
   }
   if (ideSelection.text && ideSelection.lineCount > 0) {
-    const t1 = ideSelection.lineCount === 1 ? "line" : "lines";
+    const t1 = ideSelection.lineCount === 1 ? t('ui.ideStatus.line') : t('ui.ideStatus.lines');
     let t2;
     if ($[0] !== ideSelection.lineCount || $[1] !== t1) {
-      t2 = <Text color="ide" key="selection-indicator" wrap="truncate">⧉ {ideSelection.lineCount}{" "}{t1} selected</Text>;
+      t2 = <Text color="ide" key="selection-indicator" wrap="truncate">{t('ui.ideStatus.linesSelected', { count: ideSelection.lineCount, lines: t1 })}</Text>;
       $[0] = ideSelection.lineCount;
       $[1] = t1;
       $[2] = t2;
@@ -46,7 +47,7 @@ export function IdeStatusIndicator(t0) {
     }
     let t2;
     if ($[5] !== t1) {
-      t2 = <Text color="ide" key="selection-indicator" wrap="truncate">⧉ In {t1}</Text>;
+      t2 = <Text color="ide" key="selection-indicator" wrap="truncate">{t('ui.ideStatus.inFile', { name: t1 })}</Text>;
       $[5] = t1;
       $[6] = t2;
     } else {

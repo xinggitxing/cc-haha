@@ -19,6 +19,7 @@ import { WelcomeV2 } from './LogoV2/WelcomeV2.js';
 import { PressEnterToContinue } from './PressEnterToContinue.js';
 import { ThemePicker } from './ThemePicker.js';
 import { OrderedList } from './ui/OrderedList.js';
+import { t } from '../i18n/index.js';
 type StepId = 'preflight' | 'theme' | 'oauth' | 'api-key' | 'security' | 'terminal-setup';
 interface OnboardingStep {
   id: StepId;
@@ -59,11 +60,11 @@ export function Onboarding({
 
   // Define all onboarding steps
   const themeStep = <Box marginX={1}>
-      <ThemePicker onThemeSelect={handleThemeSelection} showIntroText={true} helpText="To change this later, run /theme" hideEscToCancel={true} skipExitHandling={true} // Skip exit handling as Onboarding already handles it
+      <ThemePicker onThemeSelect={handleThemeSelection} showIntroText={true} helpText={t('ui.onboarding.changeThemeLater')} hideEscToCancel={true} skipExitHandling={true} // Skip exit handling as Onboarding already handles it
     />
     </Box>;
   const securityStep = <Box flexDirection="column" gap={1} paddingLeft={1}>
-      <Text bold>Security notes:</Text>
+      <Text bold>{t('ui.onboarding.securityNotes')}</Text>
       <Box flexDirection="column" width={70}>
         {/**
          * OrderedList misnumbers items when rendering conditionally,
@@ -71,20 +72,17 @@ export function Onboarding({
          */}
         <OrderedList>
           <OrderedList.Item>
-            <Text>Claude can make mistakes</Text>
+            <Text>{t('ui.onboarding.claudeMistakes')}</Text>
             <Text dimColor wrap="wrap">
-              You should always review Claude&apos;s responses, especially when
-              <Newline />
-              running code.
-              <Newline />
+              {t('ui.onboarding.reviewResponses')}
             </Text>
           </OrderedList.Item>
           <OrderedList.Item>
             <Text>
-              Due to prompt injection risks, only use it with code you trust
+              {t('ui.onboarding.promptInjection')}
             </Text>
             <Text dimColor wrap="wrap">
-              For more details see:
+              {t('ui.onboarding.moreDetails')}
               <Newline />
               <Link url="https://code.claude.com/docs/en/security" />
             </Text>
@@ -146,19 +144,17 @@ export function Onboarding({
     steps.push({
       id: 'terminal-setup',
       component: <Box flexDirection="column" gap={1} paddingLeft={1}>
-          <Text bold>Use Claude Code&apos;s terminal setup?</Text>
+          <Text bold>{t('ui.onboarding.terminalSetup')}</Text>
           <Box flexDirection="column" width={70} gap={1}>
             <Text>
-              For the optimal coding experience, enable the recommended settings
-              <Newline />
-              for your terminal:{' '}
-              {env.terminal === 'Apple_Terminal' ? 'Option+Enter for newlines and visual bell' : 'Shift+Enter for newlines'}
+              {t('ui.onboarding.optimalExperience')}{' '}
+              {env.terminal === 'Apple_Terminal' ? t('ui.onboarding.optionEnter') : t('ui.onboarding.shiftEnter')}
             </Text>
             <Select options={[{
-            label: 'Yes, use recommended settings',
+            label: t('ui.onboarding.yesRecommended'),
             value: 'install'
           }, {
-            label: 'No, maybe later with /terminal-setup',
+            label: t('ui.onboarding.noLater'),
             value: 'no'
           }]} onChange={value => {
             if (value === 'install') {
@@ -169,7 +165,7 @@ export function Onboarding({
             }
           }} onCancel={() => goToNextStep()} />
             <Text dimColor>
-              {exitState.pending ? <>Press {exitState.keyName} again to exit</> : <>Enter to confirm · Esc to skip</>}
+              {exitState.pending ? <>Press {exitState.keyName} again to exit</> : t('ui.onboarding.confirmSkip')}
             </Text>
           </Box>
         </Box>

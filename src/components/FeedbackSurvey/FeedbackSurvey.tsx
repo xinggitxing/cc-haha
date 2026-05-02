@@ -1,5 +1,6 @@
 import { c as _c } from "react/compiler-runtime";
 import React from 'react';
+import { t } from '../../i18n/index.js';
 import { type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS, logEvent } from 'src/services/analytics/index.js';
 import { Box, Text } from '../../ink.js';
 import { FeedbackSurveyView, isValidResponseInput } from './FeedbackSurveyView.js';
@@ -49,7 +50,7 @@ export function FeedbackSurvey(t0) {
   if (state === "submitted") {
     let t1;
     if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
-      t1 = <Box marginTop={1}><Text color="success">{"\u2713"} Thanks for sharing your transcript!</Text></Box>;
+      t1 = <Box marginTop={1}><Text color="success">{t('ui.feedbackSurvey.submitted')}</Text></Box>;
       $[5] = t1;
     } else {
       t1 = $[5];
@@ -59,7 +60,7 @@ export function FeedbackSurvey(t0) {
   if (state === "submitting") {
     let t1;
     if ($[6] === Symbol.for("react.memo_cache_sentinel")) {
-      t1 = <Box marginTop={1}><Text dimColor={true}>Sharing transcript{"\u2026"}</Text></Box>;
+      t1 = <Box marginTop={1}><Text dimColor={true}>{t('ui.feedbackSurvey.submitting')}</Text></Box>;
       $[6] = t1;
     } else {
       t1 = $[6];
@@ -155,14 +156,14 @@ function FeedbackSurveyThanks(t0) {
   const feedbackCommand = false ? "/issue" : "/feedback";
   let t4;
   if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
-    t4 = <Text color="success">Thanks for the feedback!</Text>;
+    t4 = <Text color="success">{t('ui.feedbackSurvey.thanks')}</Text>;
     $[8] = t4;
   } else {
     t4 = $[8];
   }
   let t5;
   if ($[9] !== lastResponse || $[10] !== showFollowUp) {
-    t5 = <Box marginTop={1} flexDirection="column">{t4}{showFollowUp ? <Text dimColor={true}>(Optional) Press [<Text color="ansi:cyan">1</Text>] to tell us what went well {" \xB7 "}{feedbackCommand}</Text> : lastResponse === "bad" ? <Text dimColor={true}>Use /issue to report model behavior issues.</Text> : <Text dimColor={true}>Use {feedbackCommand} to share detailed feedback anytime.</Text>}</Box>;
+    t5 = <Box marginTop={1} flexDirection="column">{t4}{showFollowUp ? <Text dimColor={true}>{t('ui.feedbackSurvey.followUp', { command: feedbackCommand })}</Text> : lastResponse === "bad" ? <Text dimColor={true}>{t('ui.feedbackSurvey.reportIssue')}</Text> : <Text dimColor={true}>{t('ui.feedbackSurvey.shareFeedback', { command: feedbackCommand })}</Text>}</Box>;
     $[9] = lastResponse;
     $[10] = showFollowUp;
     $[11] = t5;

@@ -73,82 +73,62 @@
 | `EffortCallout.tsx` | `ui.effortCallout.*` |
 | `ValidationErrorsList.tsx` | `ui.validation.*` |
 
+### 本轮完成：代码迁移 (12)
+| 文件 | 使用的 Key 前缀 |
+|------|----------------|
+| `Onboarding.tsx` | `ui.onboarding.*` |
+| `HelpV2/HelpV2.tsx` | `ui.helpV2.*` |
+| `LogoV2/LogoV2.tsx` | `ui.logoV2.*` |
+| `FeedbackSurvey/FeedbackSurvey.tsx` | `ui.feedbackSurvey.*` |
+| `FeedbackSurvey/FeedbackSurveyView.tsx` | `ui.feedbackSurveyView.*` |
+| `FeedbackSurvey/TranscriptSharePrompt.tsx` | `ui.transcriptShare.*` |
+| `MCPServerMultiselectDialog.tsx` | `ui.mcpMultiselect.*` |
+| `MCPServerDialogCopy.tsx` | `ui.mcpDialogCopy.*` |
+| `MCPServerDesktopImportDialog.tsx` | `ui.mcpDesktopImport.*` |
+| `IdeAutoConnectDialog.tsx` | `ui.ideAutoConnect.*` |
+| `IdeOnboardingDialog.tsx` | `ui.ideOnboarding.*` |
+| `IdeStatusIndicator.tsx` | `ui.ideStatus.*` |
+
 ### 词条已添加（待迁移）
 以下文件的词条 key 已在 `components.ts` 中定义，但尚未迁移代码：
 | 文件 | 使用的 Key 前缀 |
 |------|----------------|
-| `HelpV2/HelpV2.tsx` | `ui.helpV2.*` |
-| `Onboarding.tsx` | `ui.onboarding.*` |
-| `LogoV2/LogoV2.tsx` | `ui.logoV2.*` |
+| `TeleportError.tsx` | `ui.teleportError.*` |
+| `TeleportRepoMismatchDialog.tsx` | `ui.teleportRepoMismatch.*` |
+| `QuickOpenDialog.tsx` | `ui.quickOpen.*` |
+| `GlobalSearchDialog.tsx` | `ui.globalSearch.*` |
+| `LogSelector.tsx` | `ui.logSelector.*` |
+| `Spinner.tsx` | `ui.spinner.*` |
+| `AutoUpdater.tsx` | `ui.autoUpdater.*` |
+| `Stats.tsx` | `ui.stats.*` |
+| `ClaudeMdExternalIncludesDialog.tsx` | `ui.claudeMdExternal.*` |
+| `WorktreeExitDialog.tsx` | `ui.worktreeExit.*` |
+| `ClaudeInChromeOnboarding.tsx` | `ui.claudeChromeOnboarding.*` |
 
 ---
 
-## 待补全 ❌ (23 文件)
+## 待补全 ❌ (23 文件 → 待迁移)
 
-### 帮助和引导 (2)
-| 文件 | 说明 |
+### 待迁移 (11)
+| 文件 | 状态 |
 |------|------|
-| `Onboarding.tsx` | 首次使用引导 |
-| `HelpV2/HelpV2.tsx` | 帮助系统主页 |
-
-### 欢迎页面和消息 (5)
-| 文件 | 说明 |
-|------|------|
-| `LogoV2/WelcomeV2.tsx` | 欢迎消息 |
-| `LogoV2/LogoV2.tsx` | 调试/沙箱信息 |
-| `LogoV2/CondensedLogo.tsx` | 压缩 Logo |
-| `LogoV2/Feed.tsx` | 动态消息 |
-| `LogoV2/FeedColumn.tsx` | 动态消息列 |
-
-### 反馈调查 (3)
-| 文件 | 说明 |
-|------|------|
-| `FeedbackSurvey/FeedbackSurvey.tsx` | 调查入口 |
-| `FeedbackSurvey/FeedbackSurveyView.tsx` | 评分视图 |
-| `FeedbackSurvey/TranscriptSharePrompt.tsx` | 分享提示 |
-
-### MCP 对话框 (3)
-| 文件 | 说明 |
-|------|------|
-| `MCPServerMultiselectDialog.tsx` | MCP 多选 |
-| `MCPServerDialogCopy.tsx` | MCP 说明 |
-| `MCPServerDesktopImportDialog.tsx` | 桌面导入 |
-
-### 搜索和选择器 (4)
-| 文件 | 说明 |
-|------|------|
-| `LogSelector.tsx` | 会话列表 |
-| `MessageSelector.tsx` | 消息恢复选项 |
-| `GlobalSearchDialog.tsx` | 全局搜索 |
-| `QuickOpenDialog.tsx` | 快速打开 |
-
-### Teleport (3)
-| 文件 | 说明 |
-|------|------|
-| `TeleportError.tsx` | Teleport 错误 |
-| `TeleportRepoMismatchDialog.tsx` | 仓库不匹配 |
-| `TeleportResumeWrapper.tsx` | 恢复包装 |
-
-### IDE / 远程 (5)
-| 文件 | 说明 |
-|------|------|
-| `IdeAutoConnectDialog.tsx` | IDE 自动连接 |
-| `IdeOnboardingDialog.tsx` | IDE 引导 |
-| `IdeStatusIndicator.tsx` | IDE 状态 |
-
-### 设置和对话框 (4)
-| 文件 | 说明 |
-|------|------|
-| `Stats.tsx` | 统计页面 |
-| `ClaudeMdExternalIncludesDialog.tsx` | 外部导入 |
-| `WorktreeExitDialog.tsx` | Worktree 退出 |
-| `ClaudeInChromeOnboarding.tsx` | Chrome 引导 |
-
-### 其他组件 (2)
-| 文件 | 说明 |
-|------|------|
-| `Spinner.tsx` | 加载动画 |
-| `AutoUpdater.tsx` | 自动更新 |
+| `LogoV2/WelcomeV2.tsx` | ❌ |
+| `LogoV2/CondensedLogo.tsx` | ❌ |
+| `LogoV2/Feed.tsx` | ❌ |
+| `LogoV2/FeedColumn.tsx` | ❌ |
+| `LogSelector.tsx` | Keys added ❌ |
+| `MessageSelector.tsx` | ❌ |
+| `GlobalSearchDialog.tsx` | Keys added ❌ |
+| `QuickOpenDialog.tsx` | Keys added ❌ |
+| `TeleportError.tsx` | Keys added ❌ |
+| `TeleportRepoMismatchDialog.tsx` | Keys added ❌ |
+| `TeleportResumeWrapper.tsx` | ❌ |
+| `Stats.tsx` | Keys added ❌ |
+| `ClaudeMdExternalIncludesDialog.tsx` | Keys added ❌ |
+| `WorktreeExitDialog.tsx` | Keys added ❌ |
+| `ClaudeInChromeOnboarding.tsx` | Keys added ❌ |
+| `Spinner.tsx` | Keys added ❌ |
+| `AutoUpdater.tsx` | Keys added ❌ |
 
 ---
 
@@ -156,11 +136,11 @@
 
 | 状态 | 计数 | 占比 |
 |------|------|------|
-| 已完成 | 48 | 68% |
-| 待补全 | 23 | 32% |
+| 已完成 | 60 | 85% |
+| Keys 已添加待迁移 | 11 | 15% |
 | **总计** | **71** | 100% |
 
 ## 备注
-- 本轮完成了第二批 7 个文件的迁移：`General.tsx`, `ChannelsNotice.tsx`, `FileEditToolUseRejectedMessage.tsx`, `FileEditToolUpdatedMessage.tsx`, `FullscreenLayout.tsx`, `EffortCallout.tsx`, `ValidationErrorsList.tsx`
-- 为 `Onboarding.tsx`, `HelpV2/HelpV2.tsx`, `LogoV2/LogoV2.tsx` 预添加了词条 key，代码迁移待后续进行
-- 剩余文件的词条需要在 `components.ts` 中先定义 key 再进行代码迁移
+- 第三批完成了 12 个文件的迁移：`Onboarding.tsx`, `HelpV2/HelpV2.tsx`, `LogoV2/LogoV2.tsx`, `FeedbackSurvey/*` (3), `MCPServer*` (3), `Ide*` (3)
+- 为 11 个文件新添加了词条 key（`TeleportError`, `QuickOpenDialog`, `GlobalSearchDialog`, `LogSelector`, `Spinner`, `AutoUpdater`, `Stats`, `ClaudeMdExternalIncludesDialog`, `WorktreeExitDialog`, `ClaudeInChromeOnboarding` 等），待后续迁移代码
+- 还剩余 17 个文件待处理：11 个已添加 keys（待迁移）+ 6 个未开始（`WelcomeV2`, `CondensedLogo`, `Feed`, `FeedColumn`, `MessageSelector`, `TeleportResumeWrapper`）

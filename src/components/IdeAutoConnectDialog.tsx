@@ -5,6 +5,7 @@ import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
 import { isSupportedTerminal } from '../utils/ide.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+import { t } from '../i18n/index.js';
 type IdeAutoConnectDialogProps = {
   onComplete: () => void;
 };
@@ -33,10 +34,10 @@ export function IdeAutoConnectDialog(t0) {
   let t2;
   if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = [{
-      label: "Yes",
+      label: t('common.yes'),
       value: "yes"
     }, {
-      label: "No",
+      label: t('common.no'),
       value: "no"
     }];
     $[2] = t2;
@@ -54,14 +55,14 @@ export function IdeAutoConnectDialog(t0) {
   }
   let t4;
   if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
-    t4 = <Text dimColor={true}>You can also configure this in /config or with the --ide flag</Text>;
+    t4 = <Text dimColor={true}>{t('ui.ideAutoConnect.description')}</Text>;
     $[5] = t4;
   } else {
     t4 = $[5];
   }
   let t5;
   if ($[6] !== onComplete || $[7] !== t3) {
-    t5 = <Dialog title="Do you wish to enable auto-connect to IDE?" color="ide" onCancel={onComplete}>{t3}{t4}</Dialog>;
+    t5 = <Dialog title={t('ui.ideAutoConnect.title')} color="ide" onCancel={onComplete}>{t3}{t4}</Dialog>;
     $[6] = onComplete;
     $[7] = t3;
     $[8] = t5;
@@ -111,10 +112,10 @@ export function IdeDisableAutoConnectDialog(t0) {
   let t3;
   if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
     t3 = [{
-      label: "No",
+      label: t('common.no'),
       value: "no"
     }, {
-      label: "Yes",
+      label: t('common.yes'),
       value: "yes"
     }];
     $[4] = t3;
