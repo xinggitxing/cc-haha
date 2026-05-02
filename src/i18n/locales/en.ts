@@ -10,6 +10,11 @@ import { en as taskEn } from './keys/scheduledTasks'
 import { en as msgEn } from './keys/messages'
 import { en as agentEn } from './keys/agents'
 import { en as componentsEn } from './keys/components'
+import { en as trustEn } from './keys/trust'
+import { en as pluginHintsEn } from './keys/pluginHints'
+import { en as promptInputEn } from './keys/promptInput'
+import { en as sandboxEn } from './keys/sandbox'
+import { en as miscUiEn } from './keys/miscUi'
 
 export const en = {
   // ── Common ────────────────────────────────────────────
@@ -47,6 +52,21 @@ export const en = {
 
   // ── Root UI Components ──────────────────────────────
   ...componentsEn,
+
+  // ── Trust / Security Dialogs ────────────────────────
+  ...trustEn,
+
+  // ── Plugin / LSP Recommendation Dialogs ────────────
+  ...pluginHintsEn,
+
+  // ── Prompt Input Help Menu ─────────────────────────
+  ...promptInputEn,
+
+  // ── Sandbox Settings ───────────────────────────────
+  ...sandboxEn,
+
+  // ── Misc UI (DesktopUpsell, LogoBanners, etc.) ────
+  ...miscUiEn,
 } as const
 
 export type TranslationKey = keyof typeof en

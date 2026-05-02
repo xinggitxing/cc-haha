@@ -30,12 +30,12 @@ export function ThinkingToggle(t0) {
   if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
     t1 = [{
       value: "true",
-      label: "Enabled",
-      description: "Claude will think before responding"
+      label: t('ui.thinkingToggle.enabled'),
+      description: t('ui.thinkingToggle.enabledDesc')
     }, {
       value: "false",
-      label: "Disabled",
-      description: "Claude will respond without extended thinking"
+      label: t('ui.thinkingToggle.disabled'),
+      description: t('ui.thinkingToggle.disabledDesc')
     }];
     $[0] = t1;
   } else {
@@ -113,14 +113,14 @@ export function ThinkingToggle(t0) {
   const handleSelectChange = t7;
   let t8;
   if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
-    t8 = <Box marginBottom={1} flexDirection="column"><Text color="remember" bold={true}>t('ui.thinkingToggle.title')</Text><Text dimColor={true}>t('ui.thinkingToggle.description')</Text></Box>;
+    t8 = <Box marginBottom={1} flexDirection="column"><Text color="remember" bold={true}>{t('ui.thinkingToggle.title')}</Text><Text dimColor={true}>{t('ui.thinkingToggle.description')}</Text></Box>;
     $[14] = t8;
   } else {
     t8 = $[14];
   }
   let t9;
   if ($[15] !== confirmationPending || $[16] !== currentValue || $[17] !== handleSelectChange || $[18] !== onCancel) {
-    t9 = <Box flexDirection="column">{t8}{confirmationPending !== null ? <Box flexDirection="column" marginBottom={1} gap={1}><Text color="warning">Changing thinking mode mid-conversation will increase latency and may reduce quality. For best results, set this at the start of a session.</Text><Text color="warning">Do you want to proceed?</Text></Box> : <Box flexDirection="column" marginBottom={1}><Select defaultValue={currentValue ? "true" : "false"} defaultFocusValue={currentValue ? "true" : "false"} options={options} onChange={handleSelectChange} onCancel={onCancel ?? _temp} visibleOptionCount={2} /></Box>}</Box>;
+    t9 = <Box flexDirection="column">{t8}{confirmationPending !== null ? <Box flexDirection="column" marginBottom={1} gap={1}><Text color="warning">{t('ui.thinkingToggle.changingMidConversation')}</Text><Text color="warning">{t('ui.thinkingToggle.proceed')}</Text></Box> : <Box flexDirection="column" marginBottom={1}><Select defaultValue={currentValue ? "true" : "false"} defaultFocusValue={currentValue ? "true" : "false"} options={options} onChange={handleSelectChange} onCancel={onCancel ?? _temp} visibleOptionCount={2} /></Box>}</Box>;
     $[15] = confirmationPending;
     $[16] = currentValue;
     $[17] = handleSelectChange;

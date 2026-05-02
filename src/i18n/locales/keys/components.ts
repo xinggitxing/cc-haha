@@ -33,10 +33,12 @@ export const en = {
   'ui.thinkingToggle.description':
     'Enable or disable thinking for this session.',
   'ui.thinkingToggle.changingMidConversation':
-    'Changing thinking mode mid-conversation...',
+    'Changing thinking mode mid-conversation will increase latency and may reduce quality. For best results, set this at the start of a session.',
   'ui.thinkingToggle.proceed': 'Do you want to proceed?',
   'ui.thinkingToggle.enabled': 'Enabled',
+  'ui.thinkingToggle.enabledDesc': 'Claude will think before responding',
   'ui.thinkingToggle.disabled': 'Disabled',
+  'ui.thinkingToggle.disabledDesc': 'Claude will respond without extended thinking',
 
   // ThemePicker
   'ui.themePicker.title': 'Theme',
@@ -203,6 +205,12 @@ export const en = {
   'ui.oauth.checking': 'Checking authentication status...',
   'ui.oauth.expired': 'Session expired. Please re-authenticate.',
   'ui.oauth.codeCopied': '(Code copied to clipboard)',
+  'ui.oauth.claudeAccount': 'Claude account',
+  'ui.oauth.claudeAccountDesc': 'Pro, Max, Team, or Enterprise',
+  'ui.oauth.consoleAccount': 'Console account',
+  'ui.oauth.consoleAccountDesc': 'API usage billing',
+  'ui.oauth.thirdParty': 'Third-party API',
+  'ui.oauth.thirdPartyDesc': 'Amazon Bedrock, Microsoft Foundry, or Vertex AI',
 
   // CostThresholdDialog
   'ui.costThreshold.title': 'Cost Threshold Reached',
@@ -642,10 +650,12 @@ export const zh: Record<string, string> = {
   'ui.thinkingToggle.description':
     '为本次会话启用或禁用思考。',
   'ui.thinkingToggle.changingMidConversation':
-    '正在对话中切换思考模式...',
+    '在对话中切换思考模式会增加延迟并可能降低质量。为获得最佳效果，请在会话开始时设置此选项。',
   'ui.thinkingToggle.proceed': '是否继续？',
   'ui.thinkingToggle.enabled': '已启用',
+  'ui.thinkingToggle.enabledDesc': 'Claude 将在回复前进行思考',
   'ui.thinkingToggle.disabled': '已禁用',
+  'ui.thinkingToggle.disabledDesc': 'Claude 将直接回复，不进行扩展思考',
 
   // ThemePicker
   'ui.themePicker.title': '主题',
@@ -808,6 +818,12 @@ export const zh: Record<string, string> = {
   'ui.oauth.checking': '正在检查验证状态...',
   'ui.oauth.expired': '会话已过期。请重新验证。',
   'ui.oauth.codeCopied': '（代码已复制到剪贴板）',
+  'ui.oauth.claudeAccount': 'Claude 账户',
+  'ui.oauth.claudeAccountDesc': 'Pro、Max、团队或企业版',
+  'ui.oauth.consoleAccount': '控制台账户',
+  'ui.oauth.consoleAccountDesc': 'API 使用计费',
+  'ui.oauth.thirdParty': '第三方 API',
+  'ui.oauth.thirdPartyDesc': 'Amazon Bedrock、Microsoft Foundry 或 Vertex AI',
 
   // CostThresholdDialog
   'ui.costThreshold.title': '达到费用阈值',

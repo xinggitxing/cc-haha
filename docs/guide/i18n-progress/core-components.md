@@ -3,7 +3,12 @@
 ## 状态：✅ ~93% 完成 (66/71)
 
 ## 词条文件
-`src/i18n/locales/keys/components.ts`
+- `src/i18n/locales/keys/components.ts` — Core UI components
+- `src/i18n/locales/keys/trust.ts` — Trust/Security dialogs
+- `src/i18n/locales/keys/pluginHints.ts` — Plugin/LSP recommendations
+- `src/i18n/locales/keys/promptInput.ts` — Prompt input help menu
+- `src/i18n/locales/keys/sandbox.ts` — Sandbox settings
+- `src/i18n/locales/keys/miscUi.ts` — Desktop upsell, logo banners, misc
 
 ---
 
@@ -116,7 +121,15 @@
 
 ### 词条已添加（待迁移）
 
-本批次已全部完成迁移。
+以下为新独立 key 文件，词条已定义但组件尚未迁移：
+
+| 词条文件 | 目标组件 |
+|----------|---------|
+| `trust.ts` | `TrustDialog.tsx`, `ManagedSettingsSecurityDialog.tsx` |
+| `pluginHints.ts` | `ClaudeCodeHint/PluginHintMenu.tsx`, `LspRecommendation/LspRecommendationMenu.tsx` |
+| `promptInput.ts` | `PromptInput/PromptInputHelpMenu.tsx`, `PromptInput/PromptInputStashNotice.tsx`, `PromptInput/IssueFlagBanner.tsx`, `PromptInput/SandboxPromptFooterHint.tsx` |
+| `sandbox.ts` | `sandbox/SandboxConfigTab.tsx`, `sandbox/SandboxDependenciesTab.tsx`, `sandbox/SandboxOverridesTab.tsx`, `sandbox/SandboxSettings.tsx` |
+| `miscUi.ts` | `DesktopUpsell/DesktopUpsellStartup.tsx`, `LogoV2/GuestPassesUpsell.tsx`, `LogoV2/OverageCreditUpsell.tsx`, `LogoV2/Opus1mMergeNotice.tsx`, `LogoV2/VoiceModeNotice.tsx`, `MemoryUpdateNotification.tsx`, `NotebookEditToolUseRejectedMessage.tsx` |
 
 ---
 
@@ -147,3 +160,7 @@
 - 4 个文件确认无需国际化：`CondensedLogo.tsx`, `Feed.tsx`, `FeedColumn.tsx`, `MessageSelector.tsx`
 - 为上述文件添加了约 50+ 个新词条（中英文）
 - 遗留 5 个词条虽已定义但暂未找到匹配的 UI 字符串
+
+## 后续修复
+- **ThinkingToggle.tsx**: 修复 `t()` 缺少 `{}` 包裹的问题（显示为字面文本）；将 `options` 中的硬编码英文字符串替换为 `t()`；为 mid-conversation 警告添加翻译
+- **ConsoleOAuthFlow.tsx**: 修复 `t()` 缺少 `{}` 包裹的问题；替换选择项中的硬编码描述文字；新增 `ui.oauth.claudeAccount/consoleAccount/thirdParty` 等 6 个词条（中英文）

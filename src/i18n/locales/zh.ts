@@ -11,6 +11,11 @@ import { zh as taskZh } from './keys/scheduledTasks'
 import { zh as msgZh } from './keys/messages'
 import { zh as agentZh } from './keys/agents'
 import { zh as componentsZh } from './keys/components'
+import { zh as trustZh } from './keys/trust'
+import { zh as pluginHintsZh } from './keys/pluginHints'
+import { zh as promptInputZh } from './keys/promptInput'
+import { zh as sandboxZh } from './keys/sandbox'
+import { zh as miscUiZh } from './keys/miscUi'
 
 export const zh: Record<TranslationKey, string> = {
   // ── 通用 ──────────────────────────────────────────────
@@ -48,4 +53,19 @@ export const zh: Record<TranslationKey, string> = {
 
   // ── 根 UI 组件 ──────────────────────────────────────
   ...componentsZh,
+
+  // ── 信任/安全对话框 ─────────────────────────────────
+  ...trustZh,
+
+  // ── 插件/LSP 推荐对话框 ─────────────────────────────
+  ...pluginHintsZh,
+
+  // ── 输入提示帮助菜单 ────────────────────────────────
+  ...promptInputZh,
+
+  // ── 沙箱设置 ───────────────────────────────────────
+  ...sandboxZh,
+
+  // ── 杂项 UI ─────────────────────────────────────────
+  ...miscUiZh,
 }

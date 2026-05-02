@@ -1,0 +1,76 @@
+// ── Sandbox settings tab keys ──────────────────────
+export const en = {
+  'ui.sandbox.sectionTitle': 'Sandbox',
+  'ui.sandbox.missingDeps': 'Missing dependencies',
+  'ui.sandbox.availableWarnings': 'Available (with warnings)',
+  'ui.sandbox.installInstructions': 'Run /sandbox for install instructions',
+
+  'ui.sandbox.notEnabled': 'Sandbox is not enabled',
+  'ui.sandbox.excludedCommands': 'Excluded Commands:',
+  'ui.sandbox.none': 'None',
+  'ui.sandbox.fsReadRestrictions': 'Filesystem Read Restrictions:',
+  'ui.sandbox.denied': 'Denied:',
+  'ui.sandbox.allowedWithinDenied': 'Allowed within denied:',
+  'ui.sandbox.fsWriteRestrictions': 'Filesystem Write Restrictions:',
+  'ui.sandbox.allowed': 'Allowed:',
+  'ui.sandbox.deniedWithinAllowed': 'Denied within allowed:',
+  'ui.sandbox.networkRestrictions': 'Network Restrictions:',
+  'ui.sandbox.networkRestrictionsManaged': 'Network Restrictions (Managed):',
+  'ui.sandbox.allowedUnixSockets': 'Allowed Unix Sockets:',
+  'ui.sandbox.linuxGlobWarning': 'Warning: Glob patterns not fully supported on Linux',
+  'ui.sandbox.patternsIgnored': 'The following patterns will be ignored:',
+  'ui.sandbox.nMore': '({n} more)',
+
+  'ui.sandbox.seatbelt': 'seatbelt: built-in (macOS)',
+  'ui.sandbox.ripgrepFound': 'ripgrep (rg): found',
+  'ui.sandbox.ripgrepNotFound': 'ripgrep (rg): not found',
+  'ui.sandbox.brewInstall': 'brew install ripgrep',
+  'ui.sandbox.aptInstall': 'apt install ripgrep',
+
+  'ui.sandbox.notEnabledOverrides': 'Sandbox is not enabled. Enable sandbox to configure override settings.',
+  'ui.sandbox.managedByHigherPriority': 'Override settings are managed by a higher-priority configuration and cannot be changed locally.',
+  'ui.sandbox.currentSettingUnsandboxed': 'Current setting: Allow unsandboxed fallback',
+  'ui.sandbox.currentSettingStrict': 'Current setting: Strict sandbox mode',
+  'ui.sandbox.currentSuffix': '(current)',
+
+  'ui.sandbox.sandboxBashAllow': 'Sandbox BashTool, with auto-allow',
+  'ui.sandbox.sandboxBashPerms': 'Sandbox BashTool, with regular permissions',
+} as const
+
+export const zh: Record<string, string> = {
+  'ui.sandbox.sectionTitle': '沙箱',
+  'ui.sandbox.missingDeps': '缺少依赖',
+  'ui.sandbox.availableWarnings': '可用（有警告）',
+  'ui.sandbox.installInstructions': '运行 /sandbox 查看安装说明',
+
+  'ui.sandbox.notEnabled': '沙箱未启用',
+  'ui.sandbox.excludedCommands': '排除的命令：',
+  'ui.sandbox.none': '无',
+  'ui.sandbox.fsReadRestrictions': '文件系统读取限制：',
+  'ui.sandbox.denied': '已拒绝：',
+  'ui.sandbox.allowedWithinDenied': '拒绝范围内的允许：',
+  'ui.sandbox.fsWriteRestrictions': '文件系统写入限制：',
+  'ui.sandbox.allowed': '已允许：',
+  'ui.sandbox.deniedWithinAllowed': '允许范围内的拒绝：',
+  'ui.sandbox.networkRestrictions': '网络限制：',
+  'ui.sandbox.networkRestrictionsManaged': '网络限制（托管）：',
+  'ui.sandbox.allowedUnixSockets': '允许的 Unix 套接字：',
+  'ui.sandbox.linuxGlobWarning': '警告：Glob 模式在 Linux 上不完全支持',
+  'ui.sandbox.patternsIgnored': '以下模式将被忽略：',
+  'ui.sandbox.nMore': '（{n} 个更多）',
+
+  'ui.sandbox.seatbelt': 'seatbelt：内建（macOS）',
+  'ui.sandbox.ripgrepFound': 'ripgrep (rg)：已找到',
+  'ui.sandbox.ripgrepNotFound': 'ripgrep (rg)：未找到',
+  'ui.sandbox.brewInstall': 'brew install ripgrep',
+  'ui.sandbox.aptInstall': 'apt install ripgrep',
+
+  'ui.sandbox.notEnabledOverrides': '沙箱未启用。启用沙箱以配置覆盖设置。',
+  'ui.sandbox.managedByHigherPriority': '覆盖设置由更高优先级的配置管理，无法在本地更改。',
+  'ui.sandbox.currentSettingUnsandboxed': '当前设置：允许非沙箱回退',
+  'ui.sandbox.currentSettingStrict': '当前设置：严格沙箱模式',
+  'ui.sandbox.currentSuffix': '（当前）',
+
+  'ui.sandbox.sandboxBashAllow': '沙箱化 BashTool，带自动允许',
+  'ui.sandbox.sandboxBashPerms': '沙箱化 BashTool，带常规权限',
+}
