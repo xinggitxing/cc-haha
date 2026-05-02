@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { t } from '../i18n/index.js';
 import { useEffect, useRef, useState } from 'react';
 import { type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS, logEvent } from 'src/services/analytics/index.js';
 import { useInterval } from 'usehooks-ts';
@@ -181,14 +182,14 @@ export function AutoUpdater({
       {isUpdating ? <>
           <Box>
             <Text color="text" dimColor wrap="truncate">
-              Auto-updating…
+              {t('ui.autoUpdater.autoUpdating')}
             </Text>
           </Box>
         </> : autoUpdaterResult?.status === 'success' && showSuccessMessage && updateSemver && <Text color="success" wrap="truncate">
-            ✓ Update installed · Restart to apply
+            {t('ui.autoUpdater.restartToApply')}
           </Text>}
       {(autoUpdaterResult?.status === 'install_failed' || autoUpdaterResult?.status === 'no_permissions') && <Text color="error" wrap="truncate">
-          ✗ Auto-update failed &middot; Try <Text bold>claude doctor</Text> or{' '}
+          {t('ui.autoUpdater.updateFailed')}{' '}<Text bold>claude doctor</Text>{' '}{t('ui.autoUpdater.or')}{' '}
           <Text bold>
             {hasLocalInstall ? `cd ~/.claude/local && npm update ${MACRO.PACKAGE_URL}` : `npm i -g ${MACRO.PACKAGE_URL}`}
           </Text>

@@ -1,4 +1,5 @@
 import { c as _c } from "react/compiler-runtime";
+import { t } from '../i18n/index.js';
 import { feature } from 'bun:bundle';
 import { plot as asciichart } from 'asciichart';
 import chalk from 'chalk';
@@ -261,7 +262,7 @@ function StatsContent(t0) {
   }
   let t7;
   if ($[17] !== allTimeStats || $[18] !== dateRange || $[19] !== displayStats || $[20] !== isLoadingFiltered) {
-    t7 = <Tab title="Overview"><OverviewTab stats={displayStats} allTimeStats={allTimeStats} dateRange={dateRange} isLoading={isLoadingFiltered} /></Tab>;
+    t7 = <Tab title={t('ui.stats.tabOverview')}><OverviewTab stats={displayStats} allTimeStats={allTimeStats} dateRange={dateRange} isLoading={isLoadingFiltered} /></Tab>;
     $[17] = allTimeStats;
     $[18] = dateRange;
     $[19] = displayStats;
@@ -272,7 +273,7 @@ function StatsContent(t0) {
   }
   let t8;
   if ($[22] !== dateRange || $[23] !== displayStats || $[24] !== isLoadingFiltered) {
-    t8 = <Tab title="Models"><ModelsTab stats={displayStats} dateRange={dateRange} isLoading={isLoadingFiltered} /></Tab>;
+    t8 = <Tab title={t('ui.stats.tabModels')}><ModelsTab stats={displayStats} dateRange={dateRange} isLoading={isLoadingFiltered} /></Tab>;
     $[22] = dateRange;
     $[23] = displayStats;
     $[24] = isLoadingFiltered;

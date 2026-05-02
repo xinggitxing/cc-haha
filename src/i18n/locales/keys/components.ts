@@ -394,6 +394,15 @@ export const en = {
   'ui.onboarding.confirmSkip': 'Enter to confirm \u00b7 Esc to skip',
   'ui.onboarding.changeThemeLater': 'To change this later, run /theme',
 
+  // WelcomeV2
+  'ui.welcomeV2.title': 'Welcome to Claude Code',
+
+  // TeleportResumeWrapper
+  'ui.teleportResume.resuming': 'Resuming session\u2026',
+  'ui.teleportResume.loading': 'Loading "{title}"\u2026',
+  'ui.teleportResume.failed': 'Failed to resume session',
+  'ui.teleportResume.pressEsc': 'Press {key} to cancel',
+
   // LogoV2 - condensed mode messages
   'ui.logoV2.debugMode': 'Debug mode enabled',
   'ui.logoV2.loggingTo': 'Logging to: {path}',
@@ -472,6 +481,10 @@ export const en = {
     'You need to log in with a Claude account to use Teleport.',
   'ui.teleportError.gitStashRequired':
     'Please stash or commit your changes before teleporting.',
+  'ui.teleportError.requiresAccount': 'Teleport requires a Claude.ai account.',
+  'ui.teleportError.proWillBeUsed': 'Your Claude Pro/Max subscription will be used by Claude Code.',
+  'ui.teleportError.loginTitle': 'Log in to Claude',
+  'ui.teleportError.loginWithAccount': 'Login with Claude account',
 
   // TeleportRepoMismatch
   'ui.teleportRepoMismatch.title': 'Repository path mismatch',
@@ -479,6 +492,13 @@ export const en = {
     'Select the local path matching {repo}:',
   'ui.teleportRepoMismatch.cancel': 'Cancel teleport',
   'ui.teleportRepoMismatch.validating': 'Validating path...',
+  'ui.teleportRepoMismatch.dialogTitle': 'Teleport to Repo',
+  'ui.teleportRepoMismatch.usePath': 'Use {path}',
+  'ui.teleportRepoMismatch.openIn': 'Open Claude Code in {repo}:',
+  'ui.teleportRepoMismatch.validatingRepo': 'Validating repository\u2026',
+  'ui.teleportRepoMismatch.runFrom': 'Run claude --teleport from a checkout of {repo}',
+  'ui.teleportRepoMismatch.noLongerValid': '{path} no longer contains the correct repository. Select another path.',
+  'ui.teleportRepoMismatch.cancelOption': 'Cancel',
 
   // QuickOpenDialog
   'ui.quickOpen.placeholder': 'Search files by name...',
@@ -496,6 +516,10 @@ export const en = {
   'ui.logSelector.empty': 'No sessions found',
   'ui.logSelector.loading': 'Loading sessions...',
   'ui.logSelector.deleteConfirm': 'Are you sure you want to delete this session?',
+  'ui.logSelector.searching': 'Searching\u2026',
+  'ui.logSelector.claudeFound': 'Claude found these results:',
+  'ui.logSelector.noMatches': 'No matching sessions found.',
+  'ui.logSelector.searchFailed': 'Search failed',
 
   // Spinner
   'ui.spinner.thinking': 'Thinking',
@@ -515,6 +539,10 @@ export const en = {
   'ui.autoUpdater.skipVersion': 'Skip this version',
   'ui.autoUpdater.installNow': 'Install now',
   'ui.autoUpdater.later': 'Later',
+  'ui.autoUpdater.autoUpdating': 'Auto-updating\u2026',
+  'ui.autoUpdater.restartToApply': '\u2713 Update installed \u00b7 Restart to apply',
+  'ui.autoUpdater.updateFailed': '\u2717 Auto-update failed \u00b7 Try',
+  'ui.autoUpdater.or': 'or',
 
   // Stats
   'ui.stats.title': 'Session Statistics',
@@ -522,21 +550,62 @@ export const en = {
   'ui.stats.apiCalls': 'API calls',
   'ui.stats.toolsUsed': 'Tools used',
   'ui.stats.sessionTime': 'Session time',
+  'ui.stats.tabOverview': 'Overview',
+  'ui.stats.tabModels': 'Models',
 
   // ClaudeMdExternalIncludes
   'ui.claudeMdExternal.title': 'External Configuration Includes',
   'ui.claudeMdExternal.description':
     'CLAUDE.md files in the following locations will be included:',
+  'ui.claudeMdExternal.allowTitle': 'Allow external CLAUDE.md file imports?',
+  'ui.claudeMdExternal.warning': "This project's CLAUDE.md imports files outside the current working directory. Never allow this for third-party repositories.",
+  'ui.claudeMdExternal.externalImports': 'External imports:',
+  'ui.claudeMdExternal.securityWarning': 'Important: Only use Claude Code with files you trust. Accessing untrusted files may pose security risks',
+  'ui.claudeMdExternal.yesAllow': 'Yes, allow external imports',
+  'ui.claudeMdExternal.noDisable': 'No, disable external imports',
 
   // WorktreeExitDialog
   'ui.worktreeExit.title': 'Exit Worktree',
   'ui.worktreeExit.keep': 'Keep changes',
   'ui.worktreeExit.discard': 'Discard changes',
+  'ui.worktreeExit.exitingTitle': 'Exiting worktree session',
+  'ui.worktreeExit.keeping': 'Keeping worktree\u2026',
+  'ui.worktreeExit.removing': 'Removing worktree\u2026',
+  'ui.worktreeExit.removedNoChanges': 'Worktree removed (no changes)',
+  'ui.worktreeExit.cleanupFailed': 'Worktree cleanup failed, exiting anyway',
+  'ui.worktreeExit.noActiveSession': 'No active worktree session found',
+  'ui.worktreeExit.keepWorktree': 'Keep worktree',
+  'ui.worktreeExit.keepWithTmux': 'Keep worktree and tmux session',
+  'ui.worktreeExit.keepKillTmux': 'Keep worktree, kill tmux session',
+  'ui.worktreeExit.removeWorktree': 'Remove worktree',
+  'ui.worktreeExit.removeWithTmux': 'Remove worktree and tmux session',
+  'ui.worktreeExit.keepDesc': 'Stays at {path}',
+  'ui.worktreeExit.keepWithTmuxDesc': 'Stays at {path}. Reattach with: tmux attach -t {session}',
+  'ui.worktreeExit.keepKillTmuxDesc': 'Keeps worktree at {path}, terminates tmux session.',
+  'ui.worktreeExit.removeDescAll': 'All changes and commits will be lost.',
+  'ui.worktreeExit.removeDescClean': 'Clean up the worktree directory.',
+  'ui.worktreeExit.youHaveBoth': 'You have {changes} uncommitted {files} and {commits} {commitLabel} on {branch}. All will be lost if you remove.',
+  'ui.worktreeExit.youHaveChanges': 'You have {changes} uncommitted {files}. These will be lost if you remove the worktree.',
+  'ui.worktreeExit.youHaveCommits': 'You have {commits} {commitLabel} on {branch}. The branch will be deleted if you remove the worktree.',
+  'ui.worktreeExit.workingInWorktree': 'You are working in a worktree. Keep it to continue working there, or remove it to clean up.',
+  'ui.worktreeExit.removedWithUncommitted': 'Worktree removed. {commits} {commitLabel} and uncommitted changes were discarded.{tmuxNote}',
+  'ui.worktreeExit.removedWithCommits': 'Worktree removed. {commits} {commitLabel} on {branch} {wasLabel} discarded.{tmuxNote}',
+  'ui.worktreeExit.removedWithChanges': 'Worktree removed. Uncommitted changes were discarded.{tmuxNote}',
+  'ui.worktreeExit.removedSimple': 'Worktree removed.{tmuxNote}',
+  'ui.worktreeExit.keptWithPath': 'Worktree kept. Your work is saved at {path} on branch {branch}.',
+  'ui.worktreeExit.keptTmux': 'Worktree kept. Your work is saved at {path} on branch {branch}. Reattach to tmux session with: tmux attach -t {session}',
+  'ui.worktreeExit.keptKillTmux': 'Worktree kept at {path} on branch {branch}. Tmux session terminated.',
+  'ui.worktreeExit.tmuxTerminated': ' Tmux session terminated.',
 
   // ClaudeInChromeOnboarding
   'ui.claudeChromeOnboarding.title': 'Claude in Chrome',
   'ui.claudeChromeOnboarding.description':
     'Enable Claude in Chrome to browse the web during conversations.',
+  'ui.claudeChromeOnboarding.dialogTitle': 'Claude in Chrome (Beta)',
+  'ui.claudeChromeOnboarding.requiresExtension': 'Requires the Chrome extension. Get started at',
+  'ui.claudeChromeOnboarding.mainDesc': 'Claude in Chrome works with the Chrome extension to let you control your browser directly from Claude Code. You can navigate websites, fill forms, capture screenshots, record GIFs, and debug with console logs and network requests.',
+  'ui.claudeChromeOnboarding.sitePermissions': 'Site-level permissions are inherited from the Chrome extension. Manage permissions in the Chrome extension settings to control which sites Claude can browse, click, and type on',
+  'ui.claudeChromeOnboarding.forMoreInfo': 'For more info, use',
 } as const
 
 // ── Root-level UI component keys (zh) ────────────────────
@@ -923,6 +992,15 @@ export const zh: Record<string, string> = {
   'ui.onboarding.confirmSkip': 'Enter 确认 · Esc 跳过',
   'ui.onboarding.changeThemeLater': '要稍后更改，请运行 /theme',
 
+  // WelcomeV2
+  'ui.welcomeV2.title': '欢迎使用 Claude Code',
+
+  // TeleportResumeWrapper
+  'ui.teleportResume.resuming': '正在恢复会话\u2026',
+  'ui.teleportResume.loading': '正在加载"{title}"\u2026',
+  'ui.teleportResume.failed': '恢复会话失败',
+  'ui.teleportResume.pressEsc': '按 {key} 取消',
+
   // LogoV2 - condensed mode messages
   'ui.logoV2.debugMode': '调试模式已启用',
   'ui.logoV2.loggingTo': '日志输出到：{path}',
@@ -987,12 +1065,23 @@ export const zh: Record<string, string> = {
   // TeleportError
   'ui.teleportError.loginRequired': '您需要使用 Claude 账户登录才能使用 Teleport。',
   'ui.teleportError.gitStashRequired': '请在传输前暂存或提交您的更改。',
+  'ui.teleportError.requiresAccount': 'Teleport 需要 Claude.ai 账户。',
+  'ui.teleportError.proWillBeUsed': '您的 Claude Pro/Max 订阅将被 Claude Code 使用。',
+  'ui.teleportError.loginTitle': '登录到 Claude',
+  'ui.teleportError.loginWithAccount': '使用 Claude 账户登录',
 
   // TeleportRepoMismatch
   'ui.teleportRepoMismatch.title': '仓库路径不匹配',
   'ui.teleportRepoMismatch.selectPath': '选择与 {repo} 匹配的本地路径：',
   'ui.teleportRepoMismatch.cancel': '取消传输',
   'ui.teleportRepoMismatch.validating': '正在验证路径...',
+  'ui.teleportRepoMismatch.dialogTitle': '传输到仓库',
+  'ui.teleportRepoMismatch.usePath': '使用 {path}',
+  'ui.teleportRepoMismatch.openIn': '在 {repo} 中打开 Claude Code：',
+  'ui.teleportRepoMismatch.validatingRepo': '正在验证仓库\u2026',
+  'ui.teleportRepoMismatch.runFrom': '从 {repo} 的检出目录运行 claude --teleport',
+  'ui.teleportRepoMismatch.noLongerValid': '{path} 不再包含正确的仓库。请选择其他路径。',
+  'ui.teleportRepoMismatch.cancelOption': '取消',
 
   // QuickOpenDialog
   'ui.quickOpen.placeholder': '按名称搜索文件...',
@@ -1010,6 +1099,10 @@ export const zh: Record<string, string> = {
   'ui.logSelector.empty': '未找到会话',
   'ui.logSelector.loading': '正在加载会话...',
   'ui.logSelector.deleteConfirm': '确定要删除此会话吗？',
+  'ui.logSelector.searching': '搜索中\u2026',
+  'ui.logSelector.claudeFound': 'Claude 找到了以下结果：',
+  'ui.logSelector.noMatches': '未找到匹配的会话。',
+  'ui.logSelector.searchFailed': '搜索失败',
 
   // Spinner
   'ui.spinner.thinking': '思考中',
@@ -1029,6 +1122,10 @@ export const zh: Record<string, string> = {
   'ui.autoUpdater.skipVersion': '跳过此版本',
   'ui.autoUpdater.installNow': '立即安装',
   'ui.autoUpdater.later': '稍后',
+  'ui.autoUpdater.autoUpdating': '自动更新\u2026',
+  'ui.autoUpdater.restartToApply': '\u2713 更新已安装 \u00b7 重启以应用',
+  'ui.autoUpdater.updateFailed': '\u2717 自动更新失败 \u00b7 尝试',
+  'ui.autoUpdater.or': '或',
 
   // Stats
   'ui.stats.title': '会话统计',
@@ -1036,17 +1133,58 @@ export const zh: Record<string, string> = {
   'ui.stats.apiCalls': 'API 调用',
   'ui.stats.toolsUsed': '工具使用',
   'ui.stats.sessionTime': '会话时间',
+  'ui.stats.tabOverview': '概览',
+  'ui.stats.tabModels': '模型',
 
   // ClaudeMdExternalIncludes
   'ui.claudeMdExternal.title': '外部配置包含',
   'ui.claudeMdExternal.description': '以下位置的 CLAUDE.md 文件将被包含：',
+  'ui.claudeMdExternal.allowTitle': '允许外部 CLAUDE.md 文件导入？',
+  'ui.claudeMdExternal.warning': '此项目的 CLAUDE.md 导入了当前工作目录之外的文件。切勿对第三方仓库允许此操作。',
+  'ui.claudeMdExternal.externalImports': '外部导入：',
+  'ui.claudeMdExternal.securityWarning': '重要提示：仅将 Claude Code 用于您信任的文件。访问不受信任的文件可能存在安全风险',
+  'ui.claudeMdExternal.yesAllow': '是，允许外部导入',
+  'ui.claudeMdExternal.noDisable': '否，禁用外部导入',
 
   // WorktreeExitDialog
   'ui.worktreeExit.title': '退出 Worktree',
   'ui.worktreeExit.keep': '保留更改',
   'ui.worktreeExit.discard': '放弃更改',
+  'ui.worktreeExit.exitingTitle': '正在退出 worktree 会话',
+  'ui.worktreeExit.keeping': '正在保留 worktree\u2026',
+  'ui.worktreeExit.removing': '正在移除 worktree\u2026',
+  'ui.worktreeExit.removedNoChanges': 'Worktree 已移除（无更改）',
+  'ui.worktreeExit.cleanupFailed': 'Worktree 清理失败，无论如何退出',
+  'ui.worktreeExit.noActiveSession': '未找到活跃的 worktree 会话',
+  'ui.worktreeExit.keepWorktree': '保留 worktree',
+  'ui.worktreeExit.keepWithTmux': '保留 worktree 和 tmux 会话',
+  'ui.worktreeExit.keepKillTmux': '保留 worktree，终止 tmux 会话',
+  'ui.worktreeExit.removeWorktree': '移除 worktree',
+  'ui.worktreeExit.removeWithTmux': '移除 worktree 和 tmux 会话',
+  'ui.worktreeExit.keepDesc': '保存在 {path}',
+  'ui.worktreeExit.keepWithTmuxDesc': '保存在 {path}。重新连接：tmux attach -t {session}',
+  'ui.worktreeExit.keepKillTmuxDesc': '保留 worktree 在 {path}，终止 tmux 会话。',
+  'ui.worktreeExit.removeDescAll': '所有更改和提交都将丢失。',
+  'ui.worktreeExit.removeDescClean': '清理 worktree 目录。',
+  'ui.worktreeExit.youHaveBoth': '您在 {branch} 上有 {changes} 个未提交的{files}和 {commits} 个{commitLabel}。如果移除，所有内容将丢失。',
+  'ui.worktreeExit.youHaveChanges': '您有 {changes} 个未提交的{files}。如果移除 worktree，这些将丢失。',
+  'ui.worktreeExit.youHaveCommits': '您在 {branch} 上有 {commits} 个{commitLabel}。如果移除 worktree，该分支将被删除。',
+  'ui.worktreeExit.workingInWorktree': '您正在 worktree 中工作。保留它以继续工作，或移除它以清理。',
+  'ui.worktreeExit.removedWithUncommitted': 'Worktree 已移除。{commits} 个{commitLabel}和未提交的更改已被丢弃。{tmuxNote}',
+  'ui.worktreeExit.removedWithCommits': 'Worktree 已移除。{branch} 上的 {commits} 个{commitLabel}已被丢弃。{tmuxNote}',
+  'ui.worktreeExit.removedWithChanges': 'Worktree 已移除。未提交的更改已被丢弃。{tmuxNote}',
+  'ui.worktreeExit.removedSimple': 'Worktree 已移除。{tmuxNote}',
+  'ui.worktreeExit.keptWithPath': 'Worktree 已保留。您的工作保存在 {path} 的分支 {branch} 上。',
+  'ui.worktreeExit.keptTmux': 'Worktree 已保留。您的工作保存在 {path} 的分支 {branch} 上。重新连接到 tmux 会话：tmux attach -t {session}',
+  'ui.worktreeExit.keptKillTmux': 'Worktree 保留在 {path} 的分支 {branch} 上。Tmux 会话已终止。',
+  'ui.worktreeExit.tmuxTerminated': ' Tmux 会话已终止。',
 
   // ClaudeInChromeOnboarding
   'ui.claudeChromeOnboarding.title': 'Claude in Chrome',
   'ui.claudeChromeOnboarding.description': '启用 Claude in Chrome 以在对话期间浏览网页。',
+  'ui.claudeChromeOnboarding.dialogTitle': 'Claude in Chrome（Beta）',
+  'ui.claudeChromeOnboarding.requiresExtension': '需要 Chrome 扩展程序。请访问',
+  'ui.claudeChromeOnboarding.mainDesc': 'Claude in Chrome 与 Chrome 扩展程序配合使用，让您直接从 Claude Code 控制浏览器。您可以浏览网站、填写表单、截取屏幕截图、录制 GIF，以及使用控制台日志和网络请求进行调试。',
+  'ui.claudeChromeOnboarding.sitePermissions': '站点级权限继承自 Chrome 扩展程序。在 Chrome 扩展程序设置中管理权限，以控制 Claude 可以浏览、点击和输入的站点',
+  'ui.claudeChromeOnboarding.forMoreInfo': '更多信息，请使用',
 }

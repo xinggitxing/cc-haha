@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { t } from '../i18n/index.js';
 import type { CommandResultDisplay } from 'src/commands.js';
 import { logEvent } from 'src/services/analytics/index.js';
 import { logForDebugging } from 'src/utils/debug.js';
@@ -61,12 +62,12 @@ export function WorktreeExitDialog({
             setCwd(worktreeSession.originalCwd);
             recordWorktreeExit();
             getPlansDirectory.cache.clear?.();
-            setResultMessage('Worktree removed (no changes)');
+            setResultMessage(t('ui.worktreeExit.removedNoChanges'));
           }).catch(error => {
             logForDebugging(`Failed to clean up worktree: ${error}`, {
               level: 'error'
             });
-            setResultMessage('Worktree cleanup failed, exiting anyway');
+            setResultMessage(t('ui.worktreeExit.cleanupFailed'));
           }).then(() => {
             setStatus('done');
           });
@@ -86,7 +87,7 @@ export function WorktreeExitDialog({
     }
   }, [status, onDone, resultMessage]);
   if (!worktreeSession) {
-    onDone('No active worktree session found', {
+    onDone(t('ui.worktreeExit.noActiveSession'), {
       display: 'system'
     });
     return null;
@@ -109,9 +110,9 @@ export function WorktreeExitDialog({
       recordWorktreeExit();
       getPlansDirectory.cache.clear?.();
       if (hasTmux) {
-        setResultMessage(`Worktree kept. Your work is saved at ${worktreeSession.worktreePath} on branch ${worktreeSession.worktreeBranch}. Reattach to tmux session with: tmux attach -t ${worktreeSession.tmuxSessionName}`);
+        setResultMessage(t('ui.worktreeExit.keptTmux', { path: worktreeSession.worktreePath, branch: worktreeSession.worktreeBranch, session: worktreeSession.tmuxSessionName }));
       } else {
-        setResultMessage(`Worktree kept. Your work is saved at ${worktreeSession.worktreePath} on branch ${worktreeSession.worktreeBranch}`);
+        setResultMessage(t('ui.worktreeExit.keptWithPath', { path: worktreeSession.worktreePath, branch: worktreeSession.worktreeBranch }));
       }
       setStatus('done');
     } else if (value === 'keep-kill-tmux') {
@@ -128,7 +129,7 @@ export function WorktreeExitDialog({
       setCwd(worktreeSession.originalCwd);
       recordWorktreeExit();
       getPlansDirectory.cache.clear?.();
-      setResultMessage(`Worktree kept at ${worktreeSession.worktreePath} on branch ${worktreeSession.worktreeBranch}. Tmux session terminated.`);
+      setResultMessage(t('ui.worktreeExit.keptKillTmux', { path: worktreeSession.worktreePath, branch: worktreeSession.worktreeBranch }));
       setStatus('done');
     } else if (value === 'remove' || value === 'remove-with-tmux') {
       setStatus('removing');
@@ -149,19 +150,29 @@ export function WorktreeExitDialog({
         logForDebugging(`Failed to clean up worktree: ${error}`, {
           level: 'error'
         });
-        setResultMessage('Worktree cleanup failed, exiting anyway');
+        setResultMessage(t('ui.worktreeExit.cleanupFailed'));
         setStatus('done');
         return;
       }
-      const tmuxNote = hasTmux ? ' Tmux session terminated.' : '';
+      const tmuxNote = hasTmux ? t('ui.worktreeExit.tmuxTerminated') : '';
       if (commitCount > 0 && changes.length > 0) {
-        setResultMessage(`Worktree removed. ${commitCount} ${commitCount === 1 ? 'commit' : 'commits'} and uncommitted changes were discarded.${tmuxNote}`);
+        setResultMessage(t('ui.worktreeExit.removedWithUncommitted', {
+          commits: commitCount,
+          commitLabel: commitCount === 1 ? 'commit' : 'commits',
+          tmuxNote: tmuxNote,
+        }));
       } else if (commitCount > 0) {
-        setResultMessage(`Worktree removed. ${commitCount} ${commitCount === 1 ? 'commit' : 'commits'} on ${worktreeSession.worktreeBranch} ${commitCount === 1 ? 'was' : 'were'} discarded.${tmuxNote}`);
+        setResultMessage(t('ui.worktreeExit.removedWithCommits', {
+          commits: commitCount,
+          commitLabel: commitCount === 1 ? 'commit' : 'commits',
+          branch: worktreeSession.worktreeBranch,
+          wasLabel: commitCount === 1 ? 'was' : 'were',
+          tmuxNote: tmuxNote,
+        }));
       } else if (changes.length > 0) {
-        setResultMessage(`Worktree removed. Uncommitted changes were discarded.${tmuxNote}`);
+        setResultMessage(t('ui.worktreeExit.removedWithChanges', { tmuxNote: tmuxNote }));
       } else {
-        setResultMessage(`Worktree removed.${tmuxNote}`);
+        setResultMessage(t('ui.worktreeExit.removedSimple', { tmuxNote: tmuxNote }));
       }
       setStatus('done');
     }
@@ -169,13 +180,13 @@ export function WorktreeExitDialog({
   if (status === 'keeping') {
     return <Box flexDirection="row" marginY={1}>
         <Spinner />
-        <Text>Keeping worktree…</Text>
+        <Text>{t('ui.worktreeExit.keeping')}</Text>
       </Box>;
   }
   if (status === 'removing') {
     return <Box flexDirection="row" marginY={1}>
         <Spinner />
-        <Text>Removing worktree…</Text>
+        <Text>{t('ui.worktreeExit.removing')}</Text>
       </Box>;
   }
   const branchName = worktreeSession.worktreeBranch;
@@ -183,13 +194,26 @@ export function WorktreeExitDialog({
   const hasCommits = commitCount > 0;
   let subtitle = '';
   if (hasUncommitted && hasCommits) {
-    subtitle = `You have ${changes.length} uncommitted ${changes.length === 1 ? 'file' : 'files'} and ${commitCount} ${commitCount === 1 ? 'commit' : 'commits'} on ${branchName}. All will be lost if you remove.`;
+    subtitle = t('ui.worktreeExit.youHaveBoth', {
+      changes: changes.length,
+      files: changes.length === 1 ? 'file' : 'files',
+      commits: commitCount,
+      commitLabel: commitCount === 1 ? 'commit' : 'commits',
+      branch: branchName,
+    });
   } else if (hasUncommitted) {
-    subtitle = `You have ${changes.length} uncommitted ${changes.length === 1 ? 'file' : 'files'}. These will be lost if you remove the worktree.`;
+    subtitle = t('ui.worktreeExit.youHaveChanges', {
+      changes: changes.length,
+      files: changes.length === 1 ? 'file' : 'files',
+    });
   } else if (hasCommits) {
-    subtitle = `You have ${commitCount} ${commitCount === 1 ? 'commit' : 'commits'} on ${branchName}. The branch will be deleted if you remove the worktree.`;
+    subtitle = t('ui.worktreeExit.youHaveCommits', {
+      commits: commitCount,
+      commitLabel: commitCount === 1 ? 'commit' : 'commits',
+      branch: branchName,
+    });
   } else {
-    subtitle = 'You are working in a worktree. Keep it to continue working there, or remove it to clean up.';
+    subtitle = t('ui.worktreeExit.workingInWorktree');
   }
   function handleCancel() {
     if (onCancel) {
@@ -200,31 +224,31 @@ export function WorktreeExitDialog({
     // Fallback: treat Escape as "keep" if no onCancel provided
     void handleSelect('keep');
   }
-  const removeDescription = hasUncommitted || hasCommits ? 'All changes and commits will be lost.' : 'Clean up the worktree directory.';
+  const removeDescription = hasUncommitted || hasCommits ? t('ui.worktreeExit.removeDescAll') : t('ui.worktreeExit.removeDescClean');
   const hasTmuxSession = Boolean(worktreeSession.tmuxSessionName);
   const options = hasTmuxSession ? [{
-    label: 'Keep worktree and tmux session',
+    label: t('ui.worktreeExit.keepWithTmux'),
     value: 'keep-with-tmux',
-    description: `Stays at ${worktreeSession.worktreePath}. Reattach with: tmux attach -t ${worktreeSession.tmuxSessionName}`
+    description: t('ui.worktreeExit.keepWithTmuxDesc', { path: worktreeSession.worktreePath, session: worktreeSession.tmuxSessionName })
   }, {
-    label: 'Keep worktree, kill tmux session',
+    label: t('ui.worktreeExit.keepKillTmux'),
     value: 'keep-kill-tmux',
-    description: `Keeps worktree at ${worktreeSession.worktreePath}, terminates tmux session.`
+    description: t('ui.worktreeExit.keepKillTmuxDesc', { path: worktreeSession.worktreePath })
   }, {
-    label: 'Remove worktree and tmux session',
+    label: t('ui.worktreeExit.removeWithTmux'),
     value: 'remove-with-tmux',
     description: removeDescription
   }] : [{
-    label: 'Keep worktree',
+    label: t('ui.worktreeExit.keepWorktree'),
     value: 'keep',
-    description: `Stays at ${worktreeSession.worktreePath}`
+    description: t('ui.worktreeExit.keepDesc', { path: worktreeSession.worktreePath })
   }, {
-    label: 'Remove worktree',
+    label: t('ui.worktreeExit.removeWorktree'),
     value: 'remove',
     description: removeDescription
   }];
   const defaultValue = hasTmuxSession ? 'keep-with-tmux' : 'keep';
-  return <Dialog title="Exiting worktree session" subtitle={subtitle} onCancel={handleCancel}>
+  return <Dialog title={t('ui.worktreeExit.exitingTitle')} subtitle={subtitle} onCancel={handleCancel}>
       <Select defaultFocusValue={defaultValue} options={options} onChange={handleSelect} />
     </Dialog>;
 }

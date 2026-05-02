@@ -1,4 +1,5 @@
 import { c as _c } from "react/compiler-runtime";
+import { t } from '../i18n/index.js';
 import React, { useEffect } from 'react';
 import { type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS, logEvent } from 'src/services/analytics/index.js';
 import type { TeleportRemoteResponse } from 'src/utils/conversationRecovery.js';
@@ -104,14 +105,14 @@ export function TeleportResumeWrapper(t0) {
   if (isResuming && selectedSession) {
     let t8;
     if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
-      t8 = <Box flexDirection="row"><Spinner /><Text bold={true}>Resuming session…</Text></Box>;
+      t8 = <Box flexDirection="row"><Spinner /><Text bold={true}>{t('ui.teleportResume.resuming')}</Text></Box>;
       $[12] = t8;
     } else {
       t8 = $[12];
     }
     let t9;
     if ($[13] !== selectedSession.title) {
-      t9 = <Box flexDirection="column" padding={1}>{t8}<Text dimColor={true}>Loading "{selectedSession.title}"…</Text></Box>;
+      t9 = <Box flexDirection="column" padding={1}>{t8}<Text dimColor={true}>{t('ui.teleportResume.loading', { title: selectedSession.title })}</Text></Box>;
       $[13] = selectedSession.title;
       $[14] = t9;
     } else {
@@ -122,7 +123,7 @@ export function TeleportResumeWrapper(t0) {
   if (error && !onError) {
     let t8;
     if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
-      t8 = <Text bold={true} color="error">Failed to resume session</Text>;
+      t8 = <Text bold={true} color="error">{t('ui.teleportResume.failed')}</Text>;
       $[15] = t8;
     } else {
       t8 = $[15];
@@ -137,7 +138,7 @@ export function TeleportResumeWrapper(t0) {
     }
     let t10;
     if ($[18] === Symbol.for("react.memo_cache_sentinel")) {
-      t10 = <Box marginTop={1}><Text dimColor={true}>Press <Text bold={true}>Esc</Text> to cancel</Text></Box>;
+      t10 = <Box marginTop={1}><Text dimColor={true}>{t('ui.teleportResume.pressEsc', { key: 'Esc' })}</Text></Box>;
       $[18] = t10;
     } else {
       t10 = $[18];

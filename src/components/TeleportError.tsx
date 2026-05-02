@@ -1,4 +1,5 @@
 import { c as _c } from "react/compiler-runtime";
+import { t } from '../i18n/index.js';
 import React, { useCallback, useEffect, useState } from 'react';
 import { checkIsGitClean, checkNeedsClaudeAiLogin } from 'src/utils/background/remote/preconditions.js';
 import { gracefulShutdownSync } from 'src/utils/gracefulShutdown.js';
@@ -145,15 +146,15 @@ export function TeleportError(t0) {
         }
         let t9;
         if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
-          t9 = <Box flexDirection="column"><Text dimColor={true}>Teleport requires a Claude.ai account.</Text><Text dimColor={true}>Your Claude Pro/Max subscription will be used by Claude Code.</Text></Box>;
+          t9 = <Box flexDirection="column"><Text dimColor={true}>{t('ui.teleportError.requiresAccount')}</Text><Text dimColor={true}>{t('ui.teleportError.proWillBeUsed')}</Text></Box>;
           $[16] = t9;
         } else {
           t9 = $[16];
         }
         let t10;
         if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
-          t10 = <Dialog title="Log in to Claude" onCancel={onCancel}>{t9}<Select options={[{
-              label: "Login with Claude account",
+          t10 = <Dialog title={t('ui.teleportError.loginTitle')} onCancel={onCancel}>{t9}<Select options={[{
+              label: t('ui.teleportError.loginWithAccount'),
               value: "login"
             }, {
               label: "Exit",
