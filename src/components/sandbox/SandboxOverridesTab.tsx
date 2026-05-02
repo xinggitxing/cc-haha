@@ -5,6 +5,7 @@ import type { CommandResultDisplay } from '../../types/command.js';
 import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js';
 import { Select } from '../CustomSelect/select.js';
 import { useTabHeaderFocus } from '../design-system/Tabs.js';
+import { t } from '../../i18n/index.js';
 type Props = {
   onComplete: (result?: string, options?: {
     display?: CommandResultDisplay;
@@ -22,7 +23,7 @@ export function SandboxOverridesTab(t0) {
   if (!isEnabled) {
     let t1;
     if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
-      t1 = <Box flexDirection="column" paddingY={1}><Text color="subtle">Sandbox is not enabled. Enable sandbox to configure override settings.</Text></Box>;
+      t1 = <Box flexDirection="column" paddingY={1}><Text color="subtle">{t('ui.sandbox.notEnabledOverrides')}</Text></Box>;
       $[0] = t1;
     } else {
       t1 = $[0];
@@ -32,14 +33,14 @@ export function SandboxOverridesTab(t0) {
   if (isLocked) {
     let t1;
     if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
-      t1 = <Text color="subtle">Override settings are managed by a higher-priority configuration and cannot be changed locally.</Text>;
+      t1 = <Text color="subtle">{t('ui.sandbox.managedByHigherPriority')}</Text>;
       $[1] = t1;
     } else {
       t1 = $[1];
     }
     let t2;
     if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
-      t2 = <Box flexDirection="column" paddingY={1}>{t1}<Box marginTop={1}><Text dimColor={true}>Current setting:{" "}{currentAllowUnsandboxed ? "Allow unsandboxed fallback" : "Strict sandbox mode"}</Text></Box></Box>;
+      t2 = <Box flexDirection="column" paddingY={1}>{t1}<Box marginTop={1}><Text dimColor={true}>{currentAllowUnsandboxed ? t('ui.sandbox.currentSettingUnsandboxed') : t('ui.sandbox.currentSettingStrict')}</Text></Box></Box>;
       $[2] = t2;
     } else {
       t2 = $[2];
@@ -73,7 +74,7 @@ function OverridesSelect(t0) {
   } = useTabHeaderFocus();
   let t1;
   if ($[0] !== theme) {
-    t1 = color("success", theme)("(current)");
+    t1 = color("success", theme)(t('ui.sandbox.currentSuffix'));
     $[0] = theme;
     $[1] = t1;
   } else {

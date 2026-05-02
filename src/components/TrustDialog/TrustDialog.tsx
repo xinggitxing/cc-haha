@@ -1,6 +1,7 @@
 import { c as _c } from "react/compiler-runtime";
 import { homedir } from 'os';
 import React from 'react';
+import { t } from '../../i18n/index.js';
 import { logEvent } from 'src/services/analytics/index.js';
 import { setSessionTrustAccepted } from '../../bootstrap/state.js';
 import type { Command } from '../../commands.js';
@@ -205,8 +206,8 @@ export function TrustDialog(t0) {
   let t18;
   if ($[20] === Symbol.for("react.memo_cache_sentinel")) {
     t16 = <Text bold={true}>{getFsImplementation().cwd()}</Text>;
-    t17 = <Text>Quick safety check: Is this a project you created or one you trust? (Like your own code, a well-known open source project, or work from your team). If not, take a moment to review what{"'"}s in this folder first.</Text>;
-    t18 = <Text>Claude Code{"'"}ll be able to read, edit, and execute files here.</Text>;
+    t17 = <Text>{t('ui.trust.safetyCheck')}</Text>;
+    t18 = <Text>{t('ui.trust.claudeCapabilities')}</Text>;
     $[20] = t16;
     $[21] = t17;
     $[22] = t18;
@@ -217,7 +218,7 @@ export function TrustDialog(t0) {
   }
   let t19;
   if ($[23] === Symbol.for("react.memo_cache_sentinel")) {
-    t19 = <Text dimColor={true}><Link url="https://code.claude.com/docs/en/security">Security guide</Link></Text>;
+    t19 = <Text dimColor={true}><Link url="https://code.claude.com/docs/en/security">{t('ui.trust.securityGuide')}</Link></Text>;
     $[23] = t19;
   } else {
     t19 = $[23];
@@ -225,10 +226,10 @@ export function TrustDialog(t0) {
   let t20;
   if ($[24] === Symbol.for("react.memo_cache_sentinel")) {
     t20 = [{
-      label: "Yes, I trust this folder",
+      label: t('ui.trust.trustOption'),
       value: "enable_all"
     }, {
-      label: "No, exit",
+      label: t('ui.trust.exitOption'),
       value: "exit"
     }];
     $[24] = t20;
@@ -245,7 +246,7 @@ export function TrustDialog(t0) {
   }
   let t22;
   if ($[27] !== exitState.keyName || $[28] !== exitState.pending) {
-    t22 = <Text dimColor={true}>{exitState.pending ? <>Press {exitState.keyName} again to exit</> : <>Enter to confirm · Esc to cancel</>}</Text>;
+    t22 = <Text dimColor={true}>{exitState.pending ? <>{t('ui.trust.pressAgain', { key: exitState.keyName })}</> : <>{t('ui.trust.enterConfirm')}</>}</Text>;
     $[27] = exitState.keyName;
     $[28] = exitState.pending;
     $[29] = t22;
@@ -254,7 +255,7 @@ export function TrustDialog(t0) {
   }
   let t23;
   if ($[30] !== t21 || $[31] !== t22) {
-    t23 = <PermissionDialog color="warning" titleColor="warning" title="Accessing workspace:"><Box flexDirection="column" gap={1} paddingTop={1}>{t16}{t17}{t18}{t19}{t21}{t22}</Box></PermissionDialog>;
+    t23 = <PermissionDialog color="warning" titleColor="warning" title={t('ui.trust.title')}><Box flexDirection="column" gap={1} paddingTop={1}>{t16}{t17}{t18}{t19}{t21}{t22}</Box></PermissionDialog>;
     $[30] = t21;
     $[31] = t22;
     $[32] = t23;

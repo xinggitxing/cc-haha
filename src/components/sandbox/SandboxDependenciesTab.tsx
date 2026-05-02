@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Text } from '../../ink.js';
 import { getPlatform } from '../../utils/platform.js';
 import type { SandboxDependencyCheck } from '../../utils/sandbox/sandbox-adapter.js';
+import { t } from '../../i18n/index.js';
 type Props = {
   depCheck: SandboxDependencyCheck;
 };
@@ -51,10 +52,10 @@ export function SandboxDependenciesTab(t0) {
   let t5;
   if ($[7] !== bwrapMissing || $[8] !== depCheck.errors || $[9] !== rgMissing || $[10] !== seccompMissing || $[11] !== socatMissing) {
     const otherErrors = depCheck.errors.filter(_temp4);
-    const rgInstallHint = isMac ? "brew install ripgrep" : "apt install ripgrep";
+    const rgInstallHint = isMac ? t('ui.sandbox.brewInstall') : t('ui.sandbox.aptInstall');
     let t6;
     if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
-      t6 = isMac && <Box flexDirection="column"><Text>seatbelt: <Text color="success">built-in (macOS)</Text></Text></Box>;
+      t6 = isMac && <Box flexDirection="column"><Text>{t('ui.sandbox.seatbelt')}</Text></Box>;
       $[13] = t6;
     } else {
       t6 = $[13];
@@ -62,7 +63,7 @@ export function SandboxDependenciesTab(t0) {
     let t7;
     let t8;
     if ($[14] !== rgMissing) {
-      t7 = <Text>ripgrep (rg):{" "}{rgMissing ? <Text color="error">not found</Text> : <Text color="success">found</Text>}</Text>;
+      t7 = <Text>{rgMissing ? <Text color="error">{t('ui.sandbox.ripgrepNotFound')}</Text> : <Text color="success">{t('ui.sandbox.ripgrepFound')}</Text>}</Text>;
       t8 = rgMissing && <Text dimColor={true}>{"  "}· {rgInstallHint}</Text>;
       $[14] = rgMissing;
       $[15] = t7;

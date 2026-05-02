@@ -9,6 +9,7 @@ import { getSettings_DEPRECATED } from '../../utils/settings/settings.js';
 import { Select } from '../CustomSelect/select.js';
 import { Pane } from '../design-system/Pane.js';
 import { Tab, Tabs, useTabHeaderFocus } from '../design-system/Tabs.js';
+import { t } from '../../i18n/index.js';
 import { SandboxConfigTab } from './SandboxConfigTab.js';
 import { SandboxDependenciesTab } from './SandboxDependenciesTab.js';
 import { SandboxOverridesTab } from './SandboxOverridesTab.js';
@@ -51,14 +52,14 @@ export function SandboxSettings(t0) {
   const currentMode = getCurrentMode();
   let t2;
   if ($[1] !== theme) {
-    t2 = color("success", theme)("(current)");
+    t2 = color("success", theme)(t('ui.sandbox.currentSuffix'));
     $[1] = theme;
     $[2] = t2;
   } else {
     t2 = $[2];
   }
   const currentIndicator = t2;
-  const t3 = currentMode === "auto-allow" ? `Sandbox BashTool, with auto-allow ${currentIndicator}` : "Sandbox BashTool, with auto-allow";
+  const t3 = currentMode === "auto-allow" ? `${t('ui.sandbox.sandboxBashAllow')} ${currentIndicator}` : t('ui.sandbox.sandboxBashAllow');
   let t4;
   if ($[3] !== t3) {
     t4 = {
@@ -70,7 +71,7 @@ export function SandboxSettings(t0) {
   } else {
     t4 = $[4];
   }
-  const t5 = currentMode === "regular" ? `Sandbox BashTool, with regular permissions ${currentIndicator}` : "Sandbox BashTool, with regular permissions";
+  const t5 = currentMode === "regular" ? `${t('ui.sandbox.sandboxBashPerms')} ${currentIndicator}` : t('ui.sandbox.sandboxBashPerms');
   let t6;
   if ($[5] !== t5) {
     t6 = {
@@ -211,7 +212,7 @@ export function SandboxSettings(t0) {
   const tabs = t16;
   let t17;
   if ($[32] !== tabs) {
-    t17 = <Pane color="permission"><Tabs title="Sandbox:" color="permission" defaultTab="Mode">{tabs}</Tabs></Pane>;
+    t17 = <Pane color="permission"><Tabs title={`${t('ui.sandbox.sectionTitle')}:`} color="permission" defaultTab="Mode">{tabs}</Tabs></Pane>;
     $[32] = tabs;
     $[33] = t17;
   } else {

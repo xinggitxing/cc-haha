@@ -5,6 +5,7 @@ import { getCwd } from 'src/utils/cwd.js';
 import { Box, Text } from '../ink.js';
 import { HighlightedCode } from './HighlightedCode.js';
 import { MessageResponse } from './MessageResponse.js';
+import { t } from '../i18n/index.js';
 type Props = {
   notebook_path: string;
   cell_id: string | undefined;
@@ -27,7 +28,7 @@ export function NotebookEditToolUseRejectedMessage(t0) {
   const operation = edit_mode === "delete" ? "delete" : `${edit_mode} cell in`;
   let t2;
   if ($[0] !== operation) {
-    t2 = <Text color="subtle">User rejected {operation} </Text>;
+    t2 = <Text color="subtle">{t('ui.misc.editRejected', { operation })}</Text>;
     $[0] = operation;
     $[1] = t2;
   } else {

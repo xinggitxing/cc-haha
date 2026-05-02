@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { t } from '../../i18n/index.js';
 import { Box, Text } from '../../ink.js';
 import { Select } from '../CustomSelect/select.js';
 import { PermissionDialog } from '../permissions/PermissionDialog.js';
@@ -36,38 +37,33 @@ export function PluginHintMenu({
     }
   }
   const options = [{
-    label: <Text>
-          Yes, install <Text bold>{pluginName}</Text>
-        </Text>,
+    label: <Text>{t('ui.pluginHint.yesInstall', { name: pluginName })}</Text>,
     value: 'yes'
   }, {
-    label: 'No',
+    label: t('ui.pluginHint.no'),
     value: 'no'
   }, {
-    label: "No, and don't show plugin installation hints again",
+    label: t('ui.pluginHint.disableHints'),
     value: 'disable'
   }];
-  return <PermissionDialog title="Plugin Recommendation">
+  return <PermissionDialog title={t('ui.pluginHint.title')}>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Box marginBottom={1}>
-          <Text dimColor>
-            The <Text bold>{sourceCommand}</Text> command suggests installing a
-            plugin.
-          </Text>
+          <Text dimColor>{t('ui.pluginHint.commandSuggests', { command: sourceCommand })}</Text>
         </Box>
         <Box>
-          <Text dimColor>Plugin:</Text>
+          <Text dimColor>{t('ui.pluginHint.plugin')}</Text>
           <Text> {pluginName}</Text>
         </Box>
         <Box>
-          <Text dimColor>Marketplace:</Text>
+          <Text dimColor>{t('ui.pluginHint.marketplace')}</Text>
           <Text> {marketplaceName}</Text>
         </Box>
         {pluginDescription && <Box>
             <Text dimColor>{pluginDescription}</Text>
           </Box>}
         <Box marginTop={1}>
-          <Text>Would you like to install it?</Text>
+          <Text>{t('ui.pluginHint.installQuestion')}</Text>
         </Box>
         <Box>
           <Select options={options} onChange={onSelect} onCancel={() => onResponse('no')} />

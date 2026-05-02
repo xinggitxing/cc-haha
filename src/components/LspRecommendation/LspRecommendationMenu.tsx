@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { t } from '../../i18n/index.js';
 import { Box, Text } from '../../ink.js';
 import { Select } from '../CustomSelect/select.js';
 import { PermissionDialog } from '../permissions/PermissionDialog.js';
@@ -41,43 +42,36 @@ export function LspRecommendationMenu({
     }
   }
   const options = [{
-    label: <Text>
-          Yes, install <Text bold>{pluginName}</Text>
-        </Text>,
+    label: <Text>{t('ui.pluginHint.yesInstallLsp', { name: pluginName })}</Text>,
     value: 'yes'
   }, {
-    label: 'No, not now',
+    label: t('ui.pluginHint.notNow'),
     value: 'no'
   }, {
-    label: <Text>
-          Never for <Text bold>{pluginName}</Text>
-        </Text>,
+    label: <Text>{t('ui.pluginHint.neverFor', { name: pluginName })}</Text>,
     value: 'never'
   }, {
-    label: 'Disable all LSP recommendations',
+    label: t('ui.pluginHint.disableAll'),
     value: 'disable'
   }];
-  return <PermissionDialog title="LSP Plugin Recommendation">
+  return <PermissionDialog title={t('ui.pluginHint.lspTitle')}>
       <Box flexDirection="column" paddingX={2} paddingY={1}>
         <Box marginBottom={1}>
-          <Text dimColor>
-            LSP provides code intelligence like go-to-definition and error
-            checking
-          </Text>
+          <Text dimColor>{t('ui.pluginHint.lspDescription')}</Text>
         </Box>
         <Box>
-          <Text dimColor>Plugin:</Text>
+          <Text dimColor>{t('ui.pluginHint.lspPlugin')}</Text>
           <Text> {pluginName}</Text>
         </Box>
         {pluginDescription && <Box>
             <Text dimColor>{pluginDescription}</Text>
           </Box>}
         <Box>
-          <Text dimColor>Triggered by:</Text>
+          <Text dimColor>{t('ui.pluginHint.triggeredBy')}</Text>
           <Text> {fileExtension} files</Text>
         </Box>
         <Box marginTop={1}>
-          <Text>Would you like to install this LSP plugin?</Text>
+          <Text>{t('ui.pluginHint.lspInstallQuestion')}</Text>
         </Box>
         <Box>
           <Select options={options} onChange={onSelect} onCancel={() => onResponse('no')} />

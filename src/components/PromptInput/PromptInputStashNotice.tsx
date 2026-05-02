@@ -2,6 +2,7 @@ import { c as _c } from "react/compiler-runtime";
 import figures from 'figures';
 import * as React from 'react';
 import { Box, Text } from 'src/ink.js';
+import { t } from '../../i18n/index.js'
 type Props = {
   hasStash: boolean;
 };
@@ -15,7 +16,7 @@ export function PromptInputStashNotice(t0) {
   }
   let t1;
   if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
-    t1 = <Box paddingLeft={2}><Text dimColor={true}>{figures.pointerSmall} Stashed (auto-restores after submit)</Text></Box>;
+    t1 = <Box paddingLeft={2}><Text dimColor={true}>{figures.pointerSmall} {t('ui.promptInput.stashNotice')}</Text></Box>;
     $[0] = t1;
   } else {
     t1 = $[0];

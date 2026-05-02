@@ -1,6 +1,6 @@
 # 核心 UI 组件国际化进度
 
-## 状态：🔄 代码迁移 77% (66/86)，词条已全部定义
+## 状态：✅ 代码迁移 98% (84/86)，词条已全部定义
 
 ## 词条文件
 - `src/i18n/locales/keys/components.ts` — Core UI components
@@ -133,9 +133,7 @@
 
 ---
 
-## 待补全 ❌ (5 个词条未使用)
-
-以下词条虽已定义，但在当前组件中未找到匹配的 UI 字符串（可能在子组件或未来需要）：
+## 待补全 ❌ (1 个词条未使用)
 
 | Key | 说明 |
 |-----|------|
@@ -147,32 +145,8 @@
 
 ---
 
-## 汇总
-
-| 状态 | 计数 | 占比 |
-|------|------|------|
-| 已完成代码迁移 | 66 | 77% |
-| 词条已定义（待迁移） | 20 | 23% |
-| **总计** | **86** | 100% |
-
 ## 备注
-- 本轮完成了 13 个文件的代码迁移：`TeleportError.tsx`, `TeleportRepoMismatchDialog.tsx`, `AutoUpdater.tsx`, `WorktreeExitDialog.tsx`, `QuickOpenDialog.tsx`, `GlobalSearchDialog.tsx`, `LogSelector.tsx`, `Stats.tsx`, `ClaudeMdExternalIncludesDialog.tsx`, `ClaudeInChromeOnboarding.tsx`, `WelcomeV2.tsx`, `TeleportResumeWrapper.tsx`, `Spinner.tsx`（跳过）
-- 4 个文件确认无需国际化：`CondensedLogo.tsx`, `Feed.tsx`, `FeedColumn.tsx`, `MessageSelector.tsx`
-- 为上述文件添加了约 50+ 个新词条（中英文）
-- 遗留 5 个词条虽已定义但暂未找到匹配的 UI 字符串
-
-## 本轮新增：5 个独立词条文件
-
-| 文件 | 词条数 | 覆盖组件 |
-|------|--------|---------|
-| `keys/trust.ts` | 16 | TrustDialog, ManagedSettingsSecurityDialog |
-| `keys/pluginHints.ts` | 18 | PluginHintMenu, LspRecommendationMenu |
-| `keys/promptInput.ts` | 22 | PromptInputHelpMenu, StashNotice, IssueFlagBanner, SandboxPromptFooterHint |
-| `keys/sandbox.ts` | 36 | SandboxConfigTab, SandboxDependenciesTab, SandboxOverridesTab, SandboxSettings |
-| `keys/miscUi.ts` | 17 | DesktopUpsellStartup, GuestPassesUpsell, OverageCreditUpsell, Opus1mMergeNotice, VoiceModeNotice, MemoryUpdateNotification, NotebookEditToolUseRejectedMessage |
-
-**总计新增约 109 个词条（中英文），覆盖约 20 个组件文件，词条已就绪，待代码迁移。**
-
-## 后续修复
-- **ThinkingToggle.tsx**: 修复 `t()` 缺少 `{}` 包裹的问题（显示为字面文本）；将 `options` 中的硬编码英文字符串替换为 `t()`；为 mid-conversation 警告添加翻译
-- **ConsoleOAuthFlow.tsx**: 修复 `t()` 缺少 `{}` 包裹的问题；替换选择项中的硬编码描述文字；新增 `ui.oauth.claudeAccount/consoleAccount/thirdParty` 等 6 个词条（中英文）
+- 本轮完成了 18 个文件的代码迁移（信任、安全、插件、提示输入、沙箱、桌面推广、LogoV2 横幅、记忆通知等模块）
+- 使用 4 个并行代理进行迁移，每个代理处理不同的模块组
+- 所有更改均已通过语法检查和 `t()` 使用检查
+- Core Components 模块从 77% 提升到 98%，仅遗留少量边界词条

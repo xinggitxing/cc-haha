@@ -8,6 +8,7 @@ import { getInitialSettings } from '../../utils/settings/settings.js';
 import { isVoiceModeEnabled } from '../../voice/voiceModeEnabled.js';
 import { AnimatedAsterisk } from './AnimatedAsterisk.js';
 import { shouldShowOpus1mMergeNotice } from './Opus1mMergeNotice.js';
+import { t } from '../../i18n/index.js';
 const MAX_SHOW_COUNT = 3;
 export function VoiceModeNotice() {
   const $ = _c(1);
@@ -55,7 +56,7 @@ function VoiceModeNoticeInner() {
   }
   let t2;
   if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
-    t2 = <Box paddingLeft={2}><AnimatedAsterisk /><Text dimColor={true}> Voice mode is now available · /voice to enable</Text></Box>;
+    t2 = <Box paddingLeft={2}><AnimatedAsterisk /><Text dimColor={true}>{t('ui.logoBanner.voiceMode')}</Text></Box>;
     $[3] = t2;
   } else {
     t2 = $[3];

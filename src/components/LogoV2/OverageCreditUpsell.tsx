@@ -6,6 +6,7 @@ import { logEvent } from '../../services/analytics/index.js';
 import { formatGrantAmount, getCachedOverageCreditGrant, refreshOverageCreditGrantCache } from '../../services/api/overageCreditGrant.js';
 import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
 import { truncate } from '../../utils/format.js';
+import { t } from '../../i18n/index.js';
 import type { FeedConfig } from './Feed.js';
 const MAX_IMPRESSIONS = 3;
 
@@ -69,14 +70,14 @@ export function incrementOverageCreditUpsellSeenCount(): void {
 
 // Copy from "OC & Bulk Overages copy" doc (#6 — CLI /usage)
 function getUsageText(amount: string): string {
-  return `${amount} in extra usage for third-party apps · /extra-usage`;
+  return t('ui.logoBanner.overageCredit', { amount });
 }
 
 // Copy from "OC & Bulk Overages copy" doc (#4 — CLI Welcome screen).
 // Char budgets: title ≤19, subtitle ≤48.
-const FEED_SUBTITLE = 'On us. Works on third-party apps · /extra-usage';
+const FEED_SUBTITLE = t('ui.logoBanner.overageCreditOnUs');
 function getFeedTitle(amount: string): string {
-  return `${amount} in extra usage`;
+  return t('ui.logoBanner.overageCreditFallback', { amount });
 }
 type Props = {
   maxWidth?: number;
