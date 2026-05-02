@@ -268,6 +268,62 @@ export const en = {
 
   // Quick search / fuzzy picker common
   'ui.fuzzyPicker.selectAction': 'Select',
+
+  // ContextSuggestions
+  'ui.contextSuggestions.title': 'Suggestions',
+  'ui.contextSuggestions.save': 'save ~{tokens}',
+
+  // InterruptedByUser
+  'ui.interruptedByUser.text': 'Interrupted ',
+  'ui.interruptedByUser.whatShouldClaudeDo': '\u00b7 What should Claude do instead?',
+
+  // PrBadge
+  'ui.prBadge.label': 'PR',
+
+  // AwsAuthStatusBox
+  'ui.awsAuthStatus.title': 'Cloud Authentication',
+
+  // KeybindingWarnings
+  'ui.keybindingWarnings.title': 'Keybinding Configuration Issues',
+  'ui.keybindingWarnings.location': 'Location: ',
+  'ui.keybindingWarnings.error': '[Error]',
+  'ui.keybindingWarnings.warning': '[Warning]',
+
+  // SkillImprovementSurvey
+  'ui.skillSurvey.title': 'Skill improvement suggested for "{skillName}"',
+  'ui.skillSurvey.apply': ': Apply',
+  'ui.skillSurvey.dismiss': ': Dismiss',
+
+  // LanguagePicker
+  'ui.languagePicker.title': 'Enter your preferred response and voice language:',
+  'ui.languagePicker.placeholder': 'e.g., Japanese, \u65e5\u672c\u8a9e, Espa\u00f1ol\u2026',
+  'ui.languagePicker.defaultHint': 'Leave empty for default (English)',
+
+  // DesktopHandoff
+  'ui.desktopHandoff.checking': 'Checking for Claude Desktop\u2026',
+  'ui.desktopHandoff.flushing': 'Saving session\u2026',
+  'ui.desktopHandoff.opening': 'Opening Claude Desktop\u2026',
+  'ui.desktopHandoff.success': 'Opening in Claude Desktop\u2026',
+  'ui.desktopHandoff.error': 'Error: {error}',
+  'ui.desktopHandoff.pressAnyKey': 'Press any key to continue\u2026',
+  'ui.desktopHandoff.downloadPrompt': 'Download now? (y/n)',
+
+  // ShowInIDEPrompt
+  'ui.showInIDE.openedChanges': 'Opened changes in {ideName} \u29c9',
+  'ui.showInIDE.editPrompt': 'Do you want to make this edit to ',
+  'ui.showInIDE.saveFileHint': 'Save file to continue\u2026',
+  'ui.showInIDE.escToCancel': 'Esc to cancel',
+  'ui.showInIDE.tabToAmend': '\u00b7 Tab to amend',
+  'ui.showInIDE.symlinkOutside': 'This will modify {target} (outside working directory) via a symlink',
+  'ui.showInIDE.symlinkTarget': 'Symlink target: {target}',
+
+  // FallbackToolUseErrorMessage
+  'ui.fallbackError.toolFailed': 'Tool execution failed',
+  'ui.fallbackError.invalidParams': 'Invalid tool parameters',
+  'ui.fallbackError.plusLines': '\u2026 +{count} {lines} (',
+  'ui.fallbackError.toSeeAll': 'to see all)',
+  'ui.fallbackError.line': 'line',
+  'ui.fallbackError.lines': 'lines',
 } as const
 
 // ── Root-level UI component keys (zh) ────────────────────
@@ -535,4 +591,60 @@ export const zh: Record<string, string> = {
 
   // Quick search / fuzzy picker common
   'ui.fuzzyPicker.selectAction': '选择',
+
+  // ContextSuggestions
+  'ui.contextSuggestions.title': '建议',
+  'ui.contextSuggestions.save': '节省约 ~{tokens}',
+
+  // InterruptedByUser
+  'ui.interruptedByUser.text': '已中断 ',
+  'ui.interruptedByUser.whatShouldClaudeDo': '\u00b7 Claude 应该怎么做？',
+
+  // PrBadge
+  'ui.prBadge.label': 'PR',
+
+  // AwsAuthStatusBox
+  'ui.awsAuthStatus.title': '云身份验证',
+
+  // KeybindingWarnings
+  'ui.keybindingWarnings.title': '键位绑定配置问题',
+  'ui.keybindingWarnings.location': '位置：',
+  'ui.keybindingWarnings.error': '[错误]',
+  'ui.keybindingWarnings.warning': '[警告]',
+
+  // SkillImprovementSurvey
+  'ui.skillSurvey.title': '为"{skillName}"建议的技能改进',
+  'ui.skillSurvey.apply': '：应用',
+  'ui.skillSurvey.dismiss': '：忽略',
+
+  // LanguagePicker
+  'ui.languagePicker.title': '输入您偏好的回复和语音语言：',
+  'ui.languagePicker.placeholder': '例如：日语, \u65e5\u672c\u8a9e, Espa\u00f1ol\u2026',
+  'ui.languagePicker.defaultHint': '留空则使用默认语言（英语）',
+
+  // DesktopHandoff
+  'ui.desktopHandoff.checking': '正在检查 Claude Desktop\u2026',
+  'ui.desktopHandoff.flushing': '正在保存会话\u2026',
+  'ui.desktopHandoff.opening': '正在打开 Claude Desktop\u2026',
+  'ui.desktopHandoff.success': '正在在 Claude Desktop 中打开\u2026',
+  'ui.desktopHandoff.error': '错误：{error}',
+  'ui.desktopHandoff.pressAnyKey': '按任意键继续\u2026',
+  'ui.desktopHandoff.downloadPrompt': '现在下载？(y/n)',
+
+  // ShowInIDEPrompt
+  'ui.showInIDE.openedChanges': '在 {ideName} 中打开了更改 \u29c9',
+  'ui.showInIDE.editPrompt': '您想对此文件进行此编辑吗 ',
+  'ui.showInIDE.saveFileHint': '保存文件以继续\u2026',
+  'ui.showInIDE.escToCancel': 'Esc 取消',
+  'ui.showInIDE.tabToAmend': '\u00b7 Tab 修改',
+  'ui.showInIDE.symlinkOutside': '将通过符号链接修改 {target}（工作目录外）',
+  'ui.showInIDE.symlinkTarget': '符号链接目标：{target}',
+
+  // FallbackToolUseErrorMessage
+  'ui.fallbackError.toolFailed': '工具执行失败',
+  'ui.fallbackError.invalidParams': '无效的工具参数',
+  'ui.fallbackError.plusLines': '\u2026 +{count} {lines}（',
+  'ui.fallbackError.toSeeAll': '查看全部）',
+  'ui.fallbackError.line': '行',
+  'ui.fallbackError.lines': '行',
 }

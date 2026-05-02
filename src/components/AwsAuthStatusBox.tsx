@@ -1,6 +1,7 @@
 import { c as _c } from "react/compiler-runtime";
 import React, { useEffect, useState } from 'react';
 import { Box, Link, Text } from '../ink.js';
+import { t } from '../i18n/index.js';
 import { type AwsAuthStatus, AwsAuthStatusManager } from '../utils/awsAuthStatusManager.js';
 const URL_RE = /https?:\/\/\S+/;
 export function AwsAuthStatusBox() {
@@ -36,7 +37,7 @@ export function AwsAuthStatusBox() {
   }
   let t3;
   if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
-    t3 = <Text bold={true} color="permission">Cloud Authentication</Text>;
+    t3 = <Text bold={true} color="permission">{t('ui.awsAuthStatus.title')}</Text>;
     $[3] = t3;
   } else {
     t3 = $[3];

@@ -2,6 +2,7 @@ import { c as _c } from "react/compiler-runtime";
 import { basename, relative } from 'path';
 import React from 'react';
 import { Box, Text } from '../ink.js';
+import { t } from '../i18n/index.js';
 import { getCwd } from '../utils/cwd.js';
 import { isSupportedVSCodeTerminal } from '../utils/ide.js';
 import { Select } from './CustomSelect/index.js';
@@ -41,7 +42,7 @@ export function ShowInIDEPrompt(t0) {
   } = t0;
   let t1;
   if ($[0] !== ideName) {
-    t1 = <Text bold={true} color="permission">Opened changes in {ideName} ⧉</Text>;
+    t1 = <Text bold={true} color="permission">{t('ui.showInIDE.openedChanges', { ideName })}</Text>;
     $[0] = ideName;
     $[1] = t1;
   } else {
@@ -49,7 +50,7 @@ export function ShowInIDEPrompt(t0) {
   }
   let t2;
   if ($[2] !== symlinkTarget) {
-    t2 = symlinkTarget && <Text color="warning">{relative(getCwd(), symlinkTarget).startsWith("..") ? `This will modify ${symlinkTarget} (outside working directory) via a symlink` : `Symlink target: ${symlinkTarget}`}</Text>;
+    t2 = symlinkTarget && <Text color="warning">{relative(getCwd(), symlinkTarget).startsWith("..") ? t('ui.showInIDE.symlinkOutside', { target: symlinkTarget }) : t('ui.showInIDE.symlinkTarget', { target: symlinkTarget })}</Text>;
     $[2] = symlinkTarget;
     $[3] = t2;
   } else {
@@ -57,7 +58,7 @@ export function ShowInIDEPrompt(t0) {
   }
   let t3;
   if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
-    t3 = isSupportedVSCodeTerminal() && <Text dimColor={true}>Save file to continue…</Text>;
+    t3 = isSupportedVSCodeTerminal() && <Text dimColor={true}>{t('ui.showInIDE.saveFileHint')}</Text>;
     $[4] = t3;
   } else {
     t3 = $[4];
@@ -72,7 +73,7 @@ export function ShowInIDEPrompt(t0) {
   }
   let t5;
   if ($[7] !== t4) {
-    t5 = <Text>Do you want to make this edit to{" "}<Text bold={true}>{t4}</Text>?</Text>;
+    t5 = <Text>{t('ui.showInIDE.editPrompt')}<Text bold={true}>{t4}</Text>?</Text>;
     $[7] = t4;
     $[8] = t5;
   } else {
@@ -145,10 +146,10 @@ export function ShowInIDEPrompt(t0) {
   } else {
     t10 = $[28];
   }
-  const t11 = (focusedOption === "yes" && !yesInputMode || focusedOption === "no" && !noInputMode) && " \xB7 Tab to amend";
+  const t11 = (focusedOption === "yes" && !yesInputMode || focusedOption === "no" && !noInputMode) && t('ui.showInIDE.tabToAmend');
   let t12;
   if ($[29] !== t11) {
-    t12 = <Box marginTop={1}><Text dimColor={true}>Esc to cancel{t11}</Text></Box>;
+    t12 = <Box marginTop={1}><Text dimColor={true}>{t('ui.showInIDE.escToCancel')}{t11}</Text></Box>;
     $[29] = t11;
     $[30] = t12;
   } else {

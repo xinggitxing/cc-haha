@@ -1,6 +1,6 @@
 # 核心 UI 组件国际化进度
 
-## 状态：⚠️ 45% 完成 (31/71)
+## 状态：⚠️ 58% 完成 (41/71)
 
 ## 词条文件
 `src/i18n/locales/keys/components.ts`
@@ -47,6 +47,20 @@
 | `DiagnosticsDisplay.tsx` | `ui.diagnosticsDisplay.*` |
 | `HistorySearchDialog.tsx` | `ui.historySearch.*` |
 | `design-system/FuzzyPicker.tsx` | `ui.fuzzyPicker.*` |
+
+### 本轮完成：新增 (10)
+| 文件 | 使用的 Key |
+|------|-----------|
+| `ContextSuggestions.tsx` | `ui.contextSuggestions.*` |
+| `InterruptedByUser.tsx` | `ui.interruptedByUser.*` |
+| `PrBadge.tsx` | `ui.prBadge.*` |
+| `AwsAuthStatusBox.tsx` | `ui.awsAuthStatus.*` |
+| `KeybindingWarnings.tsx` | `ui.keybindingWarnings.*` |
+| `SkillImprovementSurvey.tsx` | `ui.skillSurvey.*` |
+| `LanguagePicker.tsx` | `ui.languagePicker.*` |
+| `DesktopHandoff.tsx` | `ui.desktopHandoff.*` |
+| `ShowInIDEPrompt.tsx` | `ui.showInIDE.*` |
+| `FallbackToolUseErrorMessage.tsx` | `ui.fallbackError.*` |
 
 ---
 
@@ -98,34 +112,28 @@
 | `TeleportRepoMismatchDialog.tsx` | 仓库不匹配 |
 | `TeleportResumeWrapper.tsx` | 恢复包装 |
 
-### IDE / 远程 (6)
+### IDE / 远程 (5)
 | 文件 | 说明 |
 |------|------|
-| `ShowInIDEPrompt.tsx` | IDE 提示 |
 | `IdeAutoConnectDialog.tsx` | IDE 自动连接 |
 | `IdeOnboardingDialog.tsx` | IDE 引导 |
 | `IdeStatusIndicator.tsx` | IDE 状态 |
 
-### 设置和对话框 (5)
+### 设置和对话框 (4)
 | 文件 | 说明 |
 |------|------|
-| `LanguagePicker.tsx` | 语言选择器 |
 | `Stats.tsx` | 统计页面 |
 | `ClaudeMdExternalIncludesDialog.tsx` | 外部导入 |
 | `WorktreeExitDialog.tsx` | Worktree 退出 |
 | `ClaudeInChromeOnboarding.tsx` | Chrome 引导 |
 
-### 其他组件 (7)
+### 其他组件 (2)
 | 文件 | 说明 |
 |------|------|
 | `Spinner.tsx` | 加载动画 |
 | `AutoUpdater.tsx` | 自动更新 |
-| `DesktopHandoff.tsx` | 桌面切换 |
-| `KeybindingWarnings.tsx` | 快捷键警告 |
-| `SkillImprovementSurvey.tsx` | 技能改善 |
-| `PrBadge.tsx` / `SessionBackgroundHint.tsx` / `TagTabs.tsx` / `InterruptedByUser.tsx` | 小标签组件 |
-| `FullscreenLayout.tsx` / `EffortCallout.tsx` / `ContextSuggestions.tsx` / `AwsAuthStatusBox.tsx` | 状态/提示组件 |
-| `ValidationErrorsList.tsx` / `FallbackToolUseErrorMessage.tsx` / `FileEditToolUseRejectedMessage.tsx` / `FileEditToolUpdatedMessage.tsx` | 错误/状态消息 |
+| `FullscreenLayout.tsx` / `EffortCallout.tsx` | 状态/提示组件 |
+| `ValidationErrorsList.tsx` / `FileEditToolUseRejectedMessage.tsx` / `FileEditToolUpdatedMessage.tsx` | 错误/状态消息 |
 
 ---
 
@@ -133,8 +141,8 @@
 
 | 状态 | 计数 | 占比 |
 |------|------|------|
-| 已完成 | 31 | 45% |
-| 待补全 | 40 | 55% |
+| 已完成 | 41 | 58% |
+| 待补全 | 30 | 42% |
 | **总计** | **71** | 100% |
 
 ## 备注

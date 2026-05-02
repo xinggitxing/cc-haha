@@ -1,6 +1,7 @@
 import { c as _c } from "react/compiler-runtime";
 import React from 'react';
 import { Link, Text } from '../ink.js';
+import { t } from '../i18n/index.js';
 import type { PrReviewState } from '../utils/ghPrStatus.js';
 type Props = {
   number: number;
@@ -41,7 +42,7 @@ export function PrBadge(t0) {
   const t4 = !bold;
   let t5;
   if ($[7] !== t4) {
-    t5 = <Text dimColor={t4}>PR</Text>;
+    t5 = <Text dimColor={t4}>{t('ui.prBadge.label')}</Text>;
     $[7] = t4;
     $[8] = t5;
   } else {

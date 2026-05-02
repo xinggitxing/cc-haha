@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import type { CommandResultDisplay } from '../commands.js';
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- raw input for "any key" dismiss and y/n prompt
 import { Box, Text, useInput } from '../ink.js';
+import { t } from '../i18n/index.js';
 import { openBrowser } from '../utils/browser.js';
 import { getDesktopInstallStatus, openCurrentSessionInDesktop } from '../utils/desktopDeepLink.js';
 import { errorMessage } from '../utils/errors.js';
@@ -110,7 +111,7 @@ export function DesktopHandoff(t0) {
   if (state === "error") {
     let t4;
     if ($[7] !== error) {
-      t4 = <Text color="error">Error: {error}</Text>;
+      t4 = <Text color="error">{t('ui.desktopHandoff.error', { error })}</Text>;
       $[7] = error;
       $[8] = t4;
     } else {
@@ -118,7 +119,7 @@ export function DesktopHandoff(t0) {
     }
     let t5;
     if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
-      t5 = <Text dimColor={true}>Press any key to continue…</Text>;
+      t5 = <Text dimColor={true}>{t('ui.desktopHandoff.pressAnyKey')}</Text>;
       $[9] = t5;
     } else {
       t5 = $[9];
@@ -144,7 +145,7 @@ export function DesktopHandoff(t0) {
     }
     let t5;
     if ($[14] === Symbol.for("react.memo_cache_sentinel")) {
-      t5 = <Text>Download now? (y/n)</Text>;
+      t5 = <Text>{t('ui.desktopHandoff.downloadPrompt')}</Text>;
       $[14] = t5;
     } else {
       t5 = $[14];
@@ -162,10 +163,10 @@ export function DesktopHandoff(t0) {
   let t4;
   if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
     t4 = {
-      checking: "Checking for Claude Desktop\u2026",
-      flushing: "Saving session\u2026",
-      opening: "Opening Claude Desktop\u2026",
-      success: "Opening in Claude Desktop\u2026"
+      checking: t('ui.desktopHandoff.checking'),
+      flushing: t('ui.desktopHandoff.flushing'),
+      opening: t('ui.desktopHandoff.opening'),
+      success: t('ui.desktopHandoff.success')
     };
     $[17] = t4;
   } else {

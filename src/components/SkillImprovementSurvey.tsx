@@ -2,6 +2,7 @@ import { c as _c } from "react/compiler-runtime";
 import React, { useEffect, useRef } from 'react';
 import { BLACK_CIRCLE, BULLET_OPERATOR } from '../constants/figures.js';
 import { Box, Text } from '../ink.js';
+import { t } from '../i18n/index.js';
 import type { SkillUpdate } from '../utils/hooks/skillImprovement.js';
 import { normalizeFullWidthDigits } from '../utils/stringUtils.js';
 import { isValidResponseInput } from './FeedbackSurvey/FeedbackSurveyView.js';
@@ -99,7 +100,7 @@ function SkillImprovementSurveyView(t0) {
   }
   let t4;
   if ($[6] !== skillName) {
-    t4 = <Box>{t3}<Text bold={true}>Skill improvement suggested for "{skillName}"</Text></Box>;
+    t4 = <Box>{t3}<Text bold={true}>{t('ui.skillSurvey.title', { skillName })}</Text></Box>;
     $[6] = skillName;
     $[7] = t4;
   } else {
@@ -123,14 +124,14 @@ function SkillImprovementSurveyView(t0) {
   }
   let t7;
   if ($[12] === Symbol.for("react.memo_cache_sentinel")) {
-    t7 = <Box width={12}><Text><Text color="ansi:cyan">1</Text>: Apply</Text></Box>;
+    t7 = <Box width={12}><Text><Text color="ansi:cyan">1</Text>{t('ui.skillSurvey.apply')}</Text></Box>;
     $[12] = t7;
   } else {
     t7 = $[12];
   }
   let t8;
   if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
-    t8 = <Box marginLeft={2} marginTop={1}>{t7}<Box width={14}><Text><Text color="ansi:cyan">0</Text>: Dismiss</Text></Box></Box>;
+    t8 = <Box marginLeft={2} marginTop={1}>{t7}<Box width={14}><Text><Text color="ansi:cyan">0</Text>{t('ui.skillSurvey.dismiss')}</Text></Box></Box>;
     $[13] = t8;
   } else {
     t8 = $[13];
