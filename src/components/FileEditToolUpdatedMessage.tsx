@@ -6,6 +6,7 @@ import { Box, Text } from '../ink.js';
 import { count } from '../utils/array.js';
 import { MessageResponse } from './MessageResponse.js';
 import { StructuredDiffList } from './StructuredDiffList.js';
+import { t } from '../i18n/index.js';
 type Props = {
   filePath: string;
   structuredPatch: StructuredPatchHunk[];
@@ -33,7 +34,7 @@ export function FileEditToolUpdatedMessage(t0) {
   const numRemovals = structuredPatch.reduce(_temp4, 0);
   let t1;
   if ($[0] !== numAdditions) {
-    t1 = numAdditions > 0 ? <>Added <Text bold={true}>{numAdditions}</Text>{" "}{numAdditions > 1 ? "lines" : "line"}</> : null;
+    t1 = numAdditions > 0 ? <>{t('ui.fileEdit.added')}<Text bold={true}>{numAdditions}</Text>{" "}{numAdditions > 1 ? t('ui.fileEdit.lines') : t('ui.fileEdit.line')}</> : null;
     $[0] = numAdditions;
     $[1] = t1;
   } else {
@@ -42,7 +43,7 @@ export function FileEditToolUpdatedMessage(t0) {
   const t2 = numAdditions > 0 && numRemovals > 0 ? ", " : null;
   let t3;
   if ($[2] !== numAdditions || $[3] !== numRemovals) {
-    t3 = numRemovals > 0 ? <>{numAdditions === 0 ? "R" : "r"}emoved <Text bold={true}>{numRemovals}</Text>{" "}{numRemovals > 1 ? "lines" : "line"}</> : null;
+    t3 = numRemovals > 0 ? <>{t('ui.fileEdit.removed', { case: numAdditions === 0 ? "R" : "r" })}<Text bold={true}>{numRemovals}</Text>{" "}{numRemovals > 1 ? t('ui.fileEdit.lines') : t('ui.fileEdit.line')}</> : null;
     $[2] = numAdditions;
     $[3] = numRemovals;
     $[4] = t3;

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Box, Text, useTheme } from '../ink.js';
 import type { ValidationError } from '../utils/settings/validation.js';
 import { type TreeNode, treeify } from '../utils/treeify.js';
+import { t } from '../i18n/index.js';
 
 /**
  * Builds a nested tree structure from dot-notation paths
@@ -126,7 +127,7 @@ export function ValidationErrorsList(t0) {
   return t3;
 }
 function _temp3(pair, index) {
-  return <Box key={`suggestion-pair-${index}`} flexDirection="column" marginBottom={1}>{pair.suggestion && <Text dimColor={true} wrap="wrap">{pair.suggestion}</Text>}{pair.docLink && <Text dimColor={true} wrap="wrap">Learn more: {pair.docLink}</Text>}</Box>;
+  return <Box key={`suggestion-pair-${index}`} flexDirection="column" marginBottom={1}>{pair.suggestion && <Text dimColor={true} wrap="wrap">{pair.suggestion}</Text>}{pair.docLink && <Text dimColor={true} wrap="wrap">{t('ui.validation.learnMore', { link: pair.docLink })}</Text>}</Box>;
 }
 function _temp2(a, b) {
   if (!a.path && b.path) {
@@ -138,7 +139,7 @@ function _temp2(a, b) {
   return (a.path || "").localeCompare(b.path || "");
 }
 function _temp(acc, error) {
-  const file = error.file || "(file not specified)";
+  const file = error.file || t('ui.validation.fileNotSpecified');
   if (!acc[file]) {
     acc[file] = [];
   }

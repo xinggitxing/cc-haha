@@ -15,6 +15,7 @@ import { getMcpConfigsByScope } from '../../services/mcp/config.js';
 import { getClaudeAIOAuthTokens, getSubscriptionType } from '../../utils/auth.js';
 import { loadInstalledPluginsV2 } from '../../utils/plugins/installedPluginsManager.js';
 import { getSettingsForSource } from '../../utils/settings/settings.js';
+import { t } from '../../i18n/index.js';
 export function ChannelsNotice() {
   const $ = _c(32);
   const [t0] = useState(_temp);
@@ -34,7 +35,7 @@ export function ChannelsNotice() {
   if (disabled) {
     let t1;
     if ($[0] !== flag || $[1] !== list) {
-      t1 = <Text color="error">{flag} ignored ({list})</Text>;
+      t1 = <Text color="error">{t('ui.channelsNotice.ignored', { flag, list })}</Text>;
       $[0] = flag;
       $[1] = list;
       $[2] = t1;
@@ -43,7 +44,7 @@ export function ChannelsNotice() {
     }
     let t2;
     if ($[3] === Symbol.for("react.memo_cache_sentinel")) {
-      t2 = <Text dimColor={true}>Channels are not currently available</Text>;
+      t2 = <Text dimColor={true}>{t('ui.channelsNotice.notAvailable')}</Text>;
       $[3] = t2;
     } else {
       t2 = $[3];
@@ -61,7 +62,7 @@ export function ChannelsNotice() {
   if (noAuth) {
     let t1;
     if ($[6] !== flag || $[7] !== list) {
-      t1 = <Text color="error">{flag} ignored ({list})</Text>;
+      t1 = <Text color="error">{t('ui.channelsNotice.ignored', { flag, list })}</Text>;
       $[6] = flag;
       $[7] = list;
       $[8] = t1;
@@ -70,7 +71,7 @@ export function ChannelsNotice() {
     }
     let t2;
     if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
-      t2 = <Text dimColor={true}>Channels require claude.ai authentication · run /login, then restart</Text>;
+      t2 = <Text dimColor={true}>{t('ui.channelsNotice.requiresAuth')}</Text>;
       $[9] = t2;
     } else {
       t2 = $[9];
@@ -88,7 +89,7 @@ export function ChannelsNotice() {
   if (policyBlocked) {
     let t1;
     if ($[12] !== flag || $[13] !== list) {
-      t1 = <Text color="error">{flag} blocked by org policy ({list})</Text>;
+      t1 = <Text color="error">{t('ui.channelsNotice.blockedByPolicy', { flag, list })}</Text>;
       $[12] = flag;
       $[13] = list;
       $[14] = t1;
@@ -98,8 +99,8 @@ export function ChannelsNotice() {
     let t2;
     let t3;
     if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
-      t2 = <Text dimColor={true}>Inbound messages will be silently dropped</Text>;
-      t3 = <Text dimColor={true}>Have an administrator set channelsEnabled: true in managed settings to enable</Text>;
+      t2 = <Text dimColor={true}>{t('ui.channelsNotice.inboundDropped')}</Text>;
+      t3 = <Text dimColor={true}>{t('ui.channelsNotice.adminHint')}</Text>;
       $[15] = t2;
       $[16] = t3;
     } else {
@@ -127,7 +128,7 @@ export function ChannelsNotice() {
   }
   let t1;
   if ($[22] !== list) {
-    t1 = <Text color="error">Listening for channel messages from: {list}</Text>;
+    t1 = <Text color="error">{t('ui.channelsNotice.listening', { list })}</Text>;
     $[22] = list;
     $[23] = t1;
   } else {
@@ -135,7 +136,7 @@ export function ChannelsNotice() {
   }
   let t2;
   if ($[24] !== flag) {
-    t2 = <Text dimColor={true}>Experimental · inbound messages will be pushed into this session, this carries prompt injection risks. Restart Claude Code without {flag} to disable.</Text>;
+    t2 = <Text dimColor={true}>{t('ui.channelsNotice.experimental', { flag })}</Text>;
     $[24] = flag;
     $[25] = t2;
   } else {

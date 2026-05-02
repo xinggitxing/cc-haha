@@ -8,6 +8,7 @@ import { Box, Text } from '../ink.js';
 import { HighlightedCode } from './HighlightedCode.js';
 import { MessageResponse } from './MessageResponse.js';
 import { StructuredDiffList } from './StructuredDiffList.js';
+import { t } from '../i18n/index.js';
 const MAX_LINES_TO_RENDER = 10;
 type Props = {
   file_path: string;
@@ -38,7 +39,7 @@ export function FileEditToolUseRejectedMessage(t0) {
   } = useTerminalSize();
   let t1;
   if ($[0] !== operation) {
-    t1 = <Text color="subtle">User rejected {operation} to </Text>;
+    t1 = <Text color="subtle">{t('ui.fileEdit.rejected', { operation })}</Text>;
     $[0] = operation;
     $[1] = t1;
   } else {
@@ -99,7 +100,7 @@ export function FileEditToolUseRejectedMessage(t0) {
       t5 = $[15];
     }
     const truncatedContent = t5;
-    const t6 = truncatedContent || "(No content)";
+    const t6 = truncatedContent || t('ui.fileEdit.noContent');
     const t7 = columns - 12;
     let t8;
     if ($[16] !== file_path || $[17] !== t6 || $[18] !== t7) {
@@ -113,7 +114,7 @@ export function FileEditToolUseRejectedMessage(t0) {
     }
     let t9;
     if ($[20] !== plusLines || $[21] !== verbose) {
-      t9 = !verbose && plusLines > 0 && <Text dimColor={true}>… +{plusLines} lines</Text>;
+      t9 = !verbose && plusLines > 0 && <Text dimColor={true}>{t('ui.fileEdit.plusLines', { count: plusLines })}</Text>;
       $[20] = plusLines;
       $[21] = verbose;
       $[22] = t9;

@@ -324,6 +324,83 @@ export const en = {
   'ui.fallbackError.toSeeAll': 'to see all)',
   'ui.fallbackError.line': 'line',
   'ui.fallbackError.lines': 'lines',
+
+  // General (HelpV2)
+  'ui.general.description':
+    'Claude understands your codebase, makes edits with your permission, and executes commands \u2014 right from your terminal.',
+  'ui.general.shortcuts': 'Shortcuts',
+
+  // HelpV2
+  'ui.helpV2.dismissed': 'Help dialog dismissed',
+  'ui.helpV2.browseDefault': 'Browse default commands:',
+  'ui.helpV2.browseCustom': 'Browse custom commands:',
+  'ui.helpV2.noCustom': 'No custom commands found',
+  'ui.helpV2.forMoreHelp': 'For more help:',
+  'ui.helpV2.toCancel': '{shortcut} to cancel',
+
+  // ChannelsNotice
+  'ui.channelsNotice.ignored': '{flag} ignored ({list})',
+  'ui.channelsNotice.notAvailable': 'Channels are not currently available',
+  'ui.channelsNotice.requiresAuth':
+    'Channels require claude.ai authentication \u00b7 run /login, then restart',
+  'ui.channelsNotice.blockedByPolicy': '{flag} blocked by org policy ({list})',
+  'ui.channelsNotice.inboundDropped': 'Inbound messages will be silently dropped',
+  'ui.channelsNotice.adminHint':
+    'Have an administrator set channelsEnabled: true in managed settings to enable',
+  'ui.channelsNotice.listening': 'Listening for channel messages from: {list}',
+  'ui.channelsNotice.experimental':
+    'Experimental \u00b7 inbound messages will be pushed into this session, this carries prompt injection risks. Restart Claude Code without {flag} to disable.',
+
+  // FileEditTool use rejected/updated messages
+  'ui.fileEdit.rejected': 'User rejected {operation} to ',
+  'ui.fileEdit.noContent': '(No content)',
+  'ui.fileEdit.plusLines': '\u2026 +{count} lines',
+  'ui.fileEdit.added': 'Added ',
+  'ui.fileEdit.removed': '{case}emoved ',
+  'ui.fileEdit.line': 'line',
+  'ui.fileEdit.lines': 'lines',
+
+  // EffortCallout
+  'ui.effortCallout.mediumRecommended': 'Medium (recommended)',
+  'ui.effortCallout.high': 'High',
+  'ui.effortCallout.low': 'Low',
+  'ui.effortCallout.lowLabel': 'low',
+  'ui.effortCallout.mediumLabel': 'medium',
+  'ui.effortCallout.highLabel': 'high',
+
+  // ValidationErrorsList
+  'ui.validation.learnMore': 'Learn more: {link}',
+  'ui.validation.fileNotSpecified': '(file not specified)',
+
+  // FullscreenLayout - NewMessagesPill
+  'ui.fullscreen.jumpToBottom': 'Jump to bottom',
+  'ui.fullscreen.newMessages': '{count} new {messages}',
+
+  // Onboarding
+  'ui.onboarding.securityNotes': 'Security notes:',
+  'ui.onboarding.claudeMistakes': 'Claude can make mistakes',
+  'ui.onboarding.reviewResponses':
+    'You should always review Claude\u2019s responses, especially when running code.',
+  'ui.onboarding.promptInjection':
+    'Due to prompt injection risks, only use it with code you trust',
+  'ui.onboarding.moreDetails': 'For more details see:',
+  'ui.onboarding.terminalSetup': 'Use Claude Code\u2019s terminal setup?',
+  'ui.onboarding.optimalExperience':
+    'For the optimal coding experience, enable the recommended settings for your terminal:',
+  'ui.onboarding.optionEnter': 'Option+Enter for newlines and visual bell',
+  'ui.onboarding.shiftEnter': 'Shift+Enter for newlines',
+  'ui.onboarding.yesRecommended': 'Yes, use recommended settings',
+  'ui.onboarding.noLater': 'No, maybe later with /terminal-setup',
+  'ui.onboarding.confirmSkip': 'Enter to confirm \u00b7 Esc to skip',
+  'ui.onboarding.changeThemeLater': 'To change this later, run /theme',
+
+  // LogoV2 - condensed mode messages
+  'ui.logoV2.debugMode': 'Debug mode enabled',
+  'ui.logoV2.loggingTo': 'Logging to: {path}',
+  'ui.logoV2.tmuxSession': 'tmux session: {session}',
+  'ui.logoV2.messageFrom': 'Message from {org}:',
+  'ui.logoV2.sandboxWarning':
+    'Your bash commands will be sandboxed. Disable with /sandbox.',
 } as const
 
 // ── Root-level UI component keys (zh) ────────────────────
@@ -647,4 +724,73 @@ export const zh: Record<string, string> = {
   'ui.fallbackError.toSeeAll': '查看全部）',
   'ui.fallbackError.line': '行',
   'ui.fallbackError.lines': '行',
+
+  // General (HelpV2)
+  'ui.general.description': 'Claude 能理解你的代码库，在你的许可下进行编辑，并执行命令——一切都在终端中完成。',
+  'ui.general.shortcuts': '快捷键',
+
+  // HelpV2
+  'ui.helpV2.dismissed': '帮助对话框已关闭',
+  'ui.helpV2.browseDefault': '浏览默认命令：',
+  'ui.helpV2.browseCustom': '浏览自定义命令：',
+  'ui.helpV2.noCustom': '未找到自定义命令',
+  'ui.helpV2.forMoreHelp': '更多帮助：',
+  'ui.helpV2.toCancel': '{shortcut} 取消',
+
+  // ChannelsNotice
+  'ui.channelsNotice.ignored': '{flag} 已忽略 ({list})',
+  'ui.channelsNotice.notAvailable': '频道当前不可用',
+  'ui.channelsNotice.requiresAuth': '频道需要 claude.ai 认证 · 运行 /login，然后重新启动',
+  'ui.channelsNotice.blockedByPolicy': '{flag} 被组织策略阻止 ({list})',
+  'ui.channelsNotice.inboundDropped': '入站消息将被静默丢弃',
+  'ui.channelsNotice.adminHint': '请管理员在托管设置中将 channelsEnabled 设置为 true 以启用',
+  'ui.channelsNotice.listening': '正在监听来自以下频道的消息：{list}',
+  'ui.channelsNotice.experimental': '实验性 · 入站消息将被推送到此会话，存在提示注入风险。重启 Claude Code 时不使用 {flag} 以禁用。',
+
+  // FileEditTool use rejected/updated messages
+  'ui.fileEdit.rejected': '用户拒绝了 {operation} ',
+  'ui.fileEdit.noContent': '（无内容）',
+  'ui.fileEdit.plusLines': '\u2026 +{count} 行',
+  'ui.fileEdit.added': '添加了 ',
+  'ui.fileEdit.removed': '{case}删除了 ',
+  'ui.fileEdit.line': '行',
+  'ui.fileEdit.lines': '行',
+
+  // EffortCallout
+  'ui.effortCallout.mediumRecommended': '中等（推荐）',
+  'ui.effortCallout.high': '高',
+  'ui.effortCallout.low': '低',
+  'ui.effortCallout.lowLabel': '低',
+  'ui.effortCallout.mediumLabel': '中',
+  'ui.effortCallout.highLabel': '高',
+
+  // ValidationErrorsList
+  'ui.validation.learnMore': '了解更多：{link}',
+  'ui.validation.fileNotSpecified': '（未指定文件）',
+
+  // FullscreenLayout - NewMessagesPill
+  'ui.fullscreen.jumpToBottom': '跳到底部',
+  'ui.fullscreen.newMessages': '{count} 条新{messages}',
+
+  // Onboarding
+  'ui.onboarding.securityNotes': '安全提示：',
+  'ui.onboarding.claudeMistakes': 'Claude 可能会犯错',
+  'ui.onboarding.reviewResponses': '你应该始终审查 Claude 的回复，特别是在运行代码时。',
+  'ui.onboarding.promptInjection': '由于提示注入风险，只能与你信任的代码一起使用',
+  'ui.onboarding.moreDetails': '更多详情请参阅：',
+  'ui.onboarding.terminalSetup': '使用 Claude Code 的终端设置？',
+  'ui.onboarding.optimalExperience': '为获得最佳编码体验，请为你的终端启用推荐设置：',
+  'ui.onboarding.optionEnter': 'Option+Enter 换行和视觉铃声',
+  'ui.onboarding.shiftEnter': 'Shift+Enter 换行',
+  'ui.onboarding.yesRecommended': '是的，使用推荐设置',
+  'ui.onboarding.noLater': '不，稍后通过 /terminal-setup 设置',
+  'ui.onboarding.confirmSkip': 'Enter 确认 · Esc 跳过',
+  'ui.onboarding.changeThemeLater': '要稍后更改，请运行 /theme',
+
+  // LogoV2 - condensed mode messages
+  'ui.logoV2.debugMode': '调试模式已启用',
+  'ui.logoV2.loggingTo': '日志输出到：{path}',
+  'ui.logoV2.tmuxSession': 'tmux 会话：{session}',
+  'ui.logoV2.messageFrom': '来自 {org} 的消息：',
+  'ui.logoV2.sandboxWarning': '你的 bash 命令将被沙箱化。使用 /sandbox 禁用。',
 }

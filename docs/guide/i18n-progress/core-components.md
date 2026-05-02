@@ -1,6 +1,6 @@
 # 核心 UI 组件国际化进度
 
-## 状态：⚠️ 58% 完成 (41/71)
+## 状态：⚠️ 68% 完成 (48/71)
 
 ## 词条文件
 `src/i18n/locales/keys/components.ts`
@@ -62,23 +62,40 @@
 | `ShowInIDEPrompt.tsx` | `ui.showInIDE.*` |
 | `FallbackToolUseErrorMessage.tsx` | `ui.fallbackError.*` |
 
+### 本轮完成：新增第二批 (7)
+| 文件 | 使用的 Key |
+|------|-----------|
+| `HelpV2/General.tsx` | `ui.general.*` |
+| `LogoV2/ChannelsNotice.tsx` | `ui.channelsNotice.*` |
+| `FileEditToolUseRejectedMessage.tsx` | `ui.fileEdit.*` |
+| `FileEditToolUpdatedMessage.tsx` | `ui.fileEdit.*` |
+| `FullscreenLayout.tsx` | `ui.fullscreen.*` |
+| `EffortCallout.tsx` | `ui.effortCallout.*` |
+| `ValidationErrorsList.tsx` | `ui.validation.*` |
+
+### 词条已添加（待迁移）
+以下文件的词条 key 已在 `components.ts` 中定义，但尚未迁移代码：
+| 文件 | 使用的 Key 前缀 |
+|------|----------------|
+| `HelpV2/HelpV2.tsx` | `ui.helpV2.*` |
+| `Onboarding.tsx` | `ui.onboarding.*` |
+| `LogoV2/LogoV2.tsx` | `ui.logoV2.*` |
+
 ---
 
-## 待补全 ❌ (40 文件)
+## 待补全 ❌ (23 文件)
 
-### 帮助和引导 (3)
+### 帮助和引导 (2)
 | 文件 | 说明 |
 |------|------|
 | `Onboarding.tsx` | 首次使用引导 |
-| `HelpV2/General.tsx` | 帮助介绍 |
 | `HelpV2/HelpV2.tsx` | 帮助系统主页 |
 
-### 欢迎页面和消息 (6)
+### 欢迎页面和消息 (5)
 | 文件 | 说明 |
 |------|------|
 | `LogoV2/WelcomeV2.tsx` | 欢迎消息 |
 | `LogoV2/LogoV2.tsx` | 调试/沙箱信息 |
-| `LogoV2/ChannelsNotice.tsx` | 频道状态 |
 | `LogoV2/CondensedLogo.tsx` | 压缩 Logo |
 | `LogoV2/Feed.tsx` | 动态消息 |
 | `LogoV2/FeedColumn.tsx` | 动态消息列 |
@@ -132,8 +149,6 @@
 |------|------|
 | `Spinner.tsx` | 加载动画 |
 | `AutoUpdater.tsx` | 自动更新 |
-| `FullscreenLayout.tsx` / `EffortCallout.tsx` | 状态/提示组件 |
-| `ValidationErrorsList.tsx` / `FileEditToolUseRejectedMessage.tsx` / `FileEditToolUpdatedMessage.tsx` | 错误/状态消息 |
 
 ---
 
@@ -141,11 +156,11 @@
 
 | 状态 | 计数 | 占比 |
 |------|------|------|
-| 已完成 | 41 | 58% |
-| 待补全 | 30 | 42% |
+| 已完成 | 48 | 68% |
+| 待补全 | 23 | 32% |
 | **总计** | **71** | 100% |
 
 ## 备注
-- 本轮完成了全部 27 个"词条已定义"的文件迁移（Group 1）
-- 剩余 40 个文件需要先在 `components.ts` 中定义词条 key
-- 已完成文件覆盖了最常用的对话框和交互组件
+- 本轮完成了第二批 7 个文件的迁移：`General.tsx`, `ChannelsNotice.tsx`, `FileEditToolUseRejectedMessage.tsx`, `FileEditToolUpdatedMessage.tsx`, `FullscreenLayout.tsx`, `EffortCallout.tsx`, `ValidationErrorsList.tsx`
+- 为 `Onboarding.tsx`, `HelpV2/HelpV2.tsx`, `LogoV2/LogoV2.tsx` 预添加了词条 key，代码迁移待后续进行
+- 剩余文件的词条需要在 `components.ts` 中先定义 key 再进行代码迁移

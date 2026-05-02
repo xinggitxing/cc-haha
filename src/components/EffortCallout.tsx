@@ -11,6 +11,7 @@ import type { OptionWithDescription } from './CustomSelect/select.js';
 import { Select } from './CustomSelect/select.js';
 import { effortLevelToSymbol } from './EffortIndicator.js';
 import { PermissionDialog } from './permissions/PermissionDialog.js';
+import { t } from '../i18n/index.js';
 type EffortCalloutSelection = EffortLevel | undefined | 'dismiss';
 type Props = {
   model: string;
@@ -104,13 +105,13 @@ export function EffortCallout(t0) {
   let t9;
   if ($[11] === Symbol.for("react.memo_cache_sentinel")) {
     t9 = [{
-      label: <EffortOptionLabel level="medium" text="Medium (recommended)" />,
+      label: <EffortOptionLabel level="medium" text={t('ui.effortCallout.mediumRecommended')} />,
       value: "medium"
     }, {
-      label: <EffortOptionLabel level="high" text="High" />,
+      label: <EffortOptionLabel level="high" text={t('ui.effortCallout.high')} />,
       value: "high"
     }, {
-      label: <EffortOptionLabel level="low" text="Low" />,
+      label: <EffortOptionLabel level="low" text={t('ui.effortCallout.low')} />,
       value: "low"
     }];
     $[11] = t9;
@@ -141,7 +142,7 @@ export function EffortCallout(t0) {
   }
   let t13;
   if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
-    t13 = <Box marginBottom={1}><Text dimColor={true}>{t11} low {"\xB7"}{" "}{t12} medium {"\xB7"}{" "}<EffortIndicatorSymbol level="high" /> high</Text></Box>;
+    t13 = <Box marginBottom={1}><Text dimColor={true}>{t11} {t('ui.effortCallout.lowLabel')} {"\xB7"}{" "}{t12} {t('ui.effortCallout.mediumLabel')} {"\xB7"}{" "}<EffortIndicatorSymbol level="high" /> {t('ui.effortCallout.highLabel')}</Text></Box>;
     $[15] = t13;
   } else {
     t13 = $[15];

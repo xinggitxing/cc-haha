@@ -15,6 +15,7 @@ import { plural } from '../utils/stringUtils.js';
 import { isNullRenderingAttachment } from './messages/nullRenderingAttachments.js';
 import PromptInputFooterSuggestions from './PromptInput/PromptInputFooterSuggestions.js';
 import type { StickyPrompt } from './VirtualMessageList.js';
+import { t } from '../i18n/index.js';
 
 /** Rows of transcript context kept visible above the modal pane's ▔ divider. */
 const MODAL_TRANSCRIPT_PEEK = 2;
@@ -509,7 +510,7 @@ function NewMessagesPill(t0) {
   const t3 = hover ? "userMessageBackgroundHover" : "userMessageBackground";
   let t4;
   if ($[2] !== count) {
-    t4 = count > 0 ? `${count} new ${plural(count, "message")}` : "Jump to bottom";
+    t4 = count > 0 ? t('ui.fullscreen.newMessages', { count, messages: plural(count, 'message') }) : t('ui.fullscreen.jumpToBottom');
     $[2] = count;
     $[3] = t4;
   } else {
