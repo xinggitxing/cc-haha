@@ -523,9 +523,6 @@ function AssistantMessageBlock(t0) {
       }
     case "redacted_thinking":
       {
-        if (!isTranscriptMode && !verbose) {
-          return null;
-        }
         let t1;
         if ($[29] !== addMargin) {
           t1 = <AssistantRedactedThinkingMessage addMargin={addMargin} />;
@@ -538,9 +535,6 @@ function AssistantMessageBlock(t0) {
       }
     case "thinking":
       {
-        if (!isTranscriptMode && !verbose) {
-          return null;
-        }
         const isLastThinking = !lastThinkingBlockId || thinkingBlockId === lastThinkingBlockId;
         const t1 = isTranscriptMode && !isLastThinking;
         let t2;

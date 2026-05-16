@@ -711,7 +711,7 @@ const MessagesImpl = ({
           </Box>
         </Box>}
 
-      {verbose && streamingThinking?.isStreaming && !isBriefOnly && <Box marginTop={1}>
+      {streamingThinking?.isStreaming && !isBriefOnly && <Box marginTop={1}>
           <AssistantThinkingMessage param={{
         type: 'thinking',
         thinking: streamingThinking.thinking
