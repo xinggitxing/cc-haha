@@ -11,7 +11,10 @@
     "start": "bun run ./bin/claude-haha",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "verify:all": "bun run scripts/tests/run-all.ts",
+    "verify:ssrf": "bun run scripts/tests/verify-ssrf.ts",
+    "verify:ripgrep": "bun run scripts/tests/verify-ripgrep.ts"
   },
   "dependencies": {
     "@anthropic-ai/sandbox-runtime": "^0.0.44",

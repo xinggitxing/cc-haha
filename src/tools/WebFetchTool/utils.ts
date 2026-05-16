@@ -1,5 +1,7 @@
 import axios, { type AxiosResponse } from 'axios'
+import { promises as dns } from 'dns'
 import { LRUCache } from 'lru-cache'
+import { isIP } from 'net'
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
@@ -19,18 +21,9 @@ import { makeSecondaryModelPrompt } from './prompt.js'
 
 // Custom error classes for domain blocking
 class DomainBlockedError extends Error {
-  constructor(domain: string) {
-    super(`Claude Code is unable to fetch from ${domain}`)
+  constructor(domain: string, reason: string) {
+    super(`Claude Code is unable to fetch from ${domain}: ${reason}`)
     this.name = 'DomainBlockedError'
-  }
-}
-
-class DomainCheckFailedError extends Error {
-  constructor(domain: string) {
-    super(
-      `Unable to verify if domain ${domain} is safe to fetch. This may be due to network restrictions or enterprise security policies blocking claude.ai.`,
-    )
-    this.name = 'DomainCheckFailedError'
   }
 }
 
@@ -68,13 +61,11 @@ const URL_CACHE = new LRUCache<string, CacheEntry>({
   ttl: CACHE_TTL_MS,
 })
 
-// Separate cache for preflight domain checks. URL_CACHE is URL-keyed, so
-// fetching two paths on the same domain triggers two identical preflight
-// HTTP round-trips to api.anthropic.com. This hostname-keyed cache avoids
-// that. Only 'allowed' is cached — blocked/failed re-check on next attempt.
-const DOMAIN_CHECK_CACHE = new LRUCache<string, true>({
+// DNS-based SSRF check cache: resolved IPs for domains that passed the private-IP check.
+// Keyed by domain name, evicted after 5 minutes.
+const DOMAIN_DNS_CACHE = new LRUCache<string, true>({
   max: 128,
-  ttl: 5 * 60 * 1000, // 5 minutes — shorter than URL_CACHE TTL
+  ttl: 5 * 60 * 1000,
 })
 
 export function shouldSkipWebFetchPreflight(
@@ -84,15 +75,108 @@ export function shouldSkipWebFetchPreflight(
     return settings.skipWebFetchPreflight
   }
 
-  // Desktop sessions often route through third-party providers or constrained
-  // corporate networks where Anthropic's domain preflight fails despite the
-  // actual target URL being reachable through the configured provider path.
-  return Boolean(process.env.CC_HAHA_DESKTOP_SERVER_URL)
+  // Desktop sessions or constrained networks (corporate VPN, region-restricted
+  // environments) where api.anthropic.com is unreachable despite the target URL
+  // being accessible through the configured provider path.
+  if (process.env.CC_HAHA_DESKTOP_SERVER_URL || process.env.CC_HAHA_SKIP_WEB_FETCH_PREFLIGHT) {
+    return true
+  }
+
+  return false
+}
+
+// Private and reserved IPv4 ranges for SSRF prevention.
+const PRIVATE_IPV4_RANGES: [number, number, string][] = [
+  [0x00000000, 0x00ffffff, 'invalid'],     // 0.0.0.0/8
+  [0x0a000000, 0x0affffff, 'private'],      // 10.0.0.0/8
+  [0x7f000000, 0x7fffffff, 'loopback'],     // 127.0.0.0/8
+  [0x64400000, 0x647fffff, 'shared'],       // 100.64.0.0/10 (CGNAT)
+  [0xa9fe0000, 0xa9feffff, 'link-local'],   // 169.254.0.0/16
+  [0xac100000, 0xac1fffff, 'private'],      // 172.16.0.0/12
+  [0xc0a80000, 0xc0a8ffff, 'private'],      // 192.168.0.0/16
+  [0xc0000200, 0xc00002ff, 'reserved'],     // 192.0.2.0/24 (TEST-NET)
+  [0xc6336400, 0xc63364ff, 'reserved'],     // 198.51.100.0/24 (TEST-NET-2)
+  [0xcb007100, 0xcb0071ff, 'reserved'],     // 203.0.113.0/24 (TEST-NET-3)
+  [0xe0000000, 0xefffffff, 'multicast'],    // 224.0.0.0/4
+  [0xf0000000, 0xffffffff, 'reserved'],     // 240.0.0.0/4
+]
+
+export function ip4ToInt(ip: string): number | null {
+  const parts = ip.split('.').map(Number)
+  if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255)) return null
+  return ((parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3]) >>> 0
+}
+
+export function isPrivateIPv4(ip: string): string | null {
+  const addr = ip4ToInt(ip)
+  if (addr === null) return null
+  for (const [start, end, label] of PRIVATE_IPV4_RANGES) {
+    if (addr >= start && addr <= end) return label
+  }
+  return null
+}
+
+const LOCAL_HOSTNAMES = new Set([
+  'localhost',
+  'localhost.localdomain',
+  '127.0.0.1',
+  '::1',
+  '0.0.0.0',
+  '[::1]',
+])
+
+/**
+ * Local SSRF check: resolves the domain's IP and rejects private/reserved ranges.
+ * No external API dependency — works entirely offline.
+ */
+export async function checkDomainBlocklist(
+  domain: string,
+): Promise<{ status: 'allowed' } | { status: 'blocked'; reason: string }> {
+  const lowerDomain = domain.toLowerCase()
+  if (LOCAL_HOSTNAMES.has(lowerDomain)) {
+    return { status: 'blocked', reason: 'local hostname' }
+  }
+
+  // Block bare IP addresses in private ranges
+  const ipVer = isIP(lowerDomain)
+  if (ipVer) {
+    if (ipVer === 4) {
+      const label = isPrivateIPv4(lowerDomain)
+      if (label) return { status: 'blocked', reason: `local IP (${label})` }
+      return { status: 'allowed' }
+    }
+    const clean = lowerDomain.replace(/[[\]]/g, '')
+    if (clean === '::1' || clean.startsWith('fd') || clean.startsWith('fe80')) {
+      return { status: 'blocked', reason: 'local IPv6 address' }
+    }
+    return { status: 'allowed' }
+  }
+
+  if (DOMAIN_DNS_CACHE.has(lowerDomain)) {
+    return { status: 'allowed' }
+  }
+
+  try {
+    const addresses = await dns.resolve4(domain)
+    for (const addr of addresses) {
+      const label = isPrivateIPv4(addr)
+      if (label) {
+        return { status: 'blocked', reason: `resolves to ${label} IP ${addr}` }
+      }
+    }
+    DOMAIN_DNS_CACHE.set(lowerDomain, true)
+    return { status: 'allowed' }
+  } catch {
+    // DNS resolution failed (NXDOMAIN, timeout). Allow the HTTP request to
+    // proceed — if the domain is genuinely unreachable the fetch itself fails
+    // with a clearer error than a DNS preflight rejection.
+    return { status: 'allowed' }
+  }
 }
 
 export function clearWebFetchCache(): void {
   URL_CACHE.clear()
-  DOMAIN_CHECK_CACHE.clear()
+  DOMAIN_DNS_CACHE.clear()
 }
 
 // Lazy singleton — defers the turndown → @mixmark-io/domino import (~1.4MB
@@ -128,8 +212,6 @@ const MAX_HTTP_CONTENT_LENGTH = 10 * 1024 * 1024
 // Prevents hanging indefinitely on slow/unresponsive servers.
 const FETCH_TIMEOUT_MS = 60_000
 
-// Timeout for the domain blocklist preflight check (10 seconds).
-const DOMAIN_CHECK_TIMEOUT_MS = 10_000
 
 // Cap same-host redirect hops. Without this a malicious server can return
 // a redirect loop (/a → /b → /a …) and the per-request FETCH_TIMEOUT_MS
@@ -179,40 +261,6 @@ export function validateURL(url: string): boolean {
   }
 
   return true
-}
-
-type DomainCheckResult =
-  | { status: 'allowed' }
-  | { status: 'blocked' }
-  | { status: 'check_failed'; error: Error }
-
-export async function checkDomainBlocklist(
-  domain: string,
-): Promise<DomainCheckResult> {
-  if (DOMAIN_CHECK_CACHE.has(domain)) {
-    return { status: 'allowed' }
-  }
-  try {
-    const response = await axios.get(
-      `https://api.anthropic.com/api/web/domain_info?domain=${encodeURIComponent(domain)}`,
-      { timeout: DOMAIN_CHECK_TIMEOUT_MS },
-    )
-    if (response.status === 200) {
-      if (response.data.can_fetch === true) {
-        DOMAIN_CHECK_CACHE.set(domain, true)
-        return { status: 'allowed' }
-      }
-      return { status: 'blocked' }
-    }
-    // Non-200 status but didn't throw
-    return {
-      status: 'check_failed',
-      error: new Error(`Domain check returned status ${response.status}`),
-    }
-  } catch (e) {
-    logError(e)
-    return { status: 'check_failed', error: e as Error }
-  }
 }
 
 /**
@@ -399,14 +447,8 @@ export async function getURLMarkdownContent(
     const settings = getSettings_DEPRECATED()
     if (!shouldSkipWebFetchPreflight(settings)) {
       const checkResult = await checkDomainBlocklist(hostname)
-      switch (checkResult.status) {
-        case 'allowed':
-          // Continue with the fetch
-          break
-        case 'blocked':
-          throw new DomainBlockedError(hostname)
-        case 'check_failed':
-          throw new DomainCheckFailedError(hostname)
+      if (checkResult.status === 'blocked') {
+        throw new DomainBlockedError(hostname, checkResult.reason)
       }
     }
 
@@ -418,8 +460,7 @@ export async function getURLMarkdownContent(
     }
   } catch (e) {
     if (
-      e instanceof DomainBlockedError ||
-      e instanceof DomainCheckFailedError
+      e instanceof DomainBlockedError
     ) {
       // Expected user-facing failures - re-throw without logging as internal error
       throw e

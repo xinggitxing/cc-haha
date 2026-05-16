@@ -1,5 +1,5 @@
 import type { ChildProcess, ExecFileException } from 'child_process'
-import { execFile, spawn, spawnSync } from 'child_process'
+import { execFile, execSync, spawn, spawnSync } from 'child_process'
 import { existsSync } from 'fs'
 import memoize from 'lodash-es/memoize.js'
 import { homedir } from 'os'
@@ -73,11 +73,16 @@ function systemRipgrepCandidates(): string[] {
   const seen = new Set<string>()
   const addCandidate = (candidate: string | null | undefined) => {
     if (!candidate || candidate === 'rg') return
+    // On Windows, convert MinGW-style paths (/c/Users/...) to Windows paths (C:\Users\...)
+    const normalized =
+      process.platform === 'win32'
+        ? mingwToWindowsPath(candidate)
+        : candidate
     const key =
-      process.platform === 'win32' ? candidate.toLowerCase() : candidate
+      process.platform === 'win32' ? normalized.toLowerCase() : normalized
     if (seen.has(key)) return
     seen.add(key)
-    candidates.push(candidate)
+    candidates.push(normalized)
   }
 
   addCandidate(findExecutable('rg', []).cmd)
@@ -100,7 +105,46 @@ function systemRipgrepCandidates(): string[] {
     }
   }
 
+  // On Windows, also search via where.exe to find rg in Windows system PATH
+  // (WinGet installs rg to a directory that may only be in Windows PATH, not Git Bash PATH)
+  if (process.platform === 'win32') {
+    try {
+      const output = execSync('where.exe rg 2>NUL', {
+        encoding: 'utf8',
+        timeout: 5000,
+        windowsHide: true,
+      })
+        .toString()
+        .trim()
+      for (const line of output.split(/\r?\n/)) {
+        addCandidate(line.trim())
+      }
+    } catch {
+      // where.exe failed, rg not in Windows PATH
+    }
+  }
+
   return candidates
+}
+
+/**
+ * Convert MinGW/Cygwin-style paths to Windows paths.
+ * /c/Users/... → C:\Users\...
+ * /cygdrive/c/Users/... → C:\Users\...
+ */
+export function mingwToWindowsPath(p: string): string {
+  // Skip if already a Windows path (starts with drive letter and colon)
+  if (/^[a-zA-Z]:[/\\]/.test(p)) return p
+  // Skip if not a MinGW/Cygwin path (doesn't start with /)
+  if (!p.startsWith('/')) return p
+
+  const match = p.match(/^\/(?:cygdrive\/)?([a-zA-Z])(?:\/|$)/)
+  if (match) {
+    const drive = match[1]
+    const rest = p.slice(match[0].length)
+    return `${drive}:\\${rest.replace(/\//g, '\\')}`
+  }
+  return p
 }
 
 function builtinRipgrepConfig(): RipgrepConfig {
