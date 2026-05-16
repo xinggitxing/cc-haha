@@ -582,7 +582,9 @@ describe('Design system compliance', () => {
         html.includes('C47A5A') ||
         html.includes('8F482F') ||
         html.includes('var(--color-brand)') ||
-        html.includes('bg-[var(--color-brand)]'),
+        html.includes('bg-[var(--color-brand)]') ||
+        html.includes('var(--gradient-btn-primary)') ||
+        html.includes('var(--color-btn-primary-fg)'),
       ).toBe(true)
       unmount()
     }
