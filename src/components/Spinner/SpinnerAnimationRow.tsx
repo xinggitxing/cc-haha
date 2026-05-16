@@ -6,9 +6,8 @@ import { stringWidth } from '../../ink/stringWidth.js';
 import { Box, Text, useAnimationFrame } from '../../ink.js';
 import type { InProcessTeammateTaskState } from '../../tasks/InProcessTeammateTask/types.js';
 import { formatDuration, formatNumber } from '../../utils/format.js';
-import { getInitialMainLoopModel, getTurnUsage } from '../../bootstrap/state.js';
-import { calculateCostFromTokens, convertCurrency, getDisplayCurrency, getModelCosts, type ModelCosts } from '../../utils/modelCost.js';
-import { formatCost } from '../../cost-tracker.js';
+import { getTurnInputTokens, getTurnOutputTokens } from '../../bootstrap/state.js';
+import { formatCost, getTurnCost } from '../../cost-tracker.js';
 import { toInkColor } from '../../utils/ink.js';
 import type { Theme } from '../../utils/theme.js';
 import { Byline } from '../design-system/Byline.js';
@@ -142,55 +141,24 @@ export function SpinnerAnimationRow({
   const flashOpacity = reducedMotion ? 0 : mode === 'tool-use' ? (Math.sin(time / 1000 * Math.PI) + 1) / 2 : 0;
 
   // === Token count from real API usage (replaces chars/4 estimation) ===
-  const turnUsage = getTurnUsage()
-  const leaderOutputTokens = turnUsage.outputTokens
+  const turnInputTokens = getTurnInputTokens()
+  const turnOutputTokens = getTurnOutputTokens()
   const effectiveElapsedMs = hasRunningTeammates ? Math.max(elapsedTimeMs, now - turnStartRef.current) : elapsedTimeMs;
   const timerText = formatDuration(effectiveElapsedMs);
   const timerWidth = stringWidth(timerText);
 
   // Total tokens for display: input + output (leader) + teammate output
-  const totalTokens = foregroundedTeammate && !foregroundedTeammate.isIdle ? foregroundedTeammate.progress?.tokenCount ?? 0 : turnUsage.inputTokens + leaderOutputTokens + teammateTokens;
+  const totalTokens = foregroundedTeammate && !foregroundedTeammate.isIdle ? foregroundedTeammate.progress?.tokenCount ?? 0 : turnInputTokens + turnOutputTokens + teammateTokens;
   const tokenCount = formatNumber(totalTokens);
   const tokensText = hasRunningTeammates ? `${tokenCount} tokens` : `${figures.arrowDown} ${tokenCount} tokens`;
   const tokensWidth = stringWidth(tokensText);
 
-  // === Real-time cost computed from real API usage data ===
-  // Memoized: cost only changes when token counts change (post-API-call),
-  // not every 50ms animation frame. Model name changes (/model) trigger
-  // a parent re-render which resets the memo.
+  // === Real-time cost from cumulative turn cost ===
   const costText = useMemo(() => {
-    const modelSetting = getInitialMainLoopModel()
-    const modelName = (modelSetting as { model?: string })?.model
-      ?? process.env.ANTHROPIC_MODEL
-      ?? 'claude-sonnet-4-20250514'
-    let modelCosts: ModelCosts
-    try {
-      modelCosts = getModelCosts(modelName, { input_tokens: 0, output_tokens: 0 } as Parameters<typeof getModelCosts>[1])
-    } catch {
-      return ''
-    }
-    if (foregroundedTeammate && !foregroundedTeammate.isIdle) {
-      if (totalTokens <= 0) return ''
-      return formatCost(convertCurrency((totalTokens * modelCosts.inputTokens) / 1_000_000, modelCosts.currency, getDisplayCurrency()))
-    }
-    const tu = turnUsage
-    if (tu.inputTokens + tu.outputTokens <= 0) return ''
-    try {
-      const cost = calculateCostFromTokens(
-        modelName,
-        {
-          inputTokens: tu.inputTokens,
-          outputTokens: tu.outputTokens,
-          cacheReadInputTokens: tu.cacheReadInputTokens,
-          cacheCreationInputTokens: tu.cacheCreationInputTokens,
-        },
-        modelCosts,
-      )
-      return formatCost(convertCurrency(cost, modelCosts.currency, getDisplayCurrency()))
-    } catch {
-      return ''
-    }
-  }, [turnUsage.inputTokens, turnUsage.outputTokens, turnUsage.cacheReadInputTokens, turnUsage.cacheCreationInputTokens, totalTokens, foregroundedTeammate?.isIdle, foregroundedTeammate?.progress?.tokenCount])
+    const cost = getTurnCost()
+    if (cost <= 0) return ''
+    return formatCost(cost)
+  }, [turnInputTokens, turnOutputTokens, totalTokens])
   const costWidth = costText ? stringWidth(costText) + SEP_WIDTH : 0
 
   // === Thinking text (may shrink to fit) ===

@@ -67,7 +67,9 @@ export function formatTurnStats(): string {
   const totalOutput = getTurnOutputTokens()
   const totalCacheRead = getTurnCacheReadInputTokens()
   const totalCacheCreation = getTurnCacheCreationInputTokens()
-  const totalUpTokens = totalInput + totalCacheRead + totalCacheCreation
+  // input_tokens from the API already includes cache tokens.
+  // Adding cacheRead/cacheCreation again would double-count.
+  const totalUpTokens = totalInput
   const totalAllTokens = totalUpTokens + totalOutput
   const totalCost = getTurnCost()
   const apiCalls = getTurnAPICalls()
@@ -93,7 +95,9 @@ export function formatConversationCost(): string {
   const convOutput = getConversationOutputTokens()
   const convCacheRead = getConversationCacheReadInputTokens()
   const convCacheCreation = getConversationCacheCreationInputTokens()
-  const convUpTokens = convInput + convCacheRead + convCacheCreation
+  // input_tokens from the API already includes cache tokens.
+  // Adding cacheRead/cacheCreation again would double-count.
+  const convUpTokens = convInput
   const convCost = getConversationCost()
   const convAPICalls = getConversationAPICalls()
 
@@ -358,7 +362,9 @@ export function formatTotalCost(): string {
   const totalOutput = getTotalOutputTokens()
   const totalCacheRead = getTotalCacheReadInputTokens()
   const totalCacheCreation = getTotalCacheCreationInputTokens()
-  const totalUpTokens = totalInput + totalCacheRead + totalCacheCreation
+  // input_tokens from the API already includes cache tokens.
+  // Adding cacheRead/cacheCreation again would double-count.
+  const totalUpTokens = totalInput
   const totalAllTokens = totalUpTokens + totalOutput
 
   const totalCost = getTotalCost()
@@ -446,12 +452,18 @@ function round(number: number, precision: number): number {
   return Math.round(number * precision) / precision
 }
 
+/** Strip [1m] context window suffix to unify model storage keys. */
+function normalizeModelKey(model: string): string {
+  return model.replace(/\[1m\]$/i, '').trim()
+}
+
 function addToTotalModelUsage(
   cost: number,
   usage: Usage,
   model: string,
 ): ModelUsage {
-  const modelUsage = getUsageForModel(model) ?? {
+  const storageKey = normalizeModelKey(model)
+  const modelUsage = getUsageForModel(storageKey) ?? {
     inputTokens: 0,
     outputTokens: 0,
     cacheReadInputTokens: 0,
@@ -488,7 +500,7 @@ export function addToTotalSessionCost(
   // 转换为展示币种后累加到总额
   const displayCurrency = getDisplayCurrency()
   const displayCost = convertCurrency(cost, nativeCurrency, displayCurrency)
-  addToTotalCostState(displayCost, modelUsage, model)
+  addToTotalCostState(displayCost, modelUsage, normalizeModelKey(model))
 
   const attrs =
     isFastModeEnabled() && usage.speed === 'fast'
