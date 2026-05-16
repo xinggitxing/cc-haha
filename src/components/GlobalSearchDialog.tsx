@@ -191,7 +191,7 @@ export function GlobalSearchDialog(t0) {
     t8 = $[13];
   }
   const handleInsert = t8;
-  const matchLabel = matches.length > 0 ? `${matches.length}${truncated ? "+" : ""} matches${isSearching ? "\u2026" : ""}` : " ";
+  const matchLabel = matches.length > 0 ? `${matches.length}${truncated ? "+" : ""} ${t('ui.globalSearch.matches')}${isSearching ? "\u2026" : ""}` : " ";
   const t9 = previewOnRight ? "right" : "bottom";
   let t10;
   if ($[14] !== handleInsert) {
@@ -217,7 +217,7 @@ export function GlobalSearchDialog(t0) {
   }
   let t12;
   if ($[18] !== isSearching) {
-    t12 = q_0 => isSearching ? t('ui.globalSearch.searching') : q_0 ? t('ui.globalSearch.noResults') : "Type to search\u2026";
+    t12 = q_0 => isSearching ? t('ui.globalSearch.searching') : q_0 ? t('ui.globalSearch.noResults') : t('ui.globalSearch.typeToSearch');
     $[18] = isSearching;
     $[19] = t12;
   } else {
@@ -245,7 +245,7 @@ export function GlobalSearchDialog(t0) {
   }
   let t15;
   if ($[28] !== handleOpen || $[29] !== matchLabel || $[30] !== matches || $[31] !== onDone || $[32] !== t10 || $[33] !== t11 || $[34] !== t12 || $[35] !== t13 || $[36] !== t14 || $[37] !== t9 || $[38] !== visibleResults) {
-    t15 = <FuzzyPicker title="Global Search" placeholder={t('ui.globalSearch.placeholder')} items={matches} getKey={matchKey} visibleCount={visibleResults} direction="up" previewPosition={t9} onQueryChange={handleQueryChange} onFocus={setFocused} onSelect={handleOpen} onTab={t10} onShiftTab={t11} onCancel={onDone} emptyMessage={t12} matchLabel={matchLabel} selectAction="open in editor" renderItem={t13} renderPreview={t14} />;
+    t15 = <FuzzyPicker title={t('ui.globalSearch.title')} placeholder={t('ui.globalSearch.placeholder')} items={matches} getKey={matchKey} visibleCount={visibleResults} direction="up" previewPosition={t9} onQueryChange={handleQueryChange} onFocus={setFocused} onSelect={handleOpen} onTab={t10} onShiftTab={t11} onCancel={onDone} emptyMessage={t12} matchLabel={matchLabel} selectAction={t('ui.globalSearch.selectAction')} renderItem={t13} renderPreview={t14} />;
     $[28] = handleOpen;
     $[29] = matchLabel;
     $[30] = matches;

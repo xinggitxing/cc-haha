@@ -513,11 +513,15 @@ export const en = {
   'ui.quickOpen.noResults': 'No files found',
 
   // GlobalSearchDialog
+  'ui.globalSearch.title': 'Global Search',
   'ui.globalSearch.placeholder': 'Search across files...',
   'ui.globalSearch.noResults': 'No matches found',
   'ui.globalSearch.searching': 'Searching...',
   'ui.globalSearch.truncated': 'Results truncated. Refine your search.',
   'ui.globalSearch.matchesIn': 'matches in {file}',
+  'ui.globalSearch.matches': 'matches',
+  'ui.globalSearch.typeToSearch': 'Type to search\u2026',
+  'ui.globalSearch.selectAction': 'open in editor',
 
   // LogSelector
   'ui.logSelector.title': 'Select a session to resume',
@@ -1104,11 +1108,15 @@ export const zh: Record<string, string> = {
   'ui.quickOpen.noResults': '未找到文件',
 
   // GlobalSearchDialog
+  'ui.globalSearch.title': '全局搜索',
   'ui.globalSearch.placeholder': '跨文件搜索...',
   'ui.globalSearch.noResults': '未找到匹配项',
   'ui.globalSearch.searching': '正在搜索...',
   'ui.globalSearch.truncated': '结果已截断。请优化搜索条件。',
   'ui.globalSearch.matchesIn': '在 {file} 中的匹配项',
+  'ui.globalSearch.matches': '个匹配',
+  'ui.globalSearch.typeToSearch': '输入关键词搜索\u2026',
+  'ui.globalSearch.selectAction': '在编辑器中打开',
 
   // LogSelector
   'ui.logSelector.title': '选择要恢复的会话',

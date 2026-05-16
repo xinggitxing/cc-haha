@@ -1,6 +1,6 @@
 # 核心 UI 组件国际化进度
 
-## 状态：✅ 代码迁移 98% (84/86)，词条已全部定义
+## 状态：✅ 代码迁移 100% (86/86)，词条已全部定义
 
 ## 词条文件
 - `src/i18n/locales/keys/components.ts` — Core UI components
@@ -119,34 +119,22 @@
 | `LogoV2/FeedColumn.tsx` | 仅渲染 feeds |
 | `MessageSelector.tsx` | 无硬编码 UI 字符串 |
 
-### 词条已添加（待迁移）
-
-以下为新独立 key 文件，词条已定义但组件尚未迁移：
-
-| 词条文件 | 目标组件 |
-|----------|---------|
-| `trust.ts` | `TrustDialog.tsx`, `ManagedSettingsSecurityDialog.tsx` |
-| `pluginHints.ts` | `ClaudeCodeHint/PluginHintMenu.tsx`, `LspRecommendation/LspRecommendationMenu.tsx` |
-| `promptInput.ts` | `PromptInput/PromptInputHelpMenu.tsx`, `PromptInput/PromptInputStashNotice.tsx`, `PromptInput/IssueFlagBanner.tsx`, `PromptInput/SandboxPromptFooterHint.tsx` |
-| `sandbox.ts` | `sandbox/SandboxConfigTab.tsx`, `sandbox/SandboxDependenciesTab.tsx`, `sandbox/SandboxOverridesTab.tsx`, `sandbox/SandboxSettings.tsx` |
-| `miscUi.ts` | `DesktopUpsell/DesktopUpsellStartup.tsx`, `LogoV2/GuestPassesUpsell.tsx`, `LogoV2/OverageCreditUpsell.tsx`, `LogoV2/Opus1mMergeNotice.tsx`, `LogoV2/VoiceModeNotice.tsx`, `MemoryUpdateNotification.tsx`, `NotebookEditToolUseRejectedMessage.tsx` |
-
 ---
 
-## 待补全 ❌ (1 个词条未使用)
+## 待补全 ❌ (4 个词条未使用)
 
 | Key | 说明 |
 |-----|------|
-| `ui.globalSearch.truncated` | 搜索截断提示，当前组件使用 "+" 后缀 |
-| `ui.globalSearch.matchesIn` | 匹配位置显示格式不同 |
-| `ui.logSelector.loading` | "Loading sessions..." - 可能在加载状态使用 |
-| `ui.logSelector.title` | "Select a session to resume" - 标题可能通过 props 传入 |
-| `ui.spinner.*` | Spinner 动词由 `getSpinnerVerbs()` 动态生成 |
+| `ui.globalSearch.truncated` | 搜索截断提示，当前组件使用 "+" 后缀格式不相同 |
+| `ui.globalSearch.matchesIn` | 匹配位置显示格式与组件内部实现不一致 |
+| `ui.logSelector.loading` | "Loading sessions..." - 组件使用 Spinner 组件处理加载状态 |
+| `ui.logSelector.title` | "Select a session to resume" - 标题通过父组件 props 传入 |
 
 ---
 
 ## 备注
-- 本轮完成了 18 个文件的代码迁移（信任、安全、插件、提示输入、沙箱、桌面推广、LogoV2 横幅、记忆通知等模块）
-- 使用 4 个并行代理进行迁移，每个代理处理不同的模块组
+- 验证发现信任对话框、插件提示、沙箱配置、桌面推广等模块的 18 个待迁移组件已经在之前的轮次中迁移完成
+- 新增 4 个 GlobalSearch 词条 (`title`, `typeToSearch`, `matches`, `selectAction`) 并迁移至组件
+- 修复 GlobalSearchDialog 中的硬编码字符串："Global Search"、"Type to search…"、"matches"、"open in editor"
 - 所有更改均已通过语法检查和 `t()` 使用检查
-- Core Components 模块从 77% 提升到 98%，仅遗留少量边界词条
+- Core Components 模块文件覆盖率 100%，仅遗留 4 个因组件实现差异而无法使用的词条
