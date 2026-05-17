@@ -41,8 +41,8 @@ export function DevChannelsDialog(t0) {
   let t2;
   let t3;
   if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
-    t2 = <Text>--dangerously-load-development-channels is for local channel development only. Do not use this option to run channels you have downloaded off the internet.</Text>;
-    t3 = <Text>Please use --channels to run a list of approved channels.</Text>;
+    t2 = <Text>{t('ui.devChannels.dangerousWarning')}</Text>;
+    t3 = <Text>{t('ui.devChannels.useChannelsFlag')}</Text>;
     $[2] = t2;
     $[3] = t3;
   } else {
@@ -68,10 +68,10 @@ export function DevChannelsDialog(t0) {
   let t6;
   if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
     t6 = [{
-      label: "I am using this for local development",
+      label: t('ui.devChannels.localDev'),
       value: "accept"
     }, {
-      label: "Exit",
+      label: t('ui.devChannels.exit'),
       value: "exit"
     }];
     $[8] = t6;

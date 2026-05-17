@@ -14,7 +14,7 @@ export function CostThresholdDialog(t0) {
   } = t0;
   let t1;
   if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
-    t1 = <Box flexDirection="column"><Text>Learn more about how to monitor your spending:</Text><Link url="https://code.claude.com/docs/en/costs" /></Box>;
+    t1 = <Box flexDirection="column"><Text>{t('ui.costThreshold.learnMore')}</Text><Link url="https://code.claude.com/docs/en/costs" /></Box>;
     $[0] = t1;
   } else {
     t1 = $[0];
@@ -23,7 +23,7 @@ export function CostThresholdDialog(t0) {
   if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
     t2 = [{
       value: "ok",
-      label: "Got it, thanks!"
+      label: t('ui.costThreshold.gotIt')
     }];
     $[1] = t2;
   } else {

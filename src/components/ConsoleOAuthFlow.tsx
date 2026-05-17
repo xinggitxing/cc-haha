@@ -51,7 +51,7 @@ type OAuthStatus = {
   message: string;
   toRetry?: OAuthStatus;
 };
-const PASTE_HERE_MSG = 'Paste code here if prompted > ';
+const PASTE_HERE_MSG = t('ui.oauth.pasteHere');
 export function ConsoleOAuthFlow({
   onDone,
   startingMessage,
@@ -313,7 +313,7 @@ export function ConsoleOAuthFlow({
               ✓ Long-lived authentication token created successfully!
             </Text>
             <Box flexDirection="column" gap={1}>
-              <Text>Your OAuth token (valid for 1 year):</Text>
+              <Text>{t('ui.oauth.tokenInfo')}</Text>
               <Text color="warning">{oauthStatus.token}</Text>
               <Text dimColor>
                 Store this token securely. You won&apos;t be able to see it
@@ -376,7 +376,7 @@ function OAuthStatusMessage(t0) {
         }
         let t3;
         if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
-          t3 = <Text>Select login method:</Text>;
+          t3 = <Text>{t('ui.oauth.selectMethod')}</Text>;
           $[2] = t3;
         } else {
           t3 = $[2];
@@ -461,8 +461,8 @@ function OAuthStatusMessage(t0) {
         let t2;
         let t3;
         if ($[13] === Symbol.for("react.memo_cache_sentinel")) {
-          t2 = <Text>Claude Code supports Amazon Bedrock, Microsoft Foundry, and Vertex AI. Set the required environment variables, then restart Claude Code.</Text>;
-          t3 = <Text>If you are part of an enterprise organization, contact your administrator for setup instructions.</Text>;
+          t2 = <Text>{t('ui.oauth.bedrockDesc')}</Text>;
+          t3 = <Text>{t('ui.oauth.enterpriseContact')}</Text>;
           $[13] = t2;
           $[14] = t3;
         } else {
@@ -518,7 +518,7 @@ function OAuthStatusMessage(t0) {
         }
         let t2;
         if ($[22] !== showPastePrompt) {
-          t2 = !showPastePrompt && <Box><Spinner /><Text>Opening browser to sign in…</Text></Box>;
+          t2 = !showPastePrompt && <Box><Spinner /><Text>{t('ui.oauth.openingBrowser')}</Text></Box>;
           $[22] = showPastePrompt;
           $[23] = t2;
         } else {
@@ -555,7 +555,7 @@ function OAuthStatusMessage(t0) {
       {
         let t1;
         if ($[37] === Symbol.for("react.memo_cache_sentinel")) {
-          t1 = <Box flexDirection="column" gap={1}><Box><Spinner /><Text>Creating API key for Claude Code…</Text></Box></Box>;
+          t1 = <Box flexDirection="column" gap={1}><Box><Spinner /><Text>{t('ui.oauth.creatingApiKey')}</Text></Box></Box>;
           $[37] = t1;
         } else {
           t1 = $[37];

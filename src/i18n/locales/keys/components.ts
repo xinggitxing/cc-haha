@@ -86,8 +86,13 @@ export const en = {
 
   // WorkflowMultiselectDialog
   'ui.workflowSelect.title': 'Select GitHub workflows to install',
+  'ui.workflowSelect.subtitleDetailed':
+    'We\'ll create a workflow file in your repository for each one you select.',
   'ui.workflowSelect.requireOne':
     'You must select at least one workflow to continue',
+  'ui.workflowSelect.moreExamples':
+    'More workflow examples (issue triage, CI fixes, etc.) at:',
+  'ui.workflowSelect.pressAgain': 'Press {keyName} again to exit',
 
   // BridgeDialog (Remote Control)
   'ui.bridgeDialog.title': 'Remote Control',
@@ -156,6 +161,7 @@ export const en = {
 
   // Feedback
   'ui.feedback.title': 'Submit Feedback / Bug Report',
+  'ui.feedback.pressAgain': 'Press {keyName} again to exit',
   'ui.feedback.describeIssue': 'Describe the issue below:',
   'ui.feedback.editAndRetry':
     'Edit and press Enter to retry, or Esc to cancel',
@@ -195,6 +201,13 @@ export const en = {
 
   // ConsoleOAuthFlow
   'ui.oauth.title': 'Device Registration',
+  'ui.oauth.pasteHere': 'Paste code here if prompted > ',
+  'ui.oauth.tokenInfo': 'Your OAuth token (valid for 1 year):',
+  'ui.oauth.selectMethod': 'Select login method:',
+  'ui.oauth.openingBrowser': 'Opening browser to sign in\u2026',
+  'ui.oauth.creatingApiKey': 'Creating API key for Claude Code\u2026',
+  'ui.oauth.bedrockDesc': 'Claude Code supports Amazon Bedrock, Microsoft Foundry, and Vertex AI. Set the required environment variables, then restart Claude Code.',
+  'ui.oauth.enterpriseContact': 'If you are part of an enterprise organization, contact your administrator for setup instructions.',
   'ui.oauth.visitUrl': 'Visit {url}',
   'ui.oauth.enterCode': 'and enter code: {code}',
   'ui.oauth.waiting': 'Waiting for authentication...',
@@ -216,6 +229,8 @@ export const en = {
   'ui.costThreshold.title': 'Cost Threshold Reached',
   'ui.costThreshold.description':
     "You've spent {amount} on the {api} this session.",
+  'ui.costThreshold.learnMore': 'Learn more about how to monitor your spending:',
+  'ui.costThreshold.gotIt': 'Got it, thanks!',
 
   // InvalidConfigDialog
   'ui.invalidConfig.title': 'Configuration Error',
@@ -230,9 +245,17 @@ export const en = {
   'ui.channelDowngrade.title': 'Switch to Stable Channel',
   'ui.channelDowngrade.description':
     'Allow possible downgrade to stable version',
+  'ui.channelDowngrade.stableWarning':
+    'The stable channel may have an older version than what you\'re currently running ({currentVersion}).',
 
   // DevChannelsDialog
   'ui.devChannels.warning': 'WARNING: Loading development channels',
+  'ui.devChannels.dangerousWarning':
+    '--dangerously-load-development-channels is for local channel development only. Do not use this option to run channels you have downloaded off the internet.',
+  'ui.devChannels.useChannelsFlag':
+    'Please use --channels to run a list of approved channels.',
+  'ui.devChannels.localDev': 'I am using this for local development',
+  'ui.devChannels.exit': 'Exit',
 
   // IdleReturnDialog
   'ui.idleReturn.description':
@@ -240,23 +263,42 @@ export const en = {
   'ui.idleReturn.continue': 'Continue this conversation',
   'ui.idleReturn.newConversation':
     'Send message as a new conversation',
+  'ui.idleReturn.newTaskHint':
+    'If this is a new task, clearing context will save usage and be faster.',
+  'ui.idleReturn.dontAskAgain': 'Don\'t ask me again',
 
   // AutoModeOptInDialog
   'ui.autoModeOptIn.title': 'Enable auto mode?',
+  'ui.autoModeOptIn.noExit': 'No, exit',
+  'ui.autoModeOptIn.noGoBack': 'No, go back',
+  'ui.autoModeOptIn.yesDefault': 'Yes, and make it my default mode',
+  'ui.autoModeOptIn.yesEnable': 'Yes, enable auto mode',
 
   // BypassPermissionsModeDialog
   'ui.bypassPermissions.warning':
     'WARNING: Claude Code running in Bypass Permissions mode',
+  'ui.bypassPermissions.desc1':
+    'In Bypass Permissions mode, Claude Code will not ask for your approval before running potentially dangerous commands.',
+  'ui.bypassPermissions.desc2':
+    'This mode should only be used in a sandboxed container/VM that has restricted internet access and can easily be restored if damaged.',
+  'ui.bypassPermissions.responsibility':
+    'By proceeding, you accept all responsibility for actions taken while running in Bypass Permissions mode.',
+  'ui.bypassPermissions.noExit': 'No, exit',
+  'ui.bypassPermissions.yesAccept': 'Yes, I accept',
 
   // ApproveApiKey
   'ui.approveApiKey.description':
     'Detected a custom API key in your command or environment.',
   'ui.approveApiKey.yes': 'Yes',
   'ui.approveApiKey.noRecommended': 'No (recommended)',
+  'ui.approveApiKey.question': 'Do you want to use this API key?',
 
   // HistorySearchDialog
+  'ui.historySearch.title': 'Search prompts',
   'ui.historySearch.placeholder': 'Filter history\u2026',
   'ui.historySearch.empty': 'No matching prompts',
+  'ui.historySearch.loading': 'Loading\u2026',
+  'ui.historySearch.noHistory': 'No history yet',
 
   // RemoteCallout
   'ui.remoteCallout.title': 'Remote Control',
@@ -472,6 +514,8 @@ export const en = {
   'ui.ideAutoConnect.title': 'Automatically connect to IDE on startup?',
   'ui.ideAutoConnect.description':
     'You can also configure this in /config or with the --ide flag',
+  'ui.ideAutoConnect.disableTitle': 'Do you wish to disable auto-connect to IDE?',
+  'ui.ideAutoConnect.disableSubtitle': 'You can also configure this in /config',
 
   // IdeOnboardingDialog
   'ui.ideOnboarding.title': 'IDE Extension Setup',
@@ -509,8 +553,10 @@ export const en = {
   'ui.teleportRepoMismatch.cancelOption': 'Cancel',
 
   // QuickOpenDialog
+  'ui.quickOpen.title': 'Quick Open',
   'ui.quickOpen.placeholder': 'Search files by name...',
   'ui.quickOpen.noResults': 'No files found',
+  'ui.quickOpen.selectAction': 'open in editor',
 
   // GlobalSearchDialog
   'ui.globalSearch.title': 'Global Search',
@@ -555,6 +601,68 @@ export const en = {
   'ui.autoUpdater.restartToApply': '\u2713 Update installed \u00b7 Restart to apply',
   'ui.autoUpdater.updateFailed': '\u2717 Auto-update failed \u00b7 Try',
   'ui.autoUpdater.or': 'or',
+
+  // Settings
+  'ui.settings.status': 'Status',
+  'ui.settings.config': 'Config',
+  'ui.settings.usage': 'Usage',
+  'ui.settings.gates': 'Gates',
+  'ui.settings.searchPlaceholder': 'Search settings\u2026',
+  'ui.settings.enableAutoUpdates': 'Enable Auto-Updates',
+  'ui.settings.autoUpdateEnvControlled': 'Auto-updates are controlled by an environment variable and cannot be changed here.',
+  'ui.settings.autoUpdateDevDisabled': 'Auto-updates are disabled in development builds.',
+  'ui.settings.autoUpdateUnsetEnv': 'Unset {envVar} to re-enable auto-updates.',
+  'ui.settings.autoUpdateLatestChannel': 'Enable with latest channel',
+  'ui.settings.autoUpdateStableChannel': 'Enable with stable channel',
+  'ui.settings.disabled': 'Disabled',
+
+  // Setting labels
+  'ui.settings.autoCompact': 'Auto-compact',
+  'ui.settings.showTips': 'Show tips',
+  'ui.settings.reduceMotion': 'Reduce motion',
+  'ui.settings.thinkingMode': 'Thinking mode',
+  'ui.settings.promptSuggestions': 'Prompt suggestions',
+  'ui.settings.speculativeExecution': 'Speculative execution',
+  'ui.settings.rewindCode': 'Rewind code (checkpoints)',
+  'ui.settings.verboseOutput': 'Verbose output',
+  'ui.settings.terminalProgressBar': 'Terminal progress bar',
+  'ui.settings.showTerminalStatus': 'Show status in terminal tab',
+  'ui.settings.showTurnDuration': 'Show turn duration',
+  'ui.settings.defaultPermissionMode': 'Default permission mode',
+  'ui.settings.autoModeDuringPlan': 'Use auto mode during plan',
+  'ui.settings.respectGitignore': 'Respect .gitignore in file picker',
+  'ui.settings.alwaysCopyFull': 'Always copy full response (skip /copy picker)',
+  'ui.settings.copyOnSelect': 'Copy on select',
+  'ui.settings.autoUpdateChannel': 'Auto-update channel',
+  'ui.settings.theme': 'Theme',
+  'ui.settings.pushWhenIdle': 'Push when idle',
+  'ui.settings.pushWhenInputNeeded': 'Push when input needed',
+  'ui.settings.pushWhenClaudeDecides': 'Push when Claude decides',
+  'ui.settings.outputStyle': 'Output style',
+  'ui.settings.wysiwyg': 'What you see by default',
+  'ui.settings.language': 'Language',
+  'ui.settings.uiLanguage': 'UI Language',
+  'ui.settings.editorMode': 'Editor mode',
+  'ui.settings.showPrStatus': 'Show PR status footer',
+  'ui.settings.model': 'Model',
+  'ui.settings.diffTool': 'Diff tool',
+  'ui.settings.autoConnectIde': 'Auto-connect to IDE (external terminal)',
+  'ui.settings.autoInstallIdeExt': 'Auto-install IDE extension',
+  'ui.settings.claudeChromeDefault': 'Claude in Chrome enabled by default',
+  'ui.settings.defaultTeammateModel': 'Default teammate model',
+  'ui.settings.enableRemoteForAll': 'Enable Remote Control for all sessions',
+  'ui.settings.externalClaudeMd': 'External CLAUDE.md includes',
+
+  // Config UI strings
+  'ui.settings.typeToFilter': 'Type to filter',
+  'ui.settings.moreBelow': 'more below',
+  'ui.settings.defaultLeadersModel': 'Default (leader\'s model)',
+  'ui.settings.clear': 'clear',
+  'ui.settings.change': 'change',
+  'ui.settings.search': 'search',
+  'ui.settings.disableExternalIncludes': 'disable external includes',
+  'ui.settings.teammateModelHeader': 'Default model for newly spawned teammates. The leader can override via the tool call\'s model parameter.',
+  'ui.settings.changingThinkingWarning': 'Changing thinking mode mid-conversation will increase latency and may reduce quality.',
 
   // Stats
   'ui.stats.title': 'Session Statistics',
@@ -705,7 +813,10 @@ export const zh: Record<string, string> = {
 
   // WorkflowMultiselectDialog
   'ui.workflowSelect.title': '选择要安装的 GitHub 工作流',
+  'ui.workflowSelect.subtitleDetailed': '我们将在您的仓库中为您选择的每个工作流创建工作流文件。',
   'ui.workflowSelect.requireOne': '必须至少选择一个工作流才能继续',
+  'ui.workflowSelect.moreExamples': '更多工作流示例（问题分类、CI 修复等）请访问：',
+  'ui.workflowSelect.pressAgain': '按 {keyName} 再次退出',
 
   // BridgeDialog (Remote Control)
   'ui.bridgeDialog.title': '远程控制',
@@ -774,6 +885,7 @@ export const zh: Record<string, string> = {
 
   // Feedback
   'ui.feedback.title': '提交反馈 / Bug 报告',
+  'ui.feedback.pressAgain': '按 {keyName} 再次退出',
   'ui.feedback.describeIssue': '请在下方描述问题：',
   'ui.feedback.editAndRetry':
     '编辑后按 Enter 重试，或按 Esc 取消',
@@ -812,6 +924,13 @@ export const zh: Record<string, string> = {
 
   // ConsoleOAuthFlow
   'ui.oauth.title': '设备注册',
+  'ui.oauth.pasteHere': '如果提示，请在此粘贴代码 > ',
+  'ui.oauth.tokenInfo': '您的 OAuth 令牌（有效期 1 年）：',
+  'ui.oauth.selectMethod': '选择登录方式：',
+  'ui.oauth.openingBrowser': '正在打开浏览器登录\u2026',
+  'ui.oauth.creatingApiKey': '正在为 Claude Code 创建 API 密钥\u2026',
+  'ui.oauth.bedrockDesc': 'Claude Code 支持 Amazon Bedrock、Microsoft Foundry 和 Vertex AI。设置所需的环境变量，然后重新启动 Claude Code。',
+  'ui.oauth.enterpriseContact': '如果您是企业组织的成员，请联系管理员获取设置说明。',
   'ui.oauth.visitUrl': '访问 {url}',
   'ui.oauth.enterCode': '并输入代码：{code}',
   'ui.oauth.waiting': '等待身份验证...',
@@ -833,6 +952,8 @@ export const zh: Record<string, string> = {
   'ui.costThreshold.title': '达到费用阈值',
   'ui.costThreshold.description':
     '本次会话您在 {api} 上已花费 {amount}。',
+  'ui.costThreshold.learnMore': '了解更多关于如何监控支出的信息：',
+  'ui.costThreshold.gotIt': '知道了，谢谢！',
 
   // InvalidConfigDialog
   'ui.invalidConfig.title': '配置错误',
@@ -847,9 +968,15 @@ export const zh: Record<string, string> = {
   'ui.channelDowngrade.title': '切换到稳定频道',
   'ui.channelDowngrade.description':
     '允许可能降级到稳定版本',
+  'ui.channelDowngrade.stableWarning':
+    '稳定频道可能比您当前运行的版本 ({currentVersion}) 更旧。',
 
   // DevChannelsDialog
   'ui.devChannels.warning': '警告：正在加载开发频道',
+  'ui.devChannels.dangerousWarning': '--dangerously-load-development-channels 仅用于本地频道开发。请勿使用此选项运行从互联网下载的频道。',
+  'ui.devChannels.useChannelsFlag': '请使用 --channels 运行已批准的频道列表。',
+  'ui.devChannels.localDev': '我用于本地开发',
+  'ui.devChannels.exit': '退出',
 
   // IdleReturnDialog
   'ui.idleReturn.description':
@@ -857,23 +984,42 @@ export const zh: Record<string, string> = {
   'ui.idleReturn.continue': '继续此对话',
   'ui.idleReturn.newConversation':
     '作为新对话发送消息',
+  'ui.idleReturn.newTaskHint':
+    '如果是新任务，清除上下文将节省用量并更快。',
+  'ui.idleReturn.dontAskAgain': '不再询问',
 
   // AutoModeOptInDialog
   'ui.autoModeOptIn.title': '启用自动模式？',
+  'ui.autoModeOptIn.noExit': '否，退出',
+  'ui.autoModeOptIn.noGoBack': '否，返回',
+  'ui.autoModeOptIn.yesDefault': '是，并将其设为我的默认模式',
+  'ui.autoModeOptIn.yesEnable': '是，启用自动模式',
 
   // BypassPermissionsModeDialog
   'ui.bypassPermissions.warning':
     '警告：Claude Code 正在以绕过权限模式运行',
+  'ui.bypassPermissions.desc1':
+    '在绕过权限模式下，Claude Code 在运行潜在危险命令之前不会请求您的批准。',
+  'ui.bypassPermissions.desc2':
+    '此模式应仅在沙箱化容器/虚拟机中使用，该环境应限制互联网访问且在受损时可轻松恢复。',
+  'ui.bypassPermissions.responsibility':
+    '继续即表示您接受在绕过权限模式下运行时所采取行动的全部责任。',
+  'ui.bypassPermissions.noExit': '否，退出',
+  'ui.bypassPermissions.yesAccept': '是，我接受',
 
   // ApproveApiKey
   'ui.approveApiKey.description':
     '在您的命令或环境中检测到自定义 API 密钥。',
   'ui.approveApiKey.yes': '是',
   'ui.approveApiKey.noRecommended': '否（推荐）',
+  'ui.approveApiKey.question': '是否要使用此 API 密钥？',
 
   // HistorySearchDialog
+  'ui.historySearch.title': '搜索提示',
   'ui.historySearch.placeholder': '筛选历史\u2026',
   'ui.historySearch.empty': '没有匹配的提示',
+  'ui.historySearch.loading': '加载中\u2026',
+  'ui.historySearch.noHistory': '暂无历史记录',
 
   // RemoteCallout
   'ui.remoteCallout.title': '远程控制',
@@ -1071,6 +1217,8 @@ export const zh: Record<string, string> = {
   // IdeAutoConnectDialog
   'ui.ideAutoConnect.title': '启动时自动连接到 IDE？',
   'ui.ideAutoConnect.description': '您也可以在 /config 或使用 --ide 标志进行配置',
+  'ui.ideAutoConnect.disableTitle': '是否要禁用 IDE 自动连接？',
+  'ui.ideAutoConnect.disableSubtitle': '您也可以在 /config 中进行配置',
 
   // IdeOnboardingDialog
   'ui.ideOnboarding.title': 'IDE 扩展设置',
@@ -1104,8 +1252,10 @@ export const zh: Record<string, string> = {
   'ui.teleportRepoMismatch.cancelOption': '取消',
 
   // QuickOpenDialog
+  'ui.quickOpen.title': '快速打开',
   'ui.quickOpen.placeholder': '按名称搜索文件...',
   'ui.quickOpen.noResults': '未找到文件',
+  'ui.quickOpen.selectAction': '在编辑器中打开',
 
   // GlobalSearchDialog
   'ui.globalSearch.title': '全局搜索',
@@ -1150,6 +1300,68 @@ export const zh: Record<string, string> = {
   'ui.autoUpdater.restartToApply': '\u2713 更新已安装 \u00b7 重启以应用',
   'ui.autoUpdater.updateFailed': '\u2717 自动更新失败 \u00b7 尝试',
   'ui.autoUpdater.or': '或',
+
+  // Settings
+  'ui.settings.status': '状态',
+  'ui.settings.config': '配置',
+  'ui.settings.usage': '用量',
+  'ui.settings.gates': '门控',
+  'ui.settings.searchPlaceholder': '搜索设置\u2026',
+  'ui.settings.enableAutoUpdates': '启用自动更新',
+  'ui.settings.autoUpdateEnvControlled': '自动更新由环境变量控制，无法在此处更改。',
+  'ui.settings.autoUpdateDevDisabled': '自动更新在开发版本中已禁用。',
+  'ui.settings.autoUpdateUnsetEnv': '取消设置 {envVar} 以重新启用自动更新。',
+  'ui.settings.autoUpdateLatestChannel': '使用最新频道启用',
+  'ui.settings.autoUpdateStableChannel': '使用稳定频道启用',
+  'ui.settings.disabled': '已禁用',
+
+  // Setting labels
+  'ui.settings.autoCompact': '自动压缩',
+  'ui.settings.showTips': '显示提示',
+  'ui.settings.reduceMotion': '减少动画',
+  'ui.settings.thinkingMode': '思考模式',
+  'ui.settings.promptSuggestions': '提示建议',
+  'ui.settings.speculativeExecution': '推测执行',
+  'ui.settings.rewindCode': '回退代码（检查点）',
+  'ui.settings.verboseOutput': '详细输出',
+  'ui.settings.terminalProgressBar': '终端进度条',
+  'ui.settings.showTerminalStatus': '在终端标签中显示状态',
+  'ui.settings.showTurnDuration': '显示轮次耗时',
+  'ui.settings.defaultPermissionMode': '默认权限模式',
+  'ui.settings.autoModeDuringPlan': '计划期间使用自动模式',
+  'ui.settings.respectGitignore': '文件选择器中遵循 .gitignore',
+  'ui.settings.alwaysCopyFull': '始终复制完整回复（跳过 /copy 选择器）',
+  'ui.settings.copyOnSelect': '选择时复制',
+  'ui.settings.autoUpdateChannel': '自动更新频道',
+  'ui.settings.theme': '主题',
+  'ui.settings.pushWhenIdle': '空闲时推送',
+  'ui.settings.pushWhenInputNeeded': '需要输入时推送',
+  'ui.settings.pushWhenClaudeDecides': 'Claude 决定时推送',
+  'ui.settings.outputStyle': '输出风格',
+  'ui.settings.wysiwyg': '所见即所得',
+  'ui.settings.language': '语言',
+  'ui.settings.uiLanguage': '界面语言',
+  'ui.settings.editorMode': '编辑器模式',
+  'ui.settings.showPrStatus': '显示 PR 状态页脚',
+  'ui.settings.model': '模型',
+  'ui.settings.diffTool': '差异工具',
+  'ui.settings.autoConnectIde': '自动连接 IDE（外部终端）',
+  'ui.settings.autoInstallIdeExt': '自动安装 IDE 扩展',
+  'ui.settings.claudeChromeDefault': '默认启用 Claude in Chrome',
+  'ui.settings.defaultTeammateModel': '默认队友模型',
+  'ui.settings.enableRemoteForAll': '为所有会话启用远程控制',
+  'ui.settings.externalClaudeMd': '外部 CLAUDE.md 包含',
+
+  // Config UI strings
+  'ui.settings.typeToFilter': '输入筛选',
+  'ui.settings.moreBelow': '更多以下内容',
+  'ui.settings.defaultLeadersModel': '默认（队长模型）',
+  'ui.settings.clear': '清除',
+  'ui.settings.change': '更改',
+  'ui.settings.search': '搜索',
+  'ui.settings.disableExternalIncludes': '禁用外部包含',
+  'ui.settings.teammateModelHeader': '新生成队友的默认模型。队长可通过工具调用的 model 参数覆盖。',
+  'ui.settings.changingThinkingWarning': '在对话中切换思考模式会增加延迟并可能降低质量。',
 
   // Stats
   'ui.stats.title': '会话统计',

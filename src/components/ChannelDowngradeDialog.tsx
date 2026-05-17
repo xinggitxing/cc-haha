@@ -44,7 +44,7 @@ export function ChannelDowngradeDialog(t0) {
   const handleCancel = t2;
   let t3;
   if ($[4] !== currentVersion) {
-    t3 = <Text>The stable channel may have an older version than what you're currently running ({currentVersion}).</Text>;
+    t3 = <Text>{t('ui.channelDowngrade.stableWarning', { currentVersion })}</Text>;
     $[4] = currentVersion;
     $[5] = t3;
   } else {

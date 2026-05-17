@@ -26,7 +26,7 @@ const WORKFLOWS: WorkflowOption[] = [{
 }];
 function renderInputGuide(exitState: ExitState): React.ReactNode {
   if (exitState.pending) {
-    return <Text>Press {exitState.keyName} again to exit</Text>;
+    return <Text>{t('ui.workflowSelect.pressAgain', { keyName: exitState.keyName })}</Text>;
   }
   return <Byline>
       <KeyboardShortcutHint shortcut="↑↓" action="navigate" />
@@ -80,7 +80,7 @@ export function WorkflowMultiselectDialog(t0) {
   const handleCancel = t3;
   let t4;
   if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
-    t4 = <Box><Text dimColor={true}>More workflow examples (issue triage, CI fixes, etc.) at:{" "}<Link url="https://github.com/anthropics/claude-code-action/blob/main/examples/">https://github.com/anthropics/claude-code-action/blob/main/examples/</Link></Text></Box>;
+    t4 = <Box><Text dimColor={true}>{t('ui.workflowSelect.moreExamples')}{" "}<Link url="https://github.com/anthropics/claude-code-action/blob/main/examples/">https://github.com/anthropics/claude-code-action/blob/main/examples/</Link></Text></Box>;
     $[4] = t4;
   } else {
     t4 = $[4];
@@ -103,7 +103,7 @@ export function WorkflowMultiselectDialog(t0) {
   }
   let t7;
   if ($[9] !== showError) {
-    t7 = showError && <Box><Text color="error">You must select at least one workflow to continue</Text></Box>;
+    t7 = showError && <Box><Text color="error">{t('ui.workflowSelect.requireOne')}</Text></Box>;
     $[9] = showError;
     $[10] = t7;
   } else {
@@ -111,7 +111,7 @@ export function WorkflowMultiselectDialog(t0) {
   }
   let t8;
   if ($[11] !== t6 || $[12] !== t7) {
-    t8 = <Dialog title={t('ui.workflowSelect.title')} subtitle="We'll create a workflow file in your repository for each one you select." onCancel={handleCancel} inputGuide={renderInputGuide}>{t4}{t6}{t7}</Dialog>;
+    t8 = <Dialog title={t('ui.workflowSelect.title')} subtitle={t('ui.workflowSelect.subtitleDetailed')} onCancel={handleCancel} inputGuide={renderInputGuide}>{t4}{t6}{t7}</Dialog>;
     $[11] = t6;
     $[12] = t7;
     $[13] = t8;
